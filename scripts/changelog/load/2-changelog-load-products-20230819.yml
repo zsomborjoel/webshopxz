@@ -1,0 +1,12 @@
+databaseChangeLog:
+  - changeSet:
+      id: 9bd7bc56-0759-4783-8013-7a6ca14984d0
+      author: zsomborjoel
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: classpath:load/data/2-products-mock-data-20230819.csv
+            quotchar: '""'
+            schemaName: public
+            separator: "|"
+            tableName: products

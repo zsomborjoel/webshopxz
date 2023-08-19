@@ -1,12 +1,12 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 9adac4f4-b9d8-11ec-8422-0242ac120002
+      id: 022a2a17-fef3-4adb-8bf9-4ad1fee34c50
       author: zsomborjoel
       changes:
         - createTable:
             schema: public
-            tableName: users
+            tableName: product_categories
             columns:
               - column:
                   name: id
@@ -15,26 +15,13 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: username
+                  name: name
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: password
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: email
-                  type: varchar(255)
-                  constraints:
-                    nullable: false
-              - column:
-                  name: active
-                  type: boolean
-                  defaultValue: false
-                  constraints:
-                    nullable: false
+                  name: description
+                  type: varchar(3000)
               - column:
                   name: created_at
                   type: int
@@ -44,8 +31,4 @@ databaseChangeLog:
               - column:
                   name: modified_at
                   type: int
-        -  addUniqueConstraint:  
-            columnNames: username  
-            constraintName: username_unique  
-            tableName: users
                     

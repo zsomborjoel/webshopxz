@@ -1,12 +1,12 @@
 databaseChangeLog:
 
   - changeSet:
-      id: 9adac4f4-b9d8-11ec-8422-0242ac120002
+      id: 9f046fd3-f9cd-48fb-ae3a-2bcf2f60e467
       author: zsomborjoel
       changes:
         - createTable:
             schema: public
-            tableName: users
+            tableName: products
             columns:
               - column:
                   name: id
@@ -15,24 +15,27 @@ databaseChangeLog:
                     primaryKey: true
                     nullable: false
               - column:
-                  name: username
+                  name: name
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: password
+                  name: description
+                  type: varchar(3000)
+              - column:
+                  name: SKU
                   type: varchar(255)
                   constraints:
                     nullable: false
               - column:
-                  name: email
-                  type: varchar(255)
+                  name: price
+                  type: int
                   constraints:
                     nullable: false
               - column:
                   name: active
                   type: boolean
-                  defaultValue: false
+                  defaultValue: true
                   constraints:
                     nullable: false
               - column:
@@ -44,8 +47,10 @@ databaseChangeLog:
               - column:
                   name: modified_at
                   type: int
-        -  addUniqueConstraint:  
-            columnNames: username  
-            constraintName: username_unique  
-            tableName: users
-                    
+              - column:
+                  name: product_category_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_product_product_category_id
+                    references: product_categories(id)
+                    nullable: false

@@ -5,3 +5,11 @@ databaseChangeLog:
       file: classpath:schema/2-changelog-verification-token-20221229.yml
   - include:
       file: classpath:schema/3-changelog-refresh-token-20230126.yml
+  - include:
+      file: classpath:schema/4-changelog-product-categories-20230819.yml
+  - include:
+      file: classpath:schema/5-changelog-products-20230819.yml
+  - include:
+      file: classpath:load/1-changelog-load-product-categories-20230819.yml
+  - include:
+      file: classpath:load/2-changelog-load-products-20230819.yml

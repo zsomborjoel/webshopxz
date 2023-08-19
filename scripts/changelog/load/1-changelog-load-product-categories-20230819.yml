@@ -1,0 +1,14 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: eb26bbe8-c52d-4eef-8499-424dd9ea16d6
+      author: zsomborjoel
+      changes:
+        - loadData:
+            encoding: UTF-8
+            file: classpath:load/data/1-product-categories-mock-data-20230819.csv
+            quotchar: '""'
+            schemaName: public
+            separator: '|'
+            tableName: product_categories
+            

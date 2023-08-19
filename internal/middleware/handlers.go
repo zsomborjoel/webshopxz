@@ -10,7 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/auth"
+	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -39,7 +39,7 @@ func JwtHandler() gin.HandlerFunc {
 		}
 		jwtToken := bearer[7:]
 
-		token, err := jwt.ParseWithClaims(jwtToken, &auth.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(jwtToken, &authtoken.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(key), nil
 		})
 		if err != nil {

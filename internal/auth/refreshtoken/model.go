@@ -7,7 +7,7 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/user"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 type RefreshToken struct {

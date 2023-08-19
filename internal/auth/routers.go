@@ -9,11 +9,12 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
+	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/email"
-	"github.com/zsomborjoel/workoutxz/internal/refreshtoken"
-	"github.com/zsomborjoel/workoutxz/internal/user"
-	"github.com/zsomborjoel/workoutxz/internal/verificationtoken"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 func AuthRegister(r *gin.RouterGroup) {
@@ -145,7 +146,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	jwt, err := CreateJWTToken(usr)
+	jwt, err := authtoken.CreateJWTToken(usr)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -183,7 +184,7 @@ func RefreshJWTToken(c *gin.Context) {
 		return
 	}
 
-	jwt, err := CreateJWTToken(usr)
+	jwt, err := authtoken.CreateJWTToken(usr)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

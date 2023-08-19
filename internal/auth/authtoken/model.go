@@ -1,4 +1,4 @@
-package auth
+package authtoken
 
 import (
 	"fmt"
@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/zsomborjoel/workoutxz/internal/user"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 type UserClaim struct {

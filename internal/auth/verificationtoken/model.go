@@ -8,7 +8,7 @@ import (
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/user"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 type VerificationToken struct {
@@ -89,7 +89,7 @@ func UpdateToken(token string) (string, error) {
 
 	db := common.GetDB()
 	r := db.MustExec("UPDATE verification_tokens SET token=$1 WHERE token=$2", uuid, token)
-	num, err := r.RowsAffected() 
+	num, err := r.RowsAffected()
 	if err != nil {
 		return "", fmt.Errorf("An error occured in verificationtoken.UpdateOne.RowsAffected: %w", err)
 	}
@@ -98,5 +98,5 @@ func UpdateToken(token string) (string, error) {
 		return "", errors.New("Token was not updated")
 	}
 
-	return uuid.String(), nil	
+	return uuid.String(), nil
 }

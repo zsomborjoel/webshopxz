@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/user"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 	"golang.org/x/crypto/bcrypt"
 )
 

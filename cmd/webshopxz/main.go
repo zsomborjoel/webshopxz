@@ -9,9 +9,9 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
+	"github.com/zsomborjoel/workoutxz/internal/model/user"
 	"github.com/zsomborjoel/workoutxz/internal/pagetemplate/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
-	"github.com/zsomborjoel/workoutxz/internal/user"
 )
 
 func main() {

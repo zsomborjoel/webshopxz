@@ -1,0 +1,91 @@
+{{define "mainmenuHTML"}}
+<div class="menu-wrap">
+    <nav class="menu-main">
+        <ul>
+            <li>
+                <a href="/collections/all">
+                    Shop All
+                </a>
+            </li>
+            <li>
+                <a href="https://www.everyday-needs.com/collections/new">
+                    New
+                </a>
+            </li>
+            <li>
+                <a href="https://www.everyday-needs.com/collections/back-in-stock">
+                    Back in Stock
+                </a>
+            </li>
+        </ul>
+        <ul>
+            <li>
+                <a href="/collections/bedroom">
+                    Bedroom
+                </a>
+            </li>
+            <li>
+                <a href="/collections/kitchen-table">
+                    Kitchen & Table
+                </a>
+            </li>
+            <li>
+                <a href="/collections/office-paper">
+                    Office & Paper
+                </a>
+            </li>
+            <li>
+                <a href="/collections/gifting">
+                    Gifting
+                </a>
+            </li>
+            <li>
+                <a href="/collections/bathroom">
+                    Bathroom
+                </a>
+            </li>
+            <li>
+                <a href="/collections/housekeeping">
+                    Housekeeping
+                </a>
+            </li>
+            <li>
+                <a href="/collections/apparel-1">
+                    Apparel
+                </a>
+            </li>
+            <li>
+                <a class="active" href="/collections/sale">
+                    Sale
+                </a>
+            </li>
+            <li>
+                <a href="/collections/living">
+                    Living
+                </a>
+            </li>
+            <li>
+                <a href="/collections/outdoors">
+                    Outdoors
+                </a>
+            </li>
+            <li>
+                <a href="/collections/baby-child">
+                    Baby & Child
+                </a>
+            </li>
+            <li class="search">
+                <form action="/search">
+                    <input type="hidden" name="type" value="product">
+                    <input
+                        type="text"
+                        name="q"
+                        placeholder="Search"
+                        required
+                    >
+                </form>
+            </li>
+        </ul>
+    </nav>
+</div>
+{{end}}

@@ -1,0 +1,7 @@
+databaseChangeLog:
+  - include:
+      file: classpath:schema/1-changelog-users-20221217.yml
+  - include:
+      file: classpath:schema/2-changelog-verification-token-20221229.yml
+  - include:
+      file: classpath:schema/3-changelog-refresh-token-20230126.yml

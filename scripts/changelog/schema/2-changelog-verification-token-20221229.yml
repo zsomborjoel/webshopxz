@@ -1,0 +1,32 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 55273922-774e-4ae7-a518-fddc00ab3710
+      author: zsomborjoel
+      changes:
+        - createTable:
+            schema: public
+            tableName: verification_tokens
+            columns:
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expired_at
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_verification_token_user_id
+                    references: users(id)
+                    

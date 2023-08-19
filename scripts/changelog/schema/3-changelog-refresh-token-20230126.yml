@@ -1,0 +1,32 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: e3999589-38f6-4fb7-a111-9e08608092e2
+      author: zsomborjoel
+      changes:
+        - createTable:
+            schema: public
+            tableName: refresh_tokens
+            columns:
+              - column:
+                  name: token
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: expired_at
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_refresh_token_user_id
+                    references: users(id)
+                    

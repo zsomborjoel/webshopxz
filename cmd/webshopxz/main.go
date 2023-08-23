@@ -9,6 +9,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
+	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 	"github.com/zsomborjoel/workoutxz/internal/pagetemplate/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
@@ -29,11 +30,16 @@ func main() {
 	)
 
 	v1 := r.Group("/api")
+	// technical
 	ping.PingRegister(v1.Group("/ping"))
-	user.UsersRegister(v1.Group("/users"))
 	auth.AuthRegister(v1.Group("/auth"))
 	email.EmailRegister(v1.Group("/email"))
 
+	// model
+	user.UsersRegister(v1.Group("/users"))
+	product.ProductsRegister(v1.Group("/products"))
+
+	// template
 	mainpage.MainPageRegister(v1.Group("/mainpage"))
 
 	r.Run()

@@ -23,8 +23,9 @@ func ErrorHandler() gin.HandlerFunc {
 			log.Error().Err(err).Msg("http error")
 		}
 
-		// status -1 doesn't overwrite existing status code
-		c.JSON(-1, finalErr)
+		if finalErr != nil {
+			c.JSON(-1, finalErr)
+		}
 	}
 }
 

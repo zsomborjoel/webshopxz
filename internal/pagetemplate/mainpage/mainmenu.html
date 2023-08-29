@@ -1,91 +1,44 @@
 {{define "mainmenuHTML"}}
-<div class="menu-wrap">
-    <nav class="menu-main">
-        <ul>
-            <li>
-                <a href="/collections/all">
-                    Shop All
-                </a>
-            </li>
-            <li>
-                <a href="https://www.everyday-needs.com/collections/new">
-                    New
-                </a>
-            </li>
-            <li>
-                <a href="https://www.everyday-needs.com/collections/back-in-stock">
-                    Back in Stock
-                </a>
-            </li>
-        </ul>
-        <ul>
-            <li>
-                <a href="/collections/bedroom">
-                    Bedroom
-                </a>
-            </li>
-            <li>
-                <a href="/collections/kitchen-table">
-                    Kitchen & Table
-                </a>
-            </li>
-            <li>
-                <a href="/collections/office-paper">
-                    Office & Paper
-                </a>
-            </li>
-            <li>
-                <a href="/collections/gifting">
-                    Gifting
-                </a>
-            </li>
-            <li>
-                <a href="/collections/bathroom">
-                    Bathroom
-                </a>
-            </li>
-            <li>
-                <a href="/collections/housekeeping">
-                    Housekeeping
-                </a>
-            </li>
-            <li>
-                <a href="/collections/apparel-1">
-                    Apparel
-                </a>
-            </li>
-            <li>
-                <a class="active" href="/collections/sale">
-                    Sale
-                </a>
-            </li>
-            <li>
-                <a href="/collections/living">
-                    Living
-                </a>
-            </li>
-            <li>
-                <a href="/collections/outdoors">
-                    Outdoors
-                </a>
-            </li>
-            <li>
-                <a href="/collections/baby-child">
-                    Baby & Child
-                </a>
-            </li>
-            <li class="search">
-                <form action="/search">
-                    <input type="hidden" name="type" value="product">
-                    <input
-                        type="text"
-                        name="q"
-                        placeholder="Search"
-                        required
-                    >
-                </form>
-            </li>
-        </ul>
-    </nav>
+<div class="h-52 flex flex-col text-xs font-mono mt-8 ml-32 mr-32">
+    <div class="flex items-center">
+        <div>
+            <img class="mx-auto mb-2 max-w-full h-auto" src="item1.jpg" alt="Item 1">
+        </div>
+        <div class="justify-left ml-28 mr-28">
+            <div class="grid grid-cols-5 gap-32">
+                <div class="col-span-1 space-y-2">
+                    <a href="#" class="block">Item 1</a>
+                    <a href="#" class="block">Item 3</a>
+                    <a href="#" class="block">Item 2</a>
+                </div>
+                <div class="col-span-1 space-y-2">
+                    <a href="#" class="block">Item 4</a>
+                    <a href="#" class="block">Item 5</a>
+                    <a href="#" class="block">Item 6</a>
+                </div>
+                <div class="col-span-1 space-y-2">
+                    <a href="#" class="block">Item 7</a>
+                    <a href="#" class="block">Item 8</a>
+                    <a href="#" class="block">Item 9</a>
+                </div>
+                <div class="col-span-1 space-y-2">
+                    <a href="#" class="block">Item 10</a>
+                    <a href="#" class="block">Item 11</a>
+                    <a href="#" class="block">Item 12</a>
+                </div>
+                <div class="col-span-1 space-y-2">
+                    <a href="#" class="block">Item 13</a>
+                    <a href="#" class="block">Item 14</a>
+                    <a href="#" class="block">Item 15</a>
+                </div>
+            </div>
+        </div>
+        <div class="justify-right relative ml-auto">
+            <div class="col-span-1 space-y-2">
+                <a href="#" class="block">Item 10</a>
+                <a href="#" class="block">Item 11</a>
+            </div>
+        </div>
+    </div>
 </div>
 {{end}}

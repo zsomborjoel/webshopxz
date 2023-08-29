@@ -29,7 +29,7 @@ func main() {
 		middleware.ErrorHandler(),
 	)
 
-	v1 := r.Group("/api")
+	v1 := r.Group("")
 	// technical
 	ping.PingRegister(v1.Group("/ping"))
 	auth.AuthRegister(v1.Group("/auth"))

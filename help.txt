@@ -1,11 +1,11 @@
 ### liquibase ###
 
 # status check
-liquibase --username=postgres --password=1234 --changelogFile=./db.changelog.yml --url=jdbc:postgresql://localhost:5432/workoutxz --classpath=/home/zsomborjoel/Softwares/Jars/postgresql-42.5.1.jar \
+liquibase --username=postgres --password=1234 --changelogFile=./db.changelog.yml --url=jdbc:postgresql://localhost:5432/webshopxz --classpath=/home/zsomborjoel/Softwares/Jars/postgresql-42.5.1.jar \
 status
 
 # update 
-liquibase --username=postgres --password=1234 --changelogFile=./db.changelog.yml --url=jdbc:postgresql://localhost:5432/workoutxz --classpath=/home/zsomborjoel/Softwares/Jars/postgresql-42.5.1.jar \
+liquibase --username=postgres --password=1234 --changelogFile=./db.changelog.yml --url=jdbc:postgresql://localhost:5432/webshopxz --classpath=/home/zsomborjoel/Softwares/Jars/postgresql-42.5.1.jar \
 update
 
 ### compile daemon ###

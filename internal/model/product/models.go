@@ -37,7 +37,5 @@ func FindAll() ([]Product, error) {
 		return p, fmt.Errorf("An error occured in products.FindAll.Select: %w", err)
 	}
 
-	fmt.Println(p)
-
 	return p, nil
 }

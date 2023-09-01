@@ -1,4 +1,4 @@
-package pagetemplate
+package webpage
 
 import (
 	"fmt"
@@ -23,6 +23,8 @@ func GetTemplates(pagePath string) (templates *template.Template, err error) {
 			allFiles = append(allFiles, filePath)
 		}
 	}
+
+	fmt.Println(allFiles)
 
 	return template.New("").ParseFiles(allFiles...)
 }

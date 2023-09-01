@@ -11,8 +11,8 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
-	"github.com/zsomborjoel/workoutxz/internal/pagetemplate/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/mainpage"
 )
 
 func main() {

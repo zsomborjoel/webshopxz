@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
-	"github.com/zsomborjoel/workoutxz/internal/pagetemplate"
+	"github.com/zsomborjoel/workoutxz/internal/webpage"
 )
 
 type Film struct {
@@ -24,7 +24,7 @@ func RenderMainPage(c *gin.Context) {
 		return
 	}
 
-	templates, err := pagetemplate.GetTemplates("/mainpage")
+	templates, err := webpage.GetTemplates("/mainpage")
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

@@ -85,11 +85,11 @@ func XSSProtectionHandler() gin.HandlerFunc {
 		customWriter := &responseWriterWithInterceptor{ResponseWriter: writer}
 
 		c.Writer = customWriter
-		c.Next()
 
 		responseBody := customWriter.Body()
 		sanitizedResponse := html.EscapeString(responseBody)
 
 		writer.Write([]byte(sanitizedResponse))
+		c.Next()
 	}
 }

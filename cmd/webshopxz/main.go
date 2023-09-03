@@ -1,6 +1,7 @@
 package main
 
 import (
+	"fmt"
 	"os"
 
 	"github.com/gin-gonic/gin"
@@ -17,16 +18,20 @@ import (
 
 func main() {
 	common.LoadEnvVariables()
+	common.Init()
 
 	level := os.Getenv("LOG_LEVEL")
+	fmt.Println(fmt.Sprintf("LogLevel set to %s", level))
 	zerolog.SetGlobalLevel(common.LogLevel(level))
 
-	common.Init()
+	mode := os.Getenv("GIN_MODE")
+	gin.SetMode(mode)
 
 	r := gin.Default()
 	r.Use(
 		middleware.CORS(),
 		middleware.ErrorHandler(),
+		middleware.StaticFileHandler(),
 	)
 
 	v1 := r.Group("")

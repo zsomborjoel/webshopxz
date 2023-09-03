@@ -15,8 +15,6 @@ import (
 
 func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Next()
-
 		var finalErr error
 		for _, err := range c.Errors {
 			finalErr = err
@@ -26,12 +24,13 @@ func ErrorHandler() gin.HandlerFunc {
 		if finalErr != nil {
 			c.JSON(-1, finalErr)
 		}
+
+		c.Next()
 	}
 }
 
 func JwtHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		c.Next()
 		key := os.Getenv("JWT_KEY")
 		bearer := c.GetHeader("Authorization")
 
@@ -50,5 +49,31 @@ func JwtHandler() gin.HandlerFunc {
 		if !token.Valid {
 			c.AbortWithError(http.StatusUnauthorized, errors.New("Jwt token is Invalid"))
 		}
+
+		c.Next()
+	}
+}
+
+func StaticFileHandler() gin.HandlerFunc {
+	root := os.Getenv("STATIC_FILE_PATH")
+	if root == "" {
+        log.Error().Msg("STATIC_FILE_PATH environment variable is not set")
+    }
+
+	prefix := os.Getenv("STATIC_FILE_PREFIX")
+	if prefix == "" {
+        log.Error().Msg("STATIC_FILE_PREFIX environment variable is not set")
+    }
+
+	fileServer := http.FileServer(http.Dir(root))
+
+	return func(c *gin.Context) {
+		if !strings.HasPrefix(c.Request.URL.Path, prefix) {
+			c.Next()
+			return
+		}
+
+		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, prefix)
+		fileServer.ServeHTTP(c.Writer, c.Request)
 	}
 }

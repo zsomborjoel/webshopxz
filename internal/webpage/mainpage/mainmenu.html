@@ -1,0 +1,36 @@
+{{define "mainmenuHTML"}}
+<div class="h-52 flex flex-col text-xs font-mono mt-4 ml-16 mr-32">
+    <div class="flex items-center">
+        <div>
+            <img class="mb-2 w-20 h-20" src="../static/logo.png" alt="...">
+        </div>
+        <div class="justify-left ml-36">
+            <div class="col-span-1 space-y-2">
+                <a href="#" class="block">Shop All</a>
+                <a href="#" class="block">New</a>
+                <a href="#" class="block">Back in stock</a>
+            </div>
+        </div>
+        <div class="justify-left ml-14">
+            <div class="grid grid-cols-3 gap-4">
+                {{range .Categories}}
+                <a href={{.Name}} class="block">{{.Name}}</a>
+                {{end}}
+            </div>
+        </div>
+        <div class="justify-left ml-14">
+            <div class="col-span-1 space-y-2">
+                Gifting</a>
+                <a href="#" class="block">Sale</a>
+                <a href="#" class="block">Search</a>
+            </div>
+        </div>
+        <div class="justify-right relative ml-auto">
+            <div class="col-span-1 space-y-2">
+                <a href="#" class="block">Cart</a>
+                <a href="#" class="block">Login</a>
+            </div>
+        </div>
+    </div>
+</div>
+{{end}}

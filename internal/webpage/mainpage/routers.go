@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
 )
@@ -24,11 +25,22 @@ func RenderMainPage(c *gin.Context) {
 		return
 	}
 
+	categories, err := category.FindAll()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
 	templates, err := webpage.GetTemplates("/mainpage")
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
-	templates.ExecuteTemplate(c.Writer, "indexHTML", products)
+	dataMap := map[string]interface{}{
+		"Products":   products,
+		"Categories": categories,
+	}
+
+	templates.ExecuteTemplate(c.Writer, "indexHTML", dataMap)
 }

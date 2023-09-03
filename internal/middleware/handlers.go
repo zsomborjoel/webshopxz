@@ -3,6 +3,7 @@ package middleware
 import (
 	"errors"
 	"fmt"
+	"html"
 	"net/http"
 	"os"
 	"strings"
@@ -57,13 +58,13 @@ func JwtHandler() gin.HandlerFunc {
 func StaticFileHandler() gin.HandlerFunc {
 	root := os.Getenv("STATIC_FILE_PATH")
 	if root == "" {
-        log.Error().Msg("STATIC_FILE_PATH environment variable is not set")
-    }
+		log.Error().Msg("STATIC_FILE_PATH environment variable is not set")
+	}
 
 	prefix := os.Getenv("STATIC_FILE_PREFIX")
 	if prefix == "" {
-        log.Error().Msg("STATIC_FILE_PREFIX environment variable is not set")
-    }
+		log.Error().Msg("STATIC_FILE_PREFIX environment variable is not set")
+	}
 
 	fileServer := http.FileServer(http.Dir(root))
 
@@ -75,5 +76,20 @@ func StaticFileHandler() gin.HandlerFunc {
 
 		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, prefix)
 		fileServer.ServeHTTP(c.Writer, c.Request)
+	}
+}
+
+func XSSProtectionHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		writer := c.Writer
+		customWriter := &responseWriterWithInterceptor{ResponseWriter: writer}
+
+		c.Writer = customWriter
+		c.Next()
+
+		responseBody := customWriter.Body()
+		sanitizedResponse := html.EscapeString(responseBody)
+
+		writer.Write([]byte(sanitizedResponse))
 	}
 }

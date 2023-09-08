@@ -13,3 +13,5 @@ databaseChangeLog:
       file: classpath:load/1-changelog-load-product-categories-20230819.yml
   - include:
       file: classpath:load/2-changelog-load-products-20230819.yml
+  - include:
+      file: classpath:schema/6-changelog-products-image-name-20230908.yml

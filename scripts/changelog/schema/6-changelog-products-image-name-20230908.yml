@@ -1,0 +1,32 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 231b4c74-8290-48de-9aa8-20020087571b
+      author: zsomborjoel
+      changes:
+      - addColumn:
+          schema: public
+          tableName: products
+          columns:
+          - column:
+              name: image_name
+              type: varchar(50)
+
+  - changeSet:
+      id: 03ee26a3-c39c-4fe5-b4e6-23327746759f
+      author: zsomborjoel
+      changes:
+      - sql: WITH DuplicateCTE AS (
+                SELECT "name"
+                FROM products
+                GROUP BY 1
+                HAVING COUNT(*) > 1
+            )
+            DELETE FROM products
+            WHERE "name" IN (SELECT "name" FROM DuplicateCTE);
+
+  - changeSet:  
+      id:  c05e9cd7-fc1e-4d83-9393-d7182c735ee5  
+      author: zsomborjoel 
+      changes:  
+      - sql: UPDATE products SET image_name='default.jpeg';

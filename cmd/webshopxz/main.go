@@ -15,6 +15,8 @@ import (
 )
 
 func main() {
+	fmt.Println("Application Init started")
+	
 	common.LoadEnvVariables()
 	common.Init()
 

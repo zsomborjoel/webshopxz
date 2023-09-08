@@ -8,6 +8,7 @@ type ProductResponse struct {
 	Description string
 	SKU         string
 	Price       int
+	ImageName   string
 	Active      bool
 }
 
@@ -23,6 +24,7 @@ func (s *ProductSerializer) Response() ProductResponse {
 		Description: s.Product.Description,
 		SKU:         s.Product.SKU,
 		Price:       s.Product.Price,
+		ImageName:   s.Product.ImageName,
 		Active:      s.Product.Active,
 	}
 }

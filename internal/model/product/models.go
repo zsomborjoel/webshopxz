@@ -13,6 +13,7 @@ type Product struct {
 	Description string `db:"description"`
 	SKU         string `db:"sku"`
 	Price       int    `db:"price"`
+	ImageName   string `db:"image_name"`
 	Active      bool   `db:"active"`
 }
 
@@ -29,6 +30,7 @@ func FindAll() ([]Product, error) {
 			p.description,
 			p.sku, 
 			p.price, 
+			p.image_name,
 			p.active 
 		FROM products p
 		`)

@@ -14,7 +14,12 @@
         <div class="justify-left ml-14">
             <div class="grid grid-cols-3 gap-4">
                 {{range .Categories}}
-                <a href={{.Name}} class="block">{{.Name}}</a>
+                <a hx-get="/{{.Name}}" 
+                    hx-trigger="click"
+                    hx-target="#products"    
+                    href={{.Name}} class="block">
+                    {{.Name}}
+                </a>
                 {{end}}
             </div>
         </div>

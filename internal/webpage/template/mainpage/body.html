@@ -1,7 +1,7 @@
 {{define "bodyHTML"}}
 <body class="bg-gray-50 text-gray-600">
     {{template "mainmenuHTML" .}}
-    <div class="grid grid-cols-4 gap-4 ml-72 mr-72">
+    <div id="products" class="grid grid-cols-4 gap-4 ml-72 mr-72">
         {{range .Products}}
         <div class="bg-white border p-4 text-center">
             <img class="mx-auto mb-2 max-w-full h-auto" src="../../static/images/{{.ImageName}}">

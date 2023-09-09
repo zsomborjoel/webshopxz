@@ -41,3 +41,31 @@ func FindAll() ([]Product, error) {
 
 	return p, nil
 }
+
+func FindAllByCategory(cn string) ([]Product, error) {
+	log.Debug().Msg("products.FindAllByCategory called")
+
+	db := common.GetDB()
+	var p []Product
+	err := db.Select(&p,
+		`
+		SELECT 
+			p.id,
+			p.name,
+			p.description,
+			p.sku, 
+			p.price, 
+			p.image_name,
+			p.active 
+		FROM products p
+		JOIN product_categories pc
+		ON p.product_category_id = pc.id
+		WHERE pc.name = $1
+		`, cn)
+
+	if err != nil {
+		return p, fmt.Errorf("An error occured in products.FindAllByCategory.Select: %w", err)
+	}
+
+	return p, nil
+}

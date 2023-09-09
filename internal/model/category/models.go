@@ -13,17 +13,14 @@ type Category struct {
 	Description string `db:"description"`
 }
 
-func FindAll() ([]Category, error) {
+func FindAllName() ([]Category, error) {
 	log.Debug().Msg("categories.FindAll called")
 
 	db := common.GetDB()
 	var c []Category
 	err := db.Select(&c,
 		`
-		SELECT 
-			pc.id,
-			pc.name,
-			pc.description
+		SELECT pc.name
 		FROM product_categories pc
 		`)
 

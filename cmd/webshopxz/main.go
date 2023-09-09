@@ -11,12 +11,12 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
-	"github.com/zsomborjoel/workoutxz/internal/webpage/mainpage"
+	"github.com/zsomborjoel/workoutxz/internal/webpage"
 )
 
 func main() {
 	fmt.Println("Application Init started")
-	
+
 	common.LoadEnvVariables()
 	common.Init()
 
@@ -43,7 +43,7 @@ func main() {
 	email.EmailRegister(v1.Group("/email"))
 
 	// template
-	mainpage.MainPageRegister(v1.Group("/mainpage"))
+	webpage.MainPageRegister(v1.Group(""))
 
 	r.Run()
 }

@@ -47,6 +47,11 @@ func FindAllByCategory(cn string) ([]Product, error) {
 
 	db := common.GetDB()
 	var p []Product
+
+	if cn == common.All {
+		return FindAll()
+	}
+
 	err := db.Select(&p,
 		`
 		SELECT 

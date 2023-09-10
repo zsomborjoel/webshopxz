@@ -43,8 +43,10 @@ func main() {
 	email.EmailRegister(v1.Group("/email"))
 
 	// template
+	webpage.Init()
+
 	webpage.MainPageRegister(v1.Group(""))
 	webpage.ProductsByCategoryRegister(v1.Group(""))
-	
+
 	r.Run()
 }

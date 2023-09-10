@@ -6,7 +6,15 @@
         </div>
         <div class="justify-left ml-36">
             <div class="col-span-1 space-y-2">
-                <a href="#" class="block">Shop All</a>
+                <a
+                    hx-get="all"
+                    hx-trigger="click"
+                    hx-target="#products"
+                    hx-push-url="true"
+                    class="block"
+                >
+                    Shop All
+                </a>
                 <a href="#" class="block">New</a>
                 <a href="#" class="block">Back in stock</a>
             </div>
@@ -14,10 +22,13 @@
         <div class="justify-left ml-14">
             <div class="grid grid-cols-3 gap-4">
                 {{range .Categories}}
-                <a hx-get="/{{.Name}}" 
+                <a
+                    hx-get="{{.Name}}"
                     hx-trigger="click"
-                    hx-target="#products"    
-                    href={{.Name}} class="block">
+                    hx-target="#products"
+                    hx-push-url="true"
+                    class="block"
+                >
                     {{.Name}}
                 </a>
                 {{end}}

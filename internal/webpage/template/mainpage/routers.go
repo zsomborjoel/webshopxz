@@ -1,8 +1,8 @@
-package webpage
+package mainpage
 
 import (
+	"html/template"
 	"net/http"
-	"text/template"
 
 	"github.com/rs/zerolog/log"
 
@@ -10,23 +10,25 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
+	"github.com/zsomborjoel/workoutxz/internal/webpage"
 )
 
 var mainpageTemplates *template.Template
-var componentTemplates *template.Template
 
 func Init() {
 	var err error
-	mainpageTemplates, err = GetTemplates("/mainpage")
+	mainpageTemplates, err = webpage.GetTemplates("/mainpage")
 	if err != nil {
 		log.Fatal().Stack().Msg("Error loading mainpageTemplates")
 		return
 	}
 
-	componentTemplates, err = GetTemplates("/component")
-	if err != nil {
-		log.Fatal().Stack().Msg("Error loading componentTemplates")
+	componentTemplates := webpage.GetTemplateFiles("/component")
+	if len(componentTemplates) == 0 {
+		log.Fatal().Stack().Msg("Error loading mainpageTemplates.componentTemplates")
 	}
+
+	mainpageTemplates.ParseFiles(componentTemplates...)
 }
 
 func MainPageRegister(r *gin.RouterGroup) {
@@ -74,12 +76,12 @@ func RenderProductsByCategory(c *gin.Context) {
 		"Products": products,
 	}
 
-	if !IsHTMXRequest(c) {
+	if !webpage.IsHTMXRequest(c) {
 		executeMainPage(c, dataMap)
 		return
 	}
 
-	componentTemplates.ExecuteTemplate(c.Writer, "productHTML", dataMap)
+	mainpageTemplates.ExecuteTemplate(c.Writer, "productHTML", dataMap)
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {

@@ -11,7 +11,8 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
-	"github.com/zsomborjoel/workoutxz/internal/webpage"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/notfoundpage"
 )
 
 func main() {
@@ -35,6 +36,9 @@ func main() {
 		middleware.ErrorHandler(),
 	)
 
+	notfoundpage.Init()
+	r.NoRoute(notfoundpage.RenderNotFoundPage)
+
 	v1 := r.Group("")
 
 	// technical
@@ -43,10 +47,10 @@ func main() {
 	email.EmailRegister(v1.Group("/email"))
 
 	// template
-	webpage.Init()
+	mainpage.Init()
 
-	webpage.MainPageRegister(v1.Group(""))
-	webpage.ProductsByCategoryRegister(v1.Group(""))
+	mainpage.MainPageRegister(v1.Group(""))
+	mainpage.ProductsByCategoryRegister(v1.Group(""))
 
 	r.Run()
 }

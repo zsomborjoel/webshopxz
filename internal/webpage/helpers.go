@@ -1,17 +1,23 @@
 package webpage
 
 import (
+	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
 	"strings"
-	"text/template"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 
 func GetTemplates(pagePath string) (templates *template.Template, err error) {
+	allFiles := GetTemplateFiles(pagePath)
+
+	return template.New("").ParseFiles(allFiles...)
+}
+
+func GetTemplateFiles(pagePath string) ([]string) {
 	templatePath := os.Getenv("TEMPLATE_PATH")
 	fullPath := templatePath + pagePath
 
@@ -25,10 +31,10 @@ func GetTemplates(pagePath string) (templates *template.Template, err error) {
 		}
 	}
 
-	return template.New("").ParseFiles(allFiles...)
+	return allFiles
 }
 
-func IsHTMXRequest(c *gin.Context) (bool) {
+func IsHTMXRequest(c *gin.Context) bool {
 	htmx := c.Request.Header.Get(common.HTMXRequest)
 	return htmx != ""
 }

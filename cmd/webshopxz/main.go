@@ -11,6 +11,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/loginpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/notfoundpage"
 )
@@ -48,9 +49,11 @@ func main() {
 
 	// template
 	mainpage.Init()
+	loginpage.Init()
 
 	mainpage.MainPageRegister(v1.Group(""))
 	mainpage.ProductsByCategoryRegister(v1.Group(""))
+	loginpage.LoginPageRegister(v1.Group(""))
 
 	r.Run()
 }

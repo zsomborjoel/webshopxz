@@ -82,7 +82,7 @@ func RenderProductsByCategory(c *gin.Context) {
 		return
 	}
 
-	mainpageTemplates.ExecuteTemplate(c.Writer, "productHTML", dataMap)
+	mainpageTemplates.ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
@@ -95,9 +95,9 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 
 	dataMap := map[string]interface{}{
 		"Categories": cats,
-		"LoggedIn": loggedIn,
+		"LoggedIn":   loggedIn,
 	}
 
 	common.MergeMaps(source, dataMap)
-	mainpageTemplates.ExecuteTemplate(c.Writer, "indexHTML", dataMap)
+	mainpageTemplates.ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
 }

@@ -26,5 +26,5 @@ func Init() {
 }
 
 func RenderNotFoundPage(c *gin.Context) {
-	notfoundpageTemplates.ExecuteTemplate(c.Writer, "indexHTML", nil)
+	notfoundpageTemplates.ExecuteTemplate(c.Writer, "indexHTMLnotfoundpage", nil)
 }

@@ -1,8 +1,7 @@
-{{define "bodyHTML"}}
-<body class="bg-gray-50 text-gray-600 min-h-screen">
-    {{template "headerHTML" .}}
+{{define "bodyHTMLmainpage"}}
+<body>
     <div id="products" class="grid grid-cols-4 gap-4 ml-72 mr-72 flex-grow">
-        {{template "productHTML" .}}
+        {{template "productHTMLmainpage" .}}
     </div>
 </body>
 {{end}}

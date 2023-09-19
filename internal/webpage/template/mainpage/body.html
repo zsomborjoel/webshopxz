@@ -1,7 +1,7 @@
 {{define "bodyHTML"}}
-<body class="bg-gray-50 text-gray-600">
-    {{template "mainmenuHTML" .}}
-    <div id="products" class="grid grid-cols-4 gap-4 ml-72 mr-72">
+<body class="bg-gray-50 text-gray-600 min-h-screen">
+    {{template "headerHTML" .}}
+    <div id="products" class="grid grid-cols-4 gap-4 ml-72 mr-72 flex-grow">
         {{template "productHTML" .}}
     </div>
 </body>

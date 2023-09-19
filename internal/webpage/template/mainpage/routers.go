@@ -14,6 +14,7 @@ import (
 )
 
 var mainpageTemplates *template.Template
+var categories []string
 
 func Init() {
 	var err error
@@ -36,7 +37,7 @@ func MainPageRegister(r *gin.RouterGroup) {
 }
 
 func ProductsByCategoryRegister(r *gin.RouterGroup) {
-	cs, err := category.FindAllName()
+	cs, err := category.FindAllNameWithProducts()
 	if err != nil {
 		log.Fatal().Stack().Msg("Error loading ProductsByCategoryRegister routes")
 		return
@@ -85,7 +86,8 @@ func RenderProductsByCategory(c *gin.Context) {
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
-	cats, err := category.FindAllName()
+	cats, err := category.FindAllNameWithProducts()
+	loggedIn := true
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -93,6 +95,7 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 
 	dataMap := map[string]interface{}{
 		"Categories": cats,
+		"LoggedIn": loggedIn,
 	}
 
 	common.MergeMaps(source, dataMap)

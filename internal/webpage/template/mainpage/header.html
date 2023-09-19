@@ -1,0 +1,65 @@
+{{define "headerHTML"}}
+<header class="h-36 flex flex-col text-xs font-mono mt-4 ml-16 mr-32">
+    <div class="flex items-center">
+        <nav>
+            <img
+                hx-get="all"
+                hx-trigger="click"
+                hx-target="#products"
+                hx-push-url="true"
+                class="cursor-pointer hover:opacity-75 mb-2 w-20 h-20"
+                src="../../static/logo.png"
+            >
+        </nav>
+        <div class="justify-left ml-36">
+            <div class="col-span-1 space-y-2">
+                <a
+                    hx-get="all"
+                    hx-trigger="click"
+                    hx-target="#products"
+                    hx-push-url="true"
+                    class="hover:underline block"
+                >
+                    Shop All
+                </a>
+                <a href="#" class="hover:underline block">New</a>
+                <a href="#" class="hover:underline block">Back in stock</a>
+            </div>
+        </div>
+        <div class="justify-left ml-7">
+            <div class="grid grid-cols-3 gap-2">
+                {{range .Categories}}
+                <a
+                    hx-get="{{.Name}}"
+                    hx-trigger="click"
+                    hx-target="#products"
+                    hx-push-url="true"
+                    class="hover:underline block"
+                >
+                    {{.Name}}
+                </a>
+                {{end}}
+            </div>
+        </div>
+        <div class="justify-left ml-7">
+            <div class="col-span-1 space-y-2">
+                <a href="#" class="hover:underline block">Gifting</a>
+                <a href="#" class="hover:underline block">Sale</a>
+                <a href="#" class="hover:underline block">Search</a>
+            </div>
+        </div>
+        <div class="justify-right relative ml-auto">
+            <div class="col-span-1 space-y-2">
+                <a href="#" class="hover:underline block">Cart</a>
+                <div>
+                    {{if .LoggedIn}}
+                    <a href="#" class="hover:underline block">Account</a>
+                    {{else}}
+                    <a href="#" class="hover:underline block">Login</a>
+                    {{end}}
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+{{end}}

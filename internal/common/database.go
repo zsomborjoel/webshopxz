@@ -10,7 +10,7 @@ import (
 
 var DB *sqlx.DB
 
-func Init() *sqlx.DB {
+func InitDB() *sqlx.DB {
 	conn := os.Getenv("DB_CONNECTION")
 
 	var err error

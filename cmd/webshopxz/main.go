@@ -18,9 +18,11 @@ import (
 
 func main() {
 	fmt.Println("Application Init started")
-
 	common.LoadEnvVariables()
-	common.Init()
+
+	templateRoot := os.Getenv("TEMPLATE_PATH")
+	common.InitDB()
+	common.InitTemplate(templateRoot)
 
 	level := os.Getenv("LOG_LEVEL")
 	fmt.Println(fmt.Sprintf("LogLevel set to %s", level))
@@ -37,7 +39,6 @@ func main() {
 		middleware.ErrorHandler(),
 	)
 
-	notfoundpage.Init()
 	r.NoRoute(notfoundpage.RenderNotFoundPage)
 
 	v1 := r.Group("")
@@ -48,9 +49,6 @@ func main() {
 	email.EmailRegister(v1.Group("/email"))
 
 	// template
-	mainpage.Init()
-	loginpage.Init()
-
 	mainpage.MainPageRegister(v1.Group(""))
 	mainpage.ProductsByCategoryRegister(v1.Group(""))
 	loginpage.LoginPageRegister(v1.Group(""))

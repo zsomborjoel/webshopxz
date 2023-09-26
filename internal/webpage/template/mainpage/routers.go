@@ -1,7 +1,6 @@
 package mainpage
 
 import (
-	"html/template"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
@@ -13,37 +12,10 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
 )
 
-var mainpageTemplates *template.Template
 var categories []string
 
-func Init() {
-	var err error
-	mainpageTemplateFiles := webpage.GetTemplateFiles("/mainpage")
-	if len(mainpageTemplateFiles) == 0 {
-		log.Fatal().Stack().Msg("Error loading mainpageTemplateFiles")
-	}
-
-	componentTemplateFiles := webpage.GetTemplateFiles("/component")
-	if len(componentTemplateFiles) == 0 {
-		log.Fatal().Stack().Msg("Error loading mainpageTemplates.componentTemplateFiles")
-	}
-
-	loginpageTemplateFiles := webpage.GetTemplateFiles("/loginpage")
-	if len(loginpageTemplateFiles) == 0 {
-		log.Fatal().Stack().Msg("Error loading loginpageTemplateFiles")
-	}
-
-	mainpageTemplates, err = template.New("mainpage").ParseFiles(mainpageTemplateFiles...)
-	if err != nil {
-		log.Fatal().Stack().Msg("Error loading mainpageTemplates")
-	}
-
-	mainpageTemplates.ParseFiles(componentTemplateFiles...)
-	mainpageTemplates.ParseFiles(loginpageTemplateFiles...)
-}
-
 func MainPageRegister(r *gin.RouterGroup) {
-	r.GET("", RenderMainPage)
+	r.GET("", renderMainPage)
 }
 
 func ProductsByCategoryRegister(r *gin.RouterGroup) {
@@ -53,13 +25,13 @@ func ProductsByCategoryRegister(r *gin.RouterGroup) {
 		return
 	}
 
-	r.GET(common.AllSlug, RenderProductsByCategory)
+	r.GET(common.AllSlug, renderProductsByCategory)
 	for _, c := range cs {
-		r.GET(c.Name, RenderProductsByCategory)
+		r.GET(c.Name, renderProductsByCategory)
 	}
 }
 
-func RenderMainPage(c *gin.Context) {
+func renderMainPage(c *gin.Context) {
 	ps, err := product.FindAll()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
@@ -73,7 +45,7 @@ func RenderMainPage(c *gin.Context) {
 	executeMainPage(c, dataMap)
 }
 
-func RenderProductsByCategory(c *gin.Context) {
+func renderProductsByCategory(c *gin.Context) {
 	url := c.Request.URL.String()
 	cat := common.GetLastPartUrlPath(url)
 
@@ -92,7 +64,7 @@ func RenderProductsByCategory(c *gin.Context) {
 		return
 	}
 
-	mainpageTemplates.ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+	common.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
@@ -109,5 +81,5 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 	}
 
 	common.MergeMaps(source, dataMap)
-	mainpageTemplates.ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
+	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
 }

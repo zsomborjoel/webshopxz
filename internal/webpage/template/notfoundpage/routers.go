@@ -12,17 +12,22 @@ var notfoundpageTemplates *template.Template
 
 func Init() {
 	var err error
-	notfoundpageTemplates, err = webpage.GetTemplates("/notfoundpage")
+	notfoundpageTemplatesFiles := webpage.GetTemplateFiles("/notfoundpage")
+	if len(notfoundpageTemplatesFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading notfoundpageTemplatesFiles")
+	}
+
+	componentTemplateFiles := webpage.GetTemplateFiles("/component")
+	if len(componentTemplateFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading notfoundpageTemplates.componentTemplcomponentTemplateFilesates")
+	}
+
+	notfoundpageTemplates, err := template.New("notfoundpage").ParseFiles(notfoundpageTemplatesFiles...)
 	if err != nil {
 		log.Fatal().Stack().Msg("Error loading notfoundpageTemplates")
 	}
 
-	componentTemplates := webpage.GetTemplateFiles("/component")
-	if len(componentTemplates) == 0 {
-		log.Fatal().Stack().Msg("Error loading notfoundpageTemplates.componentTemplates")
-	}
-
-	notfoundpageTemplates.ParseFiles(componentTemplates...)
+	notfoundpageTemplates.ParseFiles(componentTemplateFiles...)
 }
 
 func RenderNotFoundPage(c *gin.Context) {

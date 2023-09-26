@@ -1,7 +1,6 @@
 package webpage
 
 import (
-	"html/template"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -11,13 +10,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 
-func GetTemplates(pagePath string) (templates *template.Template, err error) {
-	allFiles := GetTemplateFiles(pagePath)
-
-	return template.New("").ParseFiles(allFiles...)
-}
-
-func GetTemplateFiles(pagePath string) ([]string) {
+func GetTemplateFiles(pagePath string) []string {
 	templatePath := os.Getenv("TEMPLATE_PATH")
 	fullPath := templatePath + pagePath
 

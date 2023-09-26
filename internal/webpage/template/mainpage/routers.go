@@ -18,18 +18,28 @@ var categories []string
 
 func Init() {
 	var err error
-	mainpageTemplates, err = webpage.GetTemplates("/mainpage")
+	mainpageTemplateFiles := webpage.GetTemplateFiles("/mainpage")
+	if len(mainpageTemplateFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading mainpageTemplateFiles")
+	}
+
+	componentTemplateFiles := webpage.GetTemplateFiles("/component")
+	if len(componentTemplateFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading mainpageTemplates.componentTemplateFiles")
+	}
+
+	loginpageTemplateFiles := webpage.GetTemplateFiles("/loginpage")
+	if len(loginpageTemplateFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading loginpageTemplateFiles")
+	}
+
+	mainpageTemplates, err = template.New("mainpage").ParseFiles(mainpageTemplateFiles...)
 	if err != nil {
 		log.Fatal().Stack().Msg("Error loading mainpageTemplates")
-		return
 	}
 
-	componentTemplates := webpage.GetTemplateFiles("/component")
-	if len(componentTemplates) == 0 {
-		log.Fatal().Stack().Msg("Error loading mainpageTemplates.componentTemplates")
-	}
-
-	mainpageTemplates.ParseFiles(componentTemplates...)
+	mainpageTemplates.ParseFiles(componentTemplateFiles...)
+	mainpageTemplates.ParseFiles(loginpageTemplateFiles...)
 }
 
 func MainPageRegister(r *gin.RouterGroup) {
@@ -87,7 +97,7 @@ func RenderProductsByCategory(c *gin.Context) {
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
 	cats, err := category.FindAllNameWithProducts()
-	loggedIn := true
+	loggedIn := false
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

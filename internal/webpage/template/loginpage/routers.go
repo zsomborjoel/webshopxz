@@ -13,24 +13,28 @@ var loginpageTemplates *template.Template
 
 func Init() {
 	var err error
-	loginpageTemplates, err = webpage.GetTemplates("/loginpage")
-	if err != nil {
-		log.Fatal().Stack().Msg("Error loading loginpageTemplates")
-		return
+	loginpageTemplateFiles := webpage.GetTemplateFiles("/loginpage")
+	if len(loginpageTemplateFiles) == 0 {
+		log.Fatal().Stack().Msg("Error loading loginpageTemplateFiles")
 	}
 
-	componentTemplates := webpage.GetTemplateFiles("/component")
-	if len(componentTemplates) == 0 {
+	componentTemplateFiles := webpage.GetTemplateFiles("/component")
+	if len(componentTemplateFiles) == 0 {
 		log.Fatal().Stack().Msg("Error loading loginpageTemplates.componentTemplates")
 	}
 
-	mainpageTemplates := webpage.GetTemplateFiles("/mainpage")
-	if len(mainpageTemplates) == 0 {
+	mainpageTemplateFiles := webpage.GetTemplateFiles("/mainpage")
+	if len(mainpageTemplateFiles) == 0 {
 		log.Fatal().Stack().Msg("Error loading loginpageTemplates.mainpageTemplates")
 	}
 
-	loginpageTemplates.ParseFiles(componentTemplates...)
-	loginpageTemplates.ParseFiles(mainpageTemplates...)
+	loginpageTemplates, err = template.New("loginpage").ParseFiles(loginpageTemplateFiles...)
+	if err != nil {
+		log.Fatal().Stack().Msg("Error loading loginpageTemplates")
+	}
+
+	loginpageTemplates.ParseFiles(componentTemplateFiles...)
+	loginpageTemplates.ParseFiles(mainpageTemplateFiles...)
 }
 
 func LoginPageRegister(r *gin.RouterGroup) {

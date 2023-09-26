@@ -55,7 +55,15 @@
                     {{if .LoggedIn}}
                     <a href="#" class="hover:underline block">Account</a>
                     {{else}}
-                    <a href="#" class="hover:underline block">Login</a>
+                    <a
+                        hx-get="login"
+                        hx-trigger="click"
+                        hx-target="#login"
+                        hx-push-url="true"
+                        class="hover:underline block"
+                    >
+                        Login
+                    </a>
                     {{end}}
                 </div>
             </div>

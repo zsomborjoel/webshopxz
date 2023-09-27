@@ -1,22 +1,22 @@
 {{define "headerHTMLgeneral"}}
-<header class="h-36 text-xs font-mono mt-4 ml-16 mr-32">
+<header class="h-36 text-xs font-mono ml-16 mr-32">
     <div class="flex items-center">
         <nav>
             <img
-                hx-get="all"
+                hx-get="/"
                 hx-trigger="click"
-                hx-target="#products"
+                hx-target="#mainpage"
                 hx-push-url="true"
-                class="cursor-pointer hover:opacity-75 mb-2 w-20 h-20"
+                class="cursor-pointer hover:opacity-75 mb-2 w-20 h-20 mt-4"
                 src="../../static/logo.png"
             >
         </nav>
         <div class="justify-left ml-36">
             <div class="col-span-1 space-y-2">
                 <a
-                    hx-get="all"
+                    hx-get="/"
                     hx-trigger="click"
-                    hx-target="#products"
+                    hx-target="#mainpage"
                     hx-push-url="true"
                     class="hover:underline block"
                 >

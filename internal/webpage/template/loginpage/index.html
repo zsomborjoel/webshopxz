@@ -1,12 +1,14 @@
 {{define "indexHTMLloginpage"}}
 <!DOCTYPE html>
-<html class="bg-blue-200 text-black">
-    {{template "headHTMLgeneral" .}}
+<html>
+    <div id="login" class="bg-blue-200 text-black">
+        {{template "headHTMLgeneral" .}}
 
-    {{template "headerHTMLgeneral" .}}
+        {{template "headerHTMLgeneral" .}}
 
-    {{template "bodyHTMLloginpage" .}}
+        {{template "bodyHTMLloginpage" .}}
 
-    {{template "footerHTMLgeneral" .}}
+        {{template "footerHTMLgeneral" .}}
+    </div>
 </html>
 {{end}}

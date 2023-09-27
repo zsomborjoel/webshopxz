@@ -1,12 +1,14 @@
 {{define "indexHTMLmainpage"}}
 <!DOCTYPE html>
-<html id="mainmenu" class="bg-gray-50 text-gray-600 min-h-screen">
-    {{template "headHTMLgeneral" .}}
+<html>
+    <div id="mainmenu" class="bg-gray-50 text-gray-600 min-h-screen">
+        {{template "headHTMLgeneral" .}}
 
-    {{template "headerHTMLgeneral" .}}
+        {{template "headerHTMLgeneral" .}}
 
-    {{template "bodyHTMLmainpage" .}}
+        {{template "bodyHTMLmainpage" .}}
 
-    {{template "footerHTMLgeneral" .}}
+        {{template "footerHTMLgeneral" .}}
+    </div>
 </html>
 {{end}}

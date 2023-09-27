@@ -20,6 +20,7 @@
                         type="text"
                         id="email"
                         name="email"
+                        placeholder="name@company.com"
                         class="mt-1 p-2 w-full border rounded"
                     >
                 </div>
@@ -29,6 +30,7 @@
                         type="password"
                         id="password"
                         name="password"
+                        placeholder="••••••••"
                         class="mt-1 p-2 w-full border rounded"
                     >
                 </div>
@@ -39,9 +41,18 @@
             </form>
             <p class="mt-4">
                 Don't have an account?
-                <a href="/create-account" class="text-blue-500 hover:underline">Create one</a>
+                <a
+                    hx-get="/create-account"
+                    hx-trigger="click"
+                    hx-target="#create-account"
+                    hx-swap="outerHTML"
+                    class="text-blue-500 hover:underline"
+                >
+                    Create one
+                </a>
             </p>
         </div>
+        <div id="create-account"/>
     </div>
 </div>
 {{end}}

@@ -5,11 +5,11 @@
         <div class="shrink-1 mb-12 grow-0 basis-auto md:mb-0 md:w-8/10 md:shrink-0 lg:w-6/10 xl:w-6/10">
             <img src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="w-full" alt="Phone image">
         </div>
+        <div id="create-account-form"/>
         <!-- Right column container -->
-        <div class="bg-white p-8 rounded shadow-md w-80 mb-4">
+        <div id="login-form" class="bg-white p-8 rounded shadow-md w-80 mb-4">
             <h1 class="text-2xl font-semibold mb-4">Login</h1>
             <form
-                id="login-form"
                 hx-post="/login"
                 hx-trigger="submit"
                 class="w-full"
@@ -44,15 +44,13 @@
                 <a
                     hx-get="/create-account"
                     hx-trigger="click"
-                    hx-target="#create-account"
-                    hx-swap="outerHTML"
+                    hx-target="#create-account-form"
                     class="text-blue-500 hover:underline"
                 >
                     Create one
                 </a>
             </p>
         </div>
-        <div id="create-account"/>
     </div>
 </div>
 {{end}}

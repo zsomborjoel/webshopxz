@@ -7,13 +7,13 @@ import (
 
 func LoginPageRegister(r *gin.RouterGroup) {
 	r.GET("/login", renderLoginPage)
-	r.GET("/create-account", renderCreateAccount)
+	r.GET("/create-account", renderCreateAccountForm)
 }
 
 func renderLoginPage(c *gin.Context) {
 	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", nil)
 }
 
-func renderCreateAccount(c *gin.Context) {
-	common.GetTemplate().ExecuteTemplate(c.Writer, "createaccountHTMLloginpage", nil)
+func renderCreateAccountForm(c *gin.Context) {
+	common.GetTemplate().ExecuteTemplate(c.Writer, "createaccountformHTMLloginpage", nil)
 }

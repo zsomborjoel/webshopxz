@@ -27,7 +27,8 @@
             </div>
         </div>
         <div class="flex justify-center sm:justify-start ml-0 sm:ml-7 mt-4 sm:mt-0">
-            <div class="space-y-2">
+            <div class="grid grid-cols-3 gap-2">
+                {{range .Categories}}
                 <a
                     hx-get="{{.Name}}"
                     hx-trigger="click"
@@ -37,6 +38,7 @@
                 >
                     {{.Name}}
                 </a>
+                {{end}}
             </div>
         </div>
         <div class="flex justify-center sm:justify-start ml-0 sm:ml-7">

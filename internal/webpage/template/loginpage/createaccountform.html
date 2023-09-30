@@ -59,7 +59,16 @@
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create</button>
                 <p class="mt-4">
                     Already have an account?
-                    <a href="login" class="text-blue-500 hover:underline">Login here</a>
+                    <a
+                        hx-get="login"
+                        hx-trigger="click"
+                        hx-target="#login"
+                        hx-push-url="true"
+                        hx-swap="innerHTML"
+                        class="text-blue-500 hover:underline"
+                    >
+                        Login here
+                    </a>
                 </p>
             </form>
         </div>

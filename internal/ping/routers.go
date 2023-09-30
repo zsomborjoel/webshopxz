@@ -1,7 +1,9 @@
 package ping
 
 import (
+	"fmt"
 	"net/http"
+	"os"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/common"
@@ -10,6 +12,7 @@ import (
 func PingRegister(router *gin.RouterGroup) {
 	router.GET("", ping)
 	router.GET("/db", pingDb)
+	router.GET("/version", version)
 }
 
 func ping(c *gin.Context) {
@@ -26,4 +29,10 @@ func pingDb(c *gin.Context) {
 	}
 
 	c.Writer.WriteHeader(http.StatusOK)
+}
+
+func version(c *gin.Context) {
+	v := os.Getenv("VERSION")
+
+	c.JSON(http.StatusOK, fmt.Sprintf("{'version':'%s'}", v))
 }

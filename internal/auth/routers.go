@@ -1,10 +1,7 @@
 package auth
 
 import (
-	"encoding/json"
 	"errors"
-	"fmt"
-	"io/ioutil"
 	"net/http"
 
 	"github.com/gin-gonic/gin"
@@ -28,20 +25,24 @@ func AuthRegister(r *gin.RouterGroup) {
 func Registration(c *gin.Context) {
 	log.Debug().Msg("Registration called")
 
-	body, err := ioutil.ReadAll(c.Request.Body)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Invalid body: %w", err))
+	e := c.PostForm("email")
+	p := c.PostForm("password")
+	cp := c.PostForm("confirm-password")
+
+	if e == "" || p == "" {
+		c.AbortWithError(http.StatusBadRequest, errors.New("Email or password can not be empty"))
 		return
 	}
 
-	var rr RegistrationRequest
-	err = json.Unmarshal(body, &rr)
-	if err != nil {
-		c.AbortWithError(http.StatusBadRequest, fmt.Errorf("Unmarshal error occured: %w", err))
+	if p != cp {
+		c.AbortWithError(http.StatusBadRequest, errors.New("Password and Confirm Password was not equal"))
 		return
 	}
+
+	rr := RegistrationRequest{e, e, p}
 
 	var u user.User
+	var err error
 	s := RegistrationRequestSerializer{c, rr}
 	u, err = s.Model()
 	if err != nil {

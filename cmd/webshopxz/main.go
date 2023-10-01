@@ -41,17 +41,19 @@ func main() {
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)
 
-	v1 := r.Group("")
+	v1 := r.Group("/api")
 
 	// technical
 	ping.PingRegister(v1.Group("/ping"))
 	auth.AuthRegister(v1.Group("/auth"))
 	email.EmailRegister(v1.Group("/email"))
 
+	v2 := r.Group("")
+
 	// template
-	mainpage.MainPageRegister(v1.Group(""))
-	mainpage.ProductsByCategoryRegister(v1.Group(""))
-	loginpage.LoginPageRegister(v1.Group(""))
+	mainpage.MainPageRegister(v2.Group(""))
+	mainpage.ProductsByCategoryRegister(v2.Group(""))
+	loginpage.LoginPageRegister(v2.Group(""))
 
 	r.Run()
 }

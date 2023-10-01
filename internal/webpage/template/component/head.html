@@ -4,7 +4,12 @@
     <link rel="shortcut icon" type="image/x-icon" href="../../static/favicon.ico">
     <title>Webshopx</title>
 </head>
-<script src="https://unpkg.com/htmx.org@1.9.5"></script>
+<script src="https://unpkg.com/htmx.org@1.9.5"/>
+<script>
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        event.detail.headers['X-CSRF-Token'] = '';
+    })
+</script>
 <div id="login"/>
 <div id="mainpage"/>
 {{end}}

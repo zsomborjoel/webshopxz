@@ -60,12 +60,12 @@ func (s *RegistrationRequestSerializer) Model() (user.User, error) {
 
 	hash, err := bcrypt.GenerateFromPassword([]byte(s.RegistrationRequest.Password), bcrypt.DefaultCost)
 	if err != nil {
-		return user.User{}, fmt.Errorf("An error occured in auth.User.Model.Model.GenerateFromPassword: %w", err)
+		return user.User{}, fmt.Errorf("An error occured in auth.User.Model.GenerateFromPassword: %w", err)
 	}
 
 	return user.User{
 		Id:       uuid.String(),
-		UserName: s.RegistrationRequest.UserName,
+		UserName: s.RegistrationRequest.Email,
 		Email:    s.RegistrationRequest.Email,
 		Password: string(hash),
 		Active:   false,

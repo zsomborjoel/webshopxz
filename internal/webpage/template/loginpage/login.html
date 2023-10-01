@@ -6,36 +6,42 @@
             <img src="https://tecdn.b-cdn.net/img/Photos/new-templates/bootstrap-login-form/draw2.svg" class="w-full" alt="Phone image">
         </div>
         <div id="create-account-form"/>
+        <div id="reset-password-form"/>
         <!-- Right column container -->
         <div id="login-form" class="bg-white p-8 rounded shadow-md w-80 mb-4">
             <h1 class="text-2xl font-semibold mb-4">Login</h1>
-            <form
-                hx-post="/login"
-                hx-trigger="submit"
-                class="w-full"
-            >
+            <form hx-post="/login" hx-trigger="submit" class="w-full">
                 <div class="mb-4">
-                    <label for="email" class="block text-gray-700 font-semibold">Email</label>
+                    <label for="email" class="block mb-2 text-gray-900">Your email</label>
                     <input
-                        type="text"
-                        id="email"
+                        type="email"
                         name="email"
+                        id="email"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                         placeholder="name@company.com"
-                        class="mt-1 p-2 w-full border rounded"
+                        required=""
                     >
                 </div>
                 <div class="mb-4">
-                    <label for="password" class="block text-gray-700 font-semibold">Password</label>
+                    <label for="password" class="block mb-2 text-gray-900 dark:text-white">Password</label>
                     <input
                         type="password"
-                        id="password"
                         name="password"
+                        id="password"
                         placeholder="••••••••"
-                        class="mt-1 p-2 w-full border rounded"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                        required=""
                     >
                 </div>
                 <div class="mb-4 text-right">
-                    <a href="/forgot-password" class="text-blue-500 hover:underline">Forgot Password?</a>
+                    <a
+                        hx-get="/reset-password"
+                        hx-trigger="click"
+                        hx-target="#reset-password-form"
+                        class="text-blue-500 hover:underline"
+                    >
+                        Forgot Password?
+                    </a>
                 </div>
                 <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Login</button>
             </form>

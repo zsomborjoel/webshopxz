@@ -50,10 +50,10 @@
         </div>
         <div class="flex justify-center sm:justify-end relative mt-4 sm:mt-0 ml-0 sm:ml-auto">
             <div class="space-y-2">
-                <a href="#" class="hover:underline block">Cart</a>
+                <a href="#" class="hover:underline block">Cart (0)</a>
                 <div>
                     {{if .LoggedIn}}
-                    <a href="#" class="hover:underline block">Account</a>
+                    <a href="#" class="hover:underline block">Logout</a>
                     {{else}}
                     <a
                         hx-get="login"

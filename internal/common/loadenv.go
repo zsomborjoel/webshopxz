@@ -5,7 +5,7 @@ import (
 	"github.com/rs/zerolog/log"
 )
 
-func LoadEnvVariables() {
+func InitEnvVariables() {
 	err := godotenv.Load()
 	if err != nil {
 		log.Fatal().Stack().Msg("Error loading .env file")

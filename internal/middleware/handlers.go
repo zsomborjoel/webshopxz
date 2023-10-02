@@ -11,6 +11,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/zerolog/log"
+	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
 )
 
@@ -55,6 +56,7 @@ func JwtHandler() gin.HandlerFunc {
 	}
 }
 
+// Needed for static files like images
 func StaticFileHandler() gin.HandlerFunc {
 	root := os.Getenv("STATIC_FILE_PATH")
 	if root == "" {
@@ -92,4 +94,19 @@ func XSSProtectionHandler() gin.HandlerFunc {
 		writer.Write([]byte(sanitizedResponse))
 		c.Next()
 	}
+}
+
+func CSRFProtectionHandler() gin.HandlerFunc {
+	csrfkey := os.Getenv("CSRF_KEY")
+	if csrfkey == "" {
+		log.Error().Msg("CSRF_KEY environment variable is not set")
+	}
+
+	return csrf.Middleware(csrf.Options{
+		Secret: csrfkey,
+		ErrorFunc: func(c *gin.Context) {
+			c.String(400, "CSRF token mismatch")
+			c.Abort()
+		},
+	})
 }

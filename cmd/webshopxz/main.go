@@ -4,9 +4,11 @@ import (
 	"fmt"
 	"os"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
@@ -18,18 +20,25 @@ import (
 
 func main() {
 	fmt.Println("Application Init started")
-	common.LoadEnvVariables()
-
-	templateRoot := os.Getenv("TEMPLATE_PATH")
+	common.InitEnvVariables()
 	common.InitDB()
-	common.InitTemplate(templateRoot)
+	common.InitTemplate()
 
 	level := os.Getenv("LOG_LEVEL")
+	if level == "" {
+		level = "error"
+	}
 	fmt.Println(fmt.Sprintf("LogLevel set to %s", level))
 	zerolog.SetGlobalLevel(common.LogLevel(level))
 
-	mode := os.Getenv("GIN_MODE")
-	gin.SetMode(mode)
+	ginMode := os.Getenv("GIN_MODE")
+	if ginMode == "" {
+		ginMode = "release"
+	}
+	fmt.Println(fmt.Sprintf("GinMode set to %s", ginMode))
+	gin.SetMode(ginMode)
+
+	store := session.SetupStore()
 
 	r := gin.Default()
 	r.Use(
@@ -37,23 +46,27 @@ func main() {
 		middleware.XSSProtectionHandler(),
 		middleware.StaticFileHandler(),
 		middleware.ErrorHandler(),
+		sessions.Sessions("mysession", store),
+		middleware.CSRFProtectionHandler(),
 	)
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)
 
-	v1 := r.Group("/api")
+	api := r.Group("/api")
+	ping.PingRegister(api.Group("/ping"))
+	auth.AuthRegister(api.Group("/auth"))
+	email.EmailRegister(api.Group("/email"))
 
-	// technical
-	ping.PingRegister(v1.Group("/ping"))
-	auth.AuthRegister(v1.Group("/auth"))
-	email.EmailRegister(v1.Group("/email"))
+	template := r.Group("")
+	mainpage.MainPageRegister(template.Group(""))
+	mainpage.ProductsByCategoryRegister(template.Group(""))
+	loginpage.LoginPageRegister(template.Group(""))
 
-	v2 := r.Group("")
+	portnum := os.Getenv("APP_PORT")
+	if portnum == "" {
+		portnum = ":3000"
+	}
+	fmt.Println(fmt.Sprintf("PortNumber set to %s", portnum))
 
-	// template
-	mainpage.MainPageRegister(v2.Group(""))
-	mainpage.ProductsByCategoryRegister(v2.Group(""))
-	loginpage.LoginPageRegister(v2.Group(""))
-
-	r.Run()
+	r.Run(fmt.Sprintf(":%s", portnum))
 }

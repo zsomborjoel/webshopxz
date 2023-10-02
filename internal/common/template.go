@@ -1,7 +1,6 @@
 package common
 
 import (
-	"fmt"
 	"html/template"
 	"io/ioutil"
 	"os"
@@ -13,14 +12,19 @@ import (
 
 var AllTemplate *template.Template
 
-func InitTemplate(rootDir string) {
+func InitTemplate() {
+	rootDir := os.Getenv("TEMPLATE_PATH")
+	if rootDir == "" {
+		log.Fatal().Msg("TEMPLATE_PATH environment variable is not set")
+	}
+
 	cleanRoot := filepath.Clean(rootDir)
 	pfx := len(cleanRoot) + 1
 	root := template.New("")
 
 	err := filepath.Walk(cleanRoot, func(path string, info os.FileInfo, e1 error) error {
 		if !info.IsDir() && strings.HasSuffix(path, ".html") {
-			fmt.Println(path)
+			log.Debug().Msg(path)
 			if e1 != nil {
 				return e1
 			}

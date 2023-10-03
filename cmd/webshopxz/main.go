@@ -45,9 +45,9 @@ func main() {
 		middleware.CORS(),
 		sessions.Sessions("mysession", store),
 		middleware.CSRFProtectionHandler(),
-		middleware.XSSProtectionHandler(),
 		middleware.StaticFileHandler(),
-		//middleware.ErrorHandler(),
+		middleware.ErrorHandler(),
+		middleware.XSSProtectionHandler(),
 	)
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)

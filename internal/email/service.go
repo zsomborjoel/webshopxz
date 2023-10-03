@@ -13,7 +13,7 @@ import (
 	"google.golang.org/api/option"
 )
 
-const EmailTitle = "Workoutxz account confirmation"
+const EmailTitle = "Webshopxz account confirmation"
 const User = "me"
 const EndpointDummy = "$?"
 

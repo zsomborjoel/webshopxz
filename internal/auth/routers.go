@@ -10,7 +10,6 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
 	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
 	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
@@ -66,21 +65,19 @@ func Registration(c *gin.Context) {
 		return
 	}
 
-	t, err := verificationtoken.CreateOne(u)
+	_, err = verificationtoken.CreateOne(u)
 	if err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		c.Abort()
 		return
 	}
 
-	if err := email.SendEmail(u.Email, t); err != nil {
+	/*if err := email.SendEmail(u.Email, t); err != nil {
 		c.String(http.StatusInternalServerError, err.Error())
 		c.Abort()
 		return
-	}
+	}*/
 
-	//c.SetCookie()
-	//c.Writer.Header().Set("X-CSRF-Token", "")
 	c.JSON(http.StatusOK, "Account been created")
 }
 

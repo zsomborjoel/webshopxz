@@ -17,14 +17,8 @@ import (
 
 func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var finalErr error
 		for _, err := range c.Errors {
-			finalErr = err
 			log.Error().Err(err).Msg("http error")
-		}
-
-		if finalErr != nil {
-			c.String(-1, finalErr.Error())
 		}
 
 		c.Next()
@@ -81,21 +75,6 @@ func StaticFileHandler() gin.HandlerFunc {
 	}
 }
 
-func XSSProtectionHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		writer := c.Writer
-		customWriter := &responseWriterWithInterceptor{ResponseWriter: writer}
-
-		c.Writer = customWriter
-
-		responseBody := customWriter.Body()
-		sanitizedResponse := html.EscapeString(responseBody)
-
-		writer.Write([]byte(sanitizedResponse))
-		c.Next()
-	}
-}
-
 func CSRFProtectionHandler() gin.HandlerFunc {
 	csrfSecret := os.Getenv("CSRF_SECRET")
 	if csrfSecret == "" {
@@ -109,4 +88,17 @@ func CSRFProtectionHandler() gin.HandlerFunc {
 			c.Abort()
 		},
 	})
+}
+
+func XSSProtectionHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		for key, values := range c.Request.URL.Query() {
+			for i, value := range values {
+				escapedValue := html.EscapeString(value)
+				c.Request.URL.Query()[key][i] = escapedValue
+			}
+		}
+	
+		c.Next()
+	}
 }

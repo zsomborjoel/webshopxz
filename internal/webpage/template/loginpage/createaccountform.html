@@ -5,7 +5,7 @@
             <h1 class="text-xl font-bold leading-tight tracking-tight text-gray-900 md:text-2xl">
                 Create an account
             </h1>
-            <form class="space-y-4 md:space-y-6" hx-post="/registration">
+            <form class="space-y-4 md:space-y-6">
                 <div>
                     <label for="email" class="block mb-2 text-gray-900">Your email</label>
                     <input
@@ -56,7 +56,16 @@
                         </label>
                     </div>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Create</button>
+                <button
+                    hx-post="/api/auth/registration"
+                    hx-trigger="click"
+                    hx-target="#response-message"
+                    type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Create
+                </button>
+                <div id="response-message"/>
                 <p class="mt-4">
                     Already have an account?
                     <a

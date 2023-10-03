@@ -24,7 +24,7 @@ func ErrorHandler() gin.HandlerFunc {
 		}
 
 		if finalErr != nil {
-			c.JSON(-1, finalErr)
+			c.String(-1, finalErr.Error())
 		}
 
 		c.Next()
@@ -97,15 +97,16 @@ func XSSProtectionHandler() gin.HandlerFunc {
 }
 
 func CSRFProtectionHandler() gin.HandlerFunc {
-	csrfToken := os.Getenv("CSRF_TOKEN")
-	if csrfToken == "" {
-		log.Fatal().Msg("CSRF_TOKEN environment variable is not set")
+	csrfSecret := os.Getenv("CSRF_SECRET")
+	if csrfSecret == "" {
+		log.Fatal().Msg("CSRF_SECRET environment variable is not set")
 	}
 
 	return csrf.Middleware(csrf.Options{
-		Secret: csrfToken,
+		Secret: csrfSecret,
 		ErrorFunc: func(c *gin.Context) {
-			c.AbortWithError(400, errors.New("CSRF token mismatch"))
+			c.String(403, "Invalid CSRF token")
+			c.Abort()
 		},
 	})
 }

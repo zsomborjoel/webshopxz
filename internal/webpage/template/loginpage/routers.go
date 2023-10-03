@@ -2,6 +2,7 @@ package loginpage
 
 import (
 	"github.com/gin-gonic/gin"
+	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 
@@ -12,7 +13,13 @@ func LoginPageRegister(r *gin.RouterGroup) {
 }
 
 func renderLoginPage(c *gin.Context) {
-	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", nil)
+	csrfToken := csrf.GetToken(c)
+
+	dataMap := map[string]interface{}{
+		"csrfToken": csrfToken,
+	}
+
+	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", dataMap)
 }
 
 func renderCreateAccountForm(c *gin.Context) {

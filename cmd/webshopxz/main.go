@@ -43,11 +43,11 @@ func main() {
 	r := gin.Default()
 	r.Use(
 		middleware.CORS(),
-		middleware.XSSProtectionHandler(),
-		middleware.StaticFileHandler(),
-		middleware.ErrorHandler(),
 		sessions.Sessions("mysession", store),
 		middleware.CSRFProtectionHandler(),
+		middleware.XSSProtectionHandler(),
+		middleware.StaticFileHandler(),
+		//middleware.ErrorHandler(),
 	)
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)

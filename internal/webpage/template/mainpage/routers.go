@@ -4,6 +4,7 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
+	csrf "github.com/utrack/gin-csrf"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/common"
@@ -32,6 +33,8 @@ func ProductsByCategoryRegister(r *gin.RouterGroup) {
 }
 
 func renderMainPage(c *gin.Context) {
+	csrfToken := csrf.GetToken(c)
+
 	ps, err := product.FindAll()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
@@ -39,7 +42,8 @@ func renderMainPage(c *gin.Context) {
 	}
 
 	dataMap := map[string]interface{}{
-		"Products": ps,
+		"Products":  ps,
+		"csrfToken": csrfToken,
 	}
 
 	executeMainPage(c, dataMap)

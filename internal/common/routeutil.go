@@ -13,7 +13,7 @@ func GetLastPartUrlPath(url string) string {
 }
 
 func AbortWithHtml(c *gin.Context, code int, msg string) {
-	dataMap := map[string]interface{}{
+	dataMap := map[string]string{
 		"Message": msg,
 	}
 	GetTemplate().ExecuteTemplate(c.Writer, "errorresponseHTMLgeneral", dataMap)
@@ -21,7 +21,7 @@ func AbortWithHtml(c *gin.Context, code int, msg string) {
 }
 
 func OkWithHtml(c *gin.Context, msg string) {
-	dataMap := map[string]interface{}{
+	dataMap := map[string]string{
 		"Message": msg,
 	}
 	GetTemplate().ExecuteTemplate(c.Writer, "okresponseHTMLgeneral", dataMap)

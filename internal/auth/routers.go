@@ -27,16 +27,27 @@ func Registration(c *gin.Context) {
 	e := c.PostForm("email")
 	p := c.PostForm("password")
 	cp := c.PostForm("confirm-password")
+	t := c.PostForm("terms")
 
 	if e == "" || p == "" {
-		common.AbortWithHtml(c, http.StatusBadGateway, "Email or password can not be empty")
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email or password can not be empty")
+		return
+	}
+
+	if !common.IsValidEmail(e) {
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not valid")
 		return
 	}
 
 	if p != cp {
-		common.AbortWithHtml(c, http.StatusBadGateway, "Password and Confirm Password is not equal")
+		common.AbortWithHtml(c, http.StatusBadRequest, "Password and Confirm Password is not equal")
 		return
 	}
+ 
+	if t != "on" {
+		common.AbortWithHtml(c, http.StatusBadRequest, "Please approve Terms and Conditions")
+		return
+	} 
 
 	rr := RegistrationRequest{e, e, p}
 
@@ -51,7 +62,7 @@ func Registration(c *gin.Context) {
 
 	err = user.ExistByUserName(u.UserName)
 	if err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
+		common.AbortWithHtml(c, http.StatusBadRequest, err.Error())
 		return
 	}
 

@@ -11,7 +11,7 @@ import (
 
 type UserClaim struct {
 	jwt.RegisteredClaims
-	user.User
+	UserId string
 }
 
 func CreateJWTToken(user user.User) (string, error) {
@@ -22,7 +22,7 @@ func CreateJWTToken(user user.User) (string, error) {
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: exp,
 		},
-		User: user,
+		UserId: user.Id,
 	})
 
 	signedString, err := token.SignedString([]byte(key))

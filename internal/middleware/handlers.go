@@ -8,6 +8,7 @@ import (
 	"os"
 	"strings"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/zerolog/log"
@@ -28,14 +29,10 @@ func ErrorHandler() gin.HandlerFunc {
 func JwtHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		key := os.Getenv("JWT_KEY")
-		bearer := c.GetHeader("Authorization")
+		session := sessions.Default(c)
+		jwtToken := session.Get("token")
 
-		if !strings.HasPrefix(bearer, "Bearer") {
-			c.AbortWithError(http.StatusUnauthorized, errors.New("It is not a Bearer token"))
-		}
-		jwtToken := bearer[7:]
-
-		token, err := jwt.ParseWithClaims(jwtToken, &authtoken.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
+		token, err := jwt.ParseWithClaims(fmt.Sprint(jwtToken), &authtoken.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
 			return []byte(key), nil
 		})
 		if err != nil {
@@ -98,7 +95,7 @@ func XSSProtectionHandler() gin.HandlerFunc {
 				c.Request.URL.Query()[key][i] = escapedValue
 			}
 		}
-	
+
 		c.Next()
 	}
 }

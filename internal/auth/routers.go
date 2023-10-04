@@ -4,6 +4,7 @@ import (
 	"errors"
 	"net/http"
 
+	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
@@ -43,11 +44,11 @@ func Registration(c *gin.Context) {
 		common.AbortWithHtml(c, http.StatusBadRequest, "Password and Confirm Password is not equal")
 		return
 	}
- 
+
 	if t != "on" {
 		common.AbortWithHtml(c, http.StatusBadRequest, "Please approve Terms and Conditions")
 		return
-	} 
+	}
 
 	rr := RegistrationRequest{e, e, p}
 
@@ -169,6 +170,11 @@ func Login(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
+
+	session := sessions.Default(c)
+	session.Set("token", jwt)
+	session.Set("refreshtoken", rt)
+	session.Save()
 
 	s := JwtTokenSerializer{c, usr, jwt, rt}
 	c.JSON(http.StatusOK, s.Response())

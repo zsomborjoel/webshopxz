@@ -29,14 +29,12 @@ func Registration(c *gin.Context) {
 	cp := c.PostForm("confirm-password")
 
 	if e == "" || p == "" {
-		c.String(http.StatusBadRequest, "Email or password can not be empty")
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusBadGateway, "Email or password can not be empty")
 		return
 	}
 
 	if p != cp {
-		c.String(http.StatusBadRequest, "Password and Confirm Password was not equal")
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusBadGateway, "Password and Confirm Password is not equal")
 		return
 	}
 
@@ -47,28 +45,24 @@ func Registration(c *gin.Context) {
 	s := RegistrationRequestSerializer{c, rr}
 	u, err = s.Model()
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	err = user.ExistByUserName(u.UserName)
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	if err := user.CreateOne(u); err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	_, err = verificationtoken.CreateOne(u)
 	if err != nil {
-		c.String(http.StatusInternalServerError, err.Error())
-		c.Abort()
+		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -78,7 +72,7 @@ func Registration(c *gin.Context) {
 		return
 	}*/
 
-	c.JSON(http.StatusOK, "Account been created")
+	common.OkWithHtml(c, "Account been created")
 }
 
 func ConfirmRegistration(c *gin.Context) {

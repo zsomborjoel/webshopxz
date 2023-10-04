@@ -17,11 +17,11 @@ import (
 
 func ErrorHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
+		c.Next()
+
 		for _, err := range c.Errors {
 			log.Error().Err(err).Msg("http error")
 		}
-
-		c.Next()
 	}
 }
 

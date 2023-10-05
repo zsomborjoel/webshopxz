@@ -15,6 +15,7 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
+	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -85,8 +86,8 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 		key := os.Getenv("JWT_KEY")
 
 		session := sessions.Default(c)
-		at := session.Get("accessToken").(string)
-		rt := session.Get("refreshToken").(string)
+		at := session.Get(common.AccessToken).(string)
+		rt := session.Get(common.RefreshToken).(string)
 
 		token, err := jwt.Parse(at, func(token *jwt.Token) (interface{}, error) {
 			return []byte(key), nil
@@ -114,7 +115,7 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 				return
 			}
 
-			session.Set("accessToken", newAccessToken)
+			session.Set(common.AccessToken, newAccessToken)
 			session.Save()
 			c.Next()
 			return

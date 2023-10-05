@@ -6,10 +6,10 @@ import (
 	"golang.org/x/crypto/bcrypt"
 )
 
-func validatePassword(recived string, existing string) error {
+func validatePassword(existing string, recived string) error {
 	err := bcrypt.CompareHashAndPassword([]byte(existing), []byte(recived))
     if err != nil {
-        return errors.New("Invalid passowrd")
+        return errors.New("Invalid bcrypt password check")
     }
     
     return nil

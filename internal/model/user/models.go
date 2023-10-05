@@ -9,11 +9,11 @@ import (
 )
 
 type User struct {
-	Id       string `db:"id"`
-	UserName string `db:"username"`
-	Email    string `db:"email"`
-	Password string `db:"password"`
-	Active   bool   `db:"active"`
+	Id         string `db:"id"`
+	UserName   string `db:"username"`
+	Email      string `db:"email"`
+	Password   string `db:"password"`
+	Active     bool   `db:"active"`
 }
 
 func FindByUserName(username string) (User, error) {
@@ -21,7 +21,7 @@ func FindByUserName(username string) (User, error) {
 
 	db := common.GetDB()
 	var u User
-	err := db.Get(&u, "SELECT * FROM users WHERE username=$1", username)
+	err := db.Get(&u, "SELECT id, username, email, password, active FROM users WHERE username=$1", username)
 	if err != nil {
 		return u, fmt.Errorf("An error occured in users.FindUserByUserName.Select: %w", err)
 	}

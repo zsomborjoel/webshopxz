@@ -2,6 +2,7 @@ package auth
 
 import (
 	"errors"
+	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -19,7 +20,6 @@ func AuthRegister(r *gin.RouterGroup) {
 	r.GET(common.ConfirmRegistrationEndpoint, ConfirmRegistration)
 	r.PUT("/resend-verification", ResendVerification)
 	r.POST("/login", Login)
-	r.POST("/refresh-token", RefreshJWTToken)
 }
 
 func Registration(c *gin.Context) {
@@ -141,40 +141,43 @@ func ResendVerification(c *gin.Context) {
 
 func Login(c *gin.Context) {
 	log.Debug().Msg("Login called")
-	lr := &LoginRequest{}
-	if err := c.BindJSON(&lr); err != nil {
-		c.AbortWithError(http.StatusBadRequest, errors.New("Invalid login request body"))
+
+	e := c.PostForm("email")
+	p := c.PostForm("password")
+
+	usr, err := user.FindByUserName(e)
+	if err != nil {
+		log.Debug().Err(err).Msg(common.LoginError)
+		common.AbortWithHtml(c, http.StatusNotFound, "Username or password is invalid")
 		return
 	}
 
-	usr, err := user.FindByUserName(lr.UserName)
+	fmt.Println(p)
+	err = validatePassword(usr.Password, p)
 	if err != nil {
-		c.AbortWithError(http.StatusNotFound, err)
-		return
-	}
-
-	err = validatePassword(lr.Password, usr.Password)
-	if err != nil {
-		c.AbortWithError(http.StatusUnauthorized, err)
+		log.Debug().Err(err).Msg(common.LoginError)
+		common.AbortWithHtml(c, http.StatusUnauthorized, "Username or password is invalid")
 		return
 	}
 
 	jwt, err := authtoken.CreateJWTToken(usr.Id)
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		log.Debug().Err(err).Msg(common.LoginError)
+		common.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
 	rt, err := refreshtoken.CreateOne(usr)
 	if err != nil {
-		c.AbortWithError(http.StatusInternalServerError, err)
+		log.Debug().Err(err).Msg(common.LoginError)
+		common.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
 	session := sessions.Default(c)
-	session.Set("accessToken", jwt)
-	session.Set("refreshToken", rt)
+	session.Set(common.AccessToken, jwt)
+	session.Set(common.RefreshToken, rt)
 	session.Save()
 
-	c.JSON(http.StatusOK, nil)
+	c.Writer.WriteHeader(http.StatusOK)
 }

@@ -43,9 +43,17 @@
                         Forgot Password?
                     </a>
                 </div>
-                <button type="submit" class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600">Login</button>
+                <button
+                    hx-post="/api/auth/login"
+                    hx-trigger="click"
+                    hx-target="#response-message"
+                    type="submit"
+                    class="px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600"
+                >
+                    Login
+                </button>
             </form>
-            <p class="mt-4">
+            <p class="mt-4 mb-2">
                 Don't have an account?
                 <a
                     hx-get="/create-account"
@@ -56,6 +64,7 @@
                     Create one
                 </a>
             </p>
+            <div id="response-message"/>
         </div>
     </div>
 </div>

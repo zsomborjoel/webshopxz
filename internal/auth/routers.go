@@ -49,10 +49,9 @@ func Registration(c *gin.Context) {
 		return
 	}
 
-	rr := RegistrationRequest{e, e, p}
-
 	var u user.User
 	var err error
+	rr := RegistrationRequest{e, e, p}
 	s := RegistrationRequestSerializer{c, rr}
 	u, err = s.Model()
 	if err != nil {
@@ -173,6 +172,7 @@ func Login(c *gin.Context) {
 	}
 
 	session := sessions.Default(c)
+	session.Options(sessions.Options{Path: common.Root})
 	session.Set(common.AccessToken, jwt)
 	session.Set(common.RefreshToken, rt)
 	session.Save()

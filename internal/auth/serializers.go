@@ -16,38 +16,9 @@ type RegistrationRequest struct {
 	Password string `json:"password"`
 }
 
-type LoginRequest struct {
-	UserName string `json:"username"`
-	Password string `json:"password"`
-}
-
-type JwtTokenResponse struct {
-	Token        string `json:"token"`
-	RefreshToken string `json:"refreshToken"`
-	UserName     string `json:"username"`
-}
-
-type RefreshTokenResponse struct {
-	Token        string `json:"token"`
-	RefreshToken string `json:"refreshToken"`
-}
-
 type RegistrationRequestSerializer struct {
 	C *gin.Context
 	RegistrationRequest
-}
-
-type JwtTokenSerializer struct {
-	C *gin.Context
-	user.User
-	jwt      string
-	refresht string
-}
-
-type RefreshTokenSerializer struct {
-	C        *gin.Context
-	jwt      string
-	refresht string
 }
 
 func (s *RegistrationRequestSerializer) Model() (user.User, error) {
@@ -70,19 +41,4 @@ func (s *RegistrationRequestSerializer) Model() (user.User, error) {
 		Password: string(hash),
 		Active:   true,
 	}, nil
-}
-
-func (s *JwtTokenSerializer) Response() JwtTokenResponse {
-	return JwtTokenResponse{
-		UserName:     s.UserName,
-		RefreshToken: s.refresht,
-		Token:        s.jwt,
-	}
-}
-
-func (s *RefreshTokenSerializer) Response() RefreshTokenResponse {
-	return RefreshTokenResponse{
-		RefreshToken: s.refresht,
-		Token:        s.jwt,
-	}
 }

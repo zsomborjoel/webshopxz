@@ -5,6 +5,7 @@ const ConfirmRegistrationEndpoint = "/confirm-registration"
 // routing
 const AllSlug = "/all"
 const All = "all"
+const Root = "/"
 
 // HTMX
 const HTMXRequest = "HX-Request"

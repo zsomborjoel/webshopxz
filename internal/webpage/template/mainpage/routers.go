@@ -7,6 +7,7 @@ import (
 	csrf "github.com/utrack/gin-csrf"
 
 	"github.com/gin-gonic/gin"
+	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
@@ -73,7 +74,6 @@ func renderProductsByCategory(c *gin.Context) {
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
 	cats, err := category.FindAllNameWithProducts()
-	loggedIn := false
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -81,7 +81,7 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 
 	dataMap := map[string]interface{}{
 		"Categories": cats,
-		"LoggedIn":   loggedIn,
+		"LoggedIn":   auth.IsLoggedIn(c),
 	}
 
 	common.MergeMaps(source, dataMap)

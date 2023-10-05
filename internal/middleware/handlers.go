@@ -14,6 +14,7 @@ import (
 	"github.com/rs/zerolog/log"
 	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -23,27 +24,6 @@ func ErrorHandler() gin.HandlerFunc {
 		for _, err := range c.Errors {
 			log.Error().Err(err).Msg("http error")
 		}
-	}
-}
-
-func JwtHandler() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		key := os.Getenv("JWT_KEY")
-		session := sessions.Default(c)
-		jwtToken := session.Get("token")
-
-		token, err := jwt.ParseWithClaims(fmt.Sprint(jwtToken), &authtoken.UserClaim{}, func(token *jwt.Token) (interface{}, error) {
-			return []byte(key), nil
-		})
-		if err != nil {
-			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Jwt Token parse error: %w", err))
-		}
-
-		if !token.Valid {
-			c.AbortWithError(http.StatusUnauthorized, errors.New("Jwt token is Invalid"))
-		}
-
-		c.Next()
 	}
 }
 
@@ -97,5 +77,49 @@ func XSSProtectionHandler() gin.HandlerFunc {
 		}
 
 		c.Next()
+	}
+}
+
+func TokenAuthAndRefreshHandler() gin.HandlerFunc {
+	return func(c *gin.Context) {
+		key := os.Getenv("JWT_KEY")
+
+		session := sessions.Default(c)
+		at := session.Get("accessToken").(string)
+		rt := session.Get("refreshToken").(string)
+
+		token, err := jwt.Parse(at, func(token *jwt.Token) (interface{}, error) {
+			return []byte(key), nil
+		})
+		if err != nil {
+			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Jwt Token parse error: %w", err))
+		}
+
+		if token.Valid {
+			c.Next()
+			return
+		}
+
+		if refreshtoken.IsValid(rt) {
+			claims, ok := token.Claims.(jwt.MapClaims)
+			if !ok {
+				c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt claims are not ok"))
+				return
+			}
+
+			userId := claims["userId"].(string)
+			newAccessToken, err := authtoken.CreateJWTToken(userId)
+			if err != nil {
+				c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt creation error on refresh"))
+				return
+			}
+
+			session.Set("accessToken", newAccessToken)
+			session.Save()
+			c.Next()
+			return
+		}
+
+		c.AbortWithError(http.StatusUnauthorized, errors.New("Jwt token is Invalid"))
 	}
 }

@@ -54,21 +54,23 @@ func CreateOne(user user.User) (string, error) {
 	return token.Token, nil
 }
 
-func IsValid(token string) (RefreshToken, error) {
+func IsValid(token string) bool {
 	log.Debug().Msg("verificationtokens.IsValid called")
 
 	db := common.GetDB()
 	var rt RefreshToken
 	err := db.Get(&rt, "SELECT * FROM refresh_tokens WHERE token=$1", token)
 	if err != nil {
-		return rt, fmt.Errorf("An error occured in refreshtoken.IsValid.Get: %w", err)
+		log.Error().Err(fmt.Errorf("An error occured in refreshtoken.IsValid.Get: %w", err))
+		return false
 	}
 
 	if rt.ExpiredAt < time.Now().Unix() {
-		return rt, fmt.Errorf("Refresh token is expired")
+		log.Debug().Msg("Refresh token expired")
+		return false
 	}
 
-	return rt, nil
+	return true
 }
 
 func DeleteOne(token string) {

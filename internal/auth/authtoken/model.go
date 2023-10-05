@@ -6,7 +6,6 @@ import (
 	"time"
 
 	"github.com/golang-jwt/jwt/v4"
-	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 type UserClaim struct {
@@ -14,7 +13,7 @@ type UserClaim struct {
 	UserId string
 }
 
-func CreateJWTToken(user user.User) (string, error) {
+func CreateJWTToken(userId string) (string, error) {
 	key := os.Getenv("JWT_KEY")
 
 	exp := &jwt.NumericDate{Time: time.Now().Add(time.Hour * 24)}
@@ -22,7 +21,7 @@ func CreateJWTToken(user user.User) (string, error) {
 		RegisteredClaims: jwt.RegisteredClaims{
 			ExpiresAt: exp,
 		},
-		UserId: user.Id,
+		UserId: userId,
 	})
 
 	signedString, err := token.SignedString([]byte(key))

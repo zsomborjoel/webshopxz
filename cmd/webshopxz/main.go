@@ -62,6 +62,9 @@ func main() {
 	mainpage.ProductsByCategoryRegister(template.Group(""))
 	loginpage.LoginPageRegister(template.Group(""))
 
+	protected := r.Group("/protected")
+	protected.Use(middleware.TokenAuthAndRefreshHandler())
+
 	portnum := os.Getenv("APP_PORT")
 	if portnum == "" {
 		portnum = ":3000"

@@ -8,6 +8,7 @@ const All = "all"
 
 // HTMX
 const HTMXRequest = "HX-Request"
+const HTMXRedirect = "HX-Redirect"
 
 // Tokens
 const AccessToken = "accessToken"

@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 	"net/http"
 
 	"github.com/gin-contrib/sessions"
@@ -152,7 +151,6 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	fmt.Println(p)
 	err = validatePassword(usr.Password, p)
 	if err != nil {
 		log.Debug().Err(err).Msg(common.LoginError)
@@ -179,5 +177,6 @@ func Login(c *gin.Context) {
 	session.Set(common.RefreshToken, rt)
 	session.Save()
 
-	c.Writer.WriteHeader(http.StatusOK)
+	c.Header(common.HTMXRedirect, "/")
+	c.Status(http.StatusOK)
 }

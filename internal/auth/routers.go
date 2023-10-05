@@ -19,6 +19,7 @@ func AuthRegister(r *gin.RouterGroup) {
 	r.GET(common.ConfirmRegistrationEndpoint, ConfirmRegistration)
 	r.PUT("/resend-verification", ResendVerification)
 	r.POST("/login", Login)
+	r.POST("/logout", Logout)
 }
 
 func Registration(c *gin.Context) {
@@ -175,6 +176,18 @@ func Login(c *gin.Context) {
 	session.Options(sessions.Options{Path: common.Root})
 	session.Set(common.AccessToken, jwt)
 	session.Set(common.RefreshToken, rt)
+	session.Save()
+
+	c.Header(common.HTMXRedirect, "/")
+	c.Status(http.StatusOK)
+}
+
+func Logout(c *gin.Context) {
+	log.Debug().Msg("Logout called")
+
+	session := sessions.Default(c)
+	session.Options(sessions.Options{Path: common.Root})
+	session.Clear()
 	session.Save()
 
 	c.Header(common.HTMXRedirect, "/")

@@ -2,7 +2,6 @@ package auth
 
 import (
 	"errors"
-	"fmt"
 
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
@@ -21,11 +20,9 @@ func validatePassword(existing string, recived string) error {
 
 func IsLoggedIn(c *gin.Context) bool {
 	session := sessions.Default(c)
-	at := session.Get(common.AccessToken)
-    fmt.Println(at)
-    if at != nil {
-        return true
-    }
- 
-    return false
+	if at := session.Get(common.AccessToken); at != nil {
+		return true
+	}
+
+	return false
 }

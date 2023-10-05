@@ -54,9 +54,10 @@
                 <a href="#" class="hover:underline block">Cart (0)</a>
                 <div>
                     {{if .LoggedIn}}
-                    <a href="#" class="hover:underline block">Logout</a>
+                    <a hx-post="/api/auth/logout" hx-trigger="click" class="hover:underline block">Logout</a>
                     {{else}}
                     <a
+                        id="login-button"
                         hx-get="login"
                         hx-trigger="click"
                         hx-target="#login"

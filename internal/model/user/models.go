@@ -1,7 +1,6 @@
 package user
 
 import (
-	"errors"
 	"fmt"
 
 	"github.com/rs/zerolog/log"
@@ -9,11 +8,11 @@ import (
 )
 
 type User struct {
-	Id         string `db:"id"`
-	UserName   string `db:"username"`
-	Email      string `db:"email"`
-	Password   string `db:"password"`
-	Active     bool   `db:"active"`
+	Id       string `db:"id"`
+	UserName string `db:"username"`
+	Email    string `db:"email"`
+	Password string `db:"password"`
+	Active   bool   `db:"active"`
 }
 
 func FindByUserName(username string) (User, error) {
@@ -42,7 +41,7 @@ func FindByUserId(id string) (User, error) {
 	return u, nil
 }
 
-func ExistByUserName(username string) error {
+func ExistByUserName(username string) bool {
 	log.Debug().Msg("users.ExistByUserName called")
 
 	db := common.GetDB()
@@ -52,11 +51,7 @@ func ExistByUserName(username string) error {
 		log.Warn().Err(err)
 	}
 
-	if i == 1 {
-		return errors.New("User already exits")
-	}
-
-	return nil
+	return i == 1
 }
 
 func CreateOne(user User) error {
@@ -97,6 +92,19 @@ func ActivateOne(user User) error {
 	err = tx.Commit()
 	if err != nil {
 		return fmt.Errorf("An error occured in users.ActivateOne.Commit: %w", err)
+	}
+
+	return nil
+}
+
+func ResetPasswordByUserName(username string) error {
+	log.Debug().Msg("users.ResetPasswordByUserName called")
+
+	db := common.GetDB()
+	newpass := common.GenerateRandomString(8)
+	_, err := db.Exec("UPDATE users SET password=$1 WHERE username=$2", newpass, username)
+	if err != nil {
+		return fmt.Errorf("An error occured in users.ResetPasswordById.Exec: %w", err)
 	}
 
 	return nil

@@ -77,5 +77,5 @@ func DeleteOne(token string) {
 	log.Debug().Msg("refreshtoken.DeleteOne called")
 
 	db := common.GetDB()
-	db.MustExec("DELETE FROM refresh_tokens WHERE token=$1", token)
+	db.Exec("DELETE FROM refresh_tokens WHERE token=$1", token)
 }

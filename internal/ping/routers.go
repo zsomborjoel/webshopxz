@@ -1,7 +1,6 @@
 package ping
 
 import (
-	"fmt"
 	"net/http"
 	"os"
 
@@ -34,5 +33,5 @@ func pingDb(c *gin.Context) {
 func version(c *gin.Context) {
 	v := os.Getenv("VERSION")
 
-	c.JSON(http.StatusOK, fmt.Sprintf("{'version':'%s'}", v))
+	c.JSON(http.StatusOK, gin.H{"version": v})
 }

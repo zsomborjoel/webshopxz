@@ -20,6 +20,7 @@ func AuthRegister(r *gin.RouterGroup) {
 	r.PUT("/resend-verification", ResendVerification)
 	r.POST("/login", Login)
 	r.POST("/logout", Logout)
+	r.POST("/reset-password", ResetPassword)
 }
 
 func Registration(c *gin.Context) {
@@ -36,7 +37,7 @@ func Registration(c *gin.Context) {
 	}
 
 	if !common.IsValidEmail(e) {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not valid")
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
 		return
 	}
 
@@ -50,28 +51,27 @@ func Registration(c *gin.Context) {
 		return
 	}
 
-	var u user.User
+	var usr user.User
 	var err error
 	rr := RegistrationRequest{e, e, p}
 	s := RegistrationRequestSerializer{c, rr}
-	u, err = s.Model()
+	usr, err = s.Model()
 	if err != nil {
 		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	err = user.ExistByUserName(u.UserName)
-	if err != nil {
-		common.AbortWithHtml(c, http.StatusBadRequest, err.Error())
+	if user.ExistByUserName(usr.UserName) {
+		common.AbortWithHtml(c, http.StatusBadRequest, "User alredy exists")
 		return
 	}
 
-	if err := user.CreateOne(u); err != nil {
+	if err := user.CreateOne(usr); err != nil {
 		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
-	_, err = verificationtoken.CreateOne(u)
+	_, err = verificationtoken.CreateOne(usr)
 	if err != nil {
 		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
@@ -192,4 +192,33 @@ func Logout(c *gin.Context) {
 
 	c.Header(common.HTMXRedirect, "/")
 	c.Status(http.StatusOK)
+}
+
+func ResetPassword(c *gin.Context) {
+	log.Debug().Msg("ResetPassword called")
+
+	e := c.PostForm("email")
+
+	if e == "" {
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email can not be empty")
+		return
+	}
+
+	if !common.IsValidEmail(e) {
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
+		return
+	}
+
+	if !user.ExistByUserName(e) {
+		common.AbortWithHtml(c, http.StatusBadRequest, "Email not exists in our system")
+		return
+	}
+
+	err := user.ResetPasswordByUserName(e)
+	if err != nil {
+		common.AbortWithHtml(c, http.StatusInternalServerError, "We were not able to reset your password - contact us via email")
+		return
+	}
+
+	common.OkWithHtml(c, "Password been reseted - Check for the verification in your email account!")
 }

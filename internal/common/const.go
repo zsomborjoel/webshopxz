@@ -11,7 +11,7 @@ const Root = "/"
 const HTMXRequest = "HX-Request"
 const HTMXRedirect = "HX-Redirect"
 
-// Tokens
+// Session values
 const AccessToken = "accessToken"
 const RefreshToken = "refreshToken"
 

@@ -1,0 +1,44 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 75cdec8a-5453-493a-b510-c97a328f3c02
+      author: zsomborjoel
+      changes:
+        - createTable:
+            schema: public
+            tableName: order_items
+            columns:
+              - column:
+                  name: id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: quantity
+                  type: int
+                  constraints:
+                    nullable: false
+              - column:
+                  name: product_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_order_items_products_id
+                    references: products(id)
+                    nullable: false
+              - column:
+                  name: order_details_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_order_items_order_details_id
+                    references: users(id)
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: int
+                  defaultValue: FLOOR(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC'))
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_at
+                  type: int

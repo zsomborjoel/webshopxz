@@ -1,0 +1,69 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: e94c8ecc-40c1-46c2-a4d9-94adfa20df45
+      author: zsomborjoel
+      changes:
+        - createTable:
+            schema: public
+            tableName: user_addresses
+            columns:
+              - column:
+                  name: id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: country
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: postal_code
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: city
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: address_line
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: phone_number
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: company_name
+                  type: varchar(255)
+              - column:
+                  name: details
+                  type: varchar(5000)
+              - column:
+                  name: bill_address
+                  type: boolean
+                  defaultValue: false
+                  constraints:
+                    nullable: false
+              - column:
+                  name: user_id
+                  type: varchar(50)
+                  constraints:
+                    foreignKeyName: fk_user_addresses_users_id
+                    references: users(id)
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: int
+                  defaultValue: FLOOR(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC'))
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_at
+                  type: int

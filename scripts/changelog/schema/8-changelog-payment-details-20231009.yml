@@ -1,0 +1,40 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: ea15e9b2-78d2-4076-8288-d3cbfebe1633
+      author: zsomborjoel
+      changes:
+        - createTable:
+            schema: public
+            tableName: payment_details
+            columns:
+              - column:
+                  name: id
+                  type: varchar(50)
+                  constraints:
+                    primaryKey: true
+                    nullable: false
+              - column:
+                  name: amount
+                  type: bigint
+                  constraints:
+                    nullable: false
+              - column:
+                  name: provider
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: status
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+              - column:
+                  name: created_at
+                  type: int
+                  defaultValue: FLOOR(EXTRACT(EPOCH FROM CURRENT_TIMESTAMP AT TIME ZONE 'UTC'))
+                  constraints:
+                    nullable: false
+              - column:
+                  name: modified_at
+                  type: int

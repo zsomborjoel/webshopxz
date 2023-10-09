@@ -203,11 +203,13 @@
     </div>
     <!--Copyright section-->
     <div class="bg-neutral-200 p-6 text-center">
-        <span>©Copyright:</span>
-        <a class="font-semibold text-neutral-600" href="https://tailwind-elements.com/">
-            Webshopxz
-        </a
-    >
+        <span></span>
+        <div id="currentYear"></div>
+        <script>
+            const currentYear = new Date().getFullYear();
+            const yearDiv = document.getElementById('currentYear');
+            yearDiv.innerHTML = `© ${currentYear} Copyright: Webshopxz`;
+        </script>
     </div>
 </footer>
 {{end}}

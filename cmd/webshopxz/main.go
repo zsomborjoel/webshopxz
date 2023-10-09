@@ -13,6 +13,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/accountpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/loginpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/notfoundpage"
@@ -58,11 +59,13 @@ func main() {
 	email.EmailRegister(api.Group("/email"))
 
 	template := r.Group("")
-	mainpage.MainPageRegister(template.Group(""))
-	mainpage.ProductsByCategoryRegister(template.Group(""))
-	loginpage.LoginPageRegister(template.Group(""))
+	mainpage.MainPageRegister(template)
+	mainpage.ProductsByCategoryRegister(template)
+	loginpage.LoginPageRegister(template)
+	accountpage.AccountPageRegister(template)
 
 	protected := r.Group("/protected")
+	accountpage.AccountPageRegister(protected)
 	protected.Use(middleware.TokenAuthAndRefreshHandler())
 
 	portnum := os.Getenv("APP_PORT")

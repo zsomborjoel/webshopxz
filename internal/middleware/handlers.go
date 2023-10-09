@@ -108,8 +108,12 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 				return
 			}
 
-			userId := claims["userId"].(string)
-			newAccessToken, err := authtoken.CreateJWTToken(userId)
+			userId := claims["userId"]
+			if userId == "" {
+				c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Claims does not contains userId"))
+			}
+
+			newAccessToken, err := authtoken.CreateJWTToken(userId.(string))
 			if err != nil {
 				c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt creation error on refresh"))
 				return

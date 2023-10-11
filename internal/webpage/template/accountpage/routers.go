@@ -9,6 +9,7 @@ import (
 
 func AccountPageRegister(r *gin.RouterGroup) {
 	r.GET("/account", renderAccountPage)
+	r.GET("/account-address", renderAccountAddressForm)
 }
 
 func renderAccountPage(c *gin.Context) {
@@ -20,4 +21,8 @@ func renderAccountPage(c *gin.Context) {
 	}
 
 	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLaccountpage", dataMap)
+}
+
+func renderAccountAddressForm(c *gin.Context) {
+	common.GetTemplate().ExecuteTemplate(c.Writer, "accountaddressformHTMLaccountpage", nil)
 }

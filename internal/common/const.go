@@ -14,6 +14,7 @@ const HTMXRedirect = "HX-Redirect"
 // Session values
 const AccessToken = "accessToken"
 const RefreshToken = "refreshToken"
+const UserId = "UserId"
 
 // Errors
 const LoginError = "Login Error"

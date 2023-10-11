@@ -33,7 +33,7 @@ func FindByUserId(id string) (User, error) {
 
 	db := common.GetDB()
 	var u User
-	err := db.Get(&u, "SELECT * FROM users WHERE id=$1", id)
+	err := db.Get(&u, "SELECT id, username, email, password, active FROM users WHERE id=$1", id)
 	if err != nil {
 		return u, fmt.Errorf("An error occured in users.FindByUserId.Get: %w", err)
 	}

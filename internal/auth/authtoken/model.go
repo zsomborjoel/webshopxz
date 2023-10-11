@@ -31,3 +31,11 @@ func CreateJWTToken(userId string) (string, error) {
 
 	return signedString, nil
 }
+
+func Parse(token string) (*jwt.Token, error) {
+	key := os.Getenv("JWT_KEY")
+
+	return jwt.Parse(token, func(token *jwt.Token) (interface{}, error) {
+		return []byte(key), nil
+	})
+}

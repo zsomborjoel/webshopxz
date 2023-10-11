@@ -1,6 +1,7 @@
 {{define "accountorderHTMLaccountpage"}}
-<div class="h-full">
+<div id="account" class="h-full">
     <div class="max-w-5xl mx-auto px-4 md:px-0">
+        <div id="account-address-form"/>
         <div class="flex flex-col md:flex-row justify-between">
             <!-- Left side: Default Home Address -->
             <dl class="max-w-md md:mb-2 text-gray-900 divide-y divide-gray-200 dark:text-white dark:divide-gray-700">
@@ -8,9 +9,13 @@
                     <dt class="mb-1 text-gray-500 md:text-lg dark:text-gray-400">Default address</dt>
                     <dd class="text-lg font-semibold">92 Miles Drive, Newark, NJ 07103, California, USA</dd>
                 </div>
-                <button hx-get="/change-address" hx-trigger="click" class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4">Change Address</button>
+                <button
+                    hx-get="/protected/account-address"
+                    hx-trigger="click"
+                    hx-target="#account-address-form"
+                    class="mt-4 px-4 py-2 bg-blue-500 text-white rounded hover:bg-blue-600 mb-4"
+                >Change Address</button>
             </dl>
-            <div id="account-address-form"/>
             <!-- Right side: List of Orders -->
             <ul class="max-w-md divide-y divide-gray-200 dark:divide-gray-700 md:ml-4">
                 <li class="pb-3 sm:pb-4">

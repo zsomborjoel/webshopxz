@@ -12,6 +12,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
+	"github.com/zsomborjoel/workoutxz/internal/model/address"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/accountpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/loginpage"
@@ -62,11 +63,15 @@ func main() {
 	mainpage.MainPageRegister(template)
 	mainpage.ProductsByCategoryRegister(template)
 	loginpage.LoginPageRegister(template)
-	accountpage.AccountPageRegister(template)
 
 	protected := r.Group("/protected")
+	protected.Use(
+		middleware.TokenAuthAndRefreshHandler(),
+	)
 	accountpage.AccountPageRegister(protected)
-	protected.Use(middleware.TokenAuthAndRefreshHandler())
+
+	addressgrp := protected.Group("/address")
+	address.AddressRegister(addressgrp)
 
 	portnum := os.Getenv("APP_PORT")
 	if portnum == "" {

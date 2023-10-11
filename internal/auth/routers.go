@@ -176,6 +176,7 @@ func Login(c *gin.Context) {
 	session.Options(sessions.Options{Path: common.Root})
 	session.Set(common.AccessToken, jwt)
 	session.Set(common.RefreshToken, rt)
+	session.Set(common.UserId, usr.Id)
 	session.Save()
 
 	c.Header(common.HTMXRedirect, "/")

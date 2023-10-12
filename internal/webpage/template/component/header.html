@@ -48,7 +48,17 @@
             <div class="space-y-2">
                 <a href="#" class="hover:underline block">Gifting</a>
                 <a href="#" class="hover:underline block">Sale</a>
-                <a href="#" class="hover:underline block">Search</a>
+                <form action="/search">
+                    <div class="w-full group">
+                        <input
+                            name="query"
+                            id="query"
+                            class="block px-0 w-full text-gray-900 bg-transparent border-0 border-b-2 border-gray-300 appearance-none dark:text-white dark:border-gray-600 dark:focus:border-blue-500 focus:outline-none focus:ring-0 focus:border-blue-600 peer"
+                            placeholder="🔍️"
+                            required
+                        >
+                    </div>
+                </form>
             </div>
         </div>
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">

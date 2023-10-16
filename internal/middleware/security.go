@@ -51,6 +51,7 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 		session := sessions.Default(c)
 		at := session.Get(common.AccessToken)
 		rt := session.Get(common.RefreshToken)
+
 		if at == nil || rt == nil {
 			c.AbortWithError(http.StatusUnauthorized, errors.New("Token not present"))
 			return
@@ -59,6 +60,7 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 		token, err := authtoken.Parse(at.(string))
 		if err != nil {
 			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Jwt Token parse error: %w", err))
+			return
 		}
 
 		if token.Valid {
@@ -66,30 +68,43 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 			return
 		}
 
-		if refreshtoken.IsValid(rt.(string)) {
-			claims, ok := token.Claims.(jwt.MapClaims)
-			if !ok {
-				c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt claims are not ok"))
-				return
-			}
-
-			userId := claims["UserId"]
-			if userId == "" {
-				c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Claims does not contains userId"))
-			}
-
-			newAccessToken, err := authtoken.CreateJWTToken(userId.(string))
-			if err != nil {
-				c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt creation error on refresh"))
-				return
-			}
-
-			session.Set(common.AccessToken, newAccessToken)
-			session.Save()
-			c.Next()
+		if isValidRefreshToken(rt.(string)) {
+			handleValidRefreshToken(c, token, session)
 			return
 		}
 
 		c.AbortWithError(http.StatusUnauthorized, errors.New("Jwt token is Invalid"))
 	}
+}
+
+func isValidRefreshToken(tokenString string) bool {
+	return refreshtoken.IsValid(tokenString)
+}
+
+func handleValidRefreshToken(c *gin.Context, token *jwt.Token, session sessions.Session) {
+	claims, ok := token.Claims.(jwt.MapClaims)
+	if !ok {
+		c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt claims are not ok"))
+		return
+	}
+
+	userId := claims["UserId"]
+	if userId == "" {
+		c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Claims does not contain userId"))
+		return
+	}
+
+	handleTokenRefresh(c, userId.(string), session)
+}
+
+func handleTokenRefresh(c *gin.Context, userID string, session sessions.Session) {
+	newAccessToken, err := authtoken.CreateJWTToken(userID)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, errors.New("Jwt creation error on refresh"))
+		return
+	}
+
+	session.Set(common.AccessToken, newAccessToken)
+	session.Save()
+	c.Next()
 }

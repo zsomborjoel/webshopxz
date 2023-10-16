@@ -2,6 +2,7 @@ package address
 
 import (
 	"fmt"
+	"time"
 
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/common"
@@ -17,6 +18,8 @@ type Address struct {
 	CompanyName string `db:"company_name"`
 	Details     string `db:"details"`
 	UserId      string `db:"user_id"`
+	CreatedAt   int64  `db:"created_at"`
+	ModifiedAt  int64  `db:"modified_at"`
 }
 
 func FindByUserId(userId string) (Address, error) {
@@ -45,6 +48,7 @@ func Update(address Address) error {
 
 	db := common.GetDB()
 
+	address.ModifiedAt = time.Now().Unix()
 	_, err := db.NamedExec(
 		`UPDATE user_addresses
 		SET 
@@ -54,8 +58,9 @@ func Update(address Address) error {
 			address_line=:address_line,
 			phone_number=:phone_number,
 			company_name=:company_name,
-			details=:details
-		WHERE user_id=$8`,
+			details=:details,
+			modified_at=:modified_at
+		WHERE user_id=:user_id`,
 		address)
 
 	if err != nil {
@@ -90,7 +95,7 @@ func CreateOne(address Address) error {
 
 func UpsertOne(address Address) error {
 	var err error
-	if existById(address.Id) {
+	if existByUserId(address.UserId) {
 		err = Update(address)
 		if err != nil {
 			return err
@@ -104,15 +109,16 @@ func UpsertOne(address Address) error {
 		return err
 	}
 
+	log.Debug().Msg("address.UpsertOne done")
 	return nil
 }
 
-func existById(id string) bool {
-	log.Debug().Msg("address.ExistById called")
+func existByUserId(id string) bool {
+	log.Debug().Msg("address.existByUserId called")
 
 	db := common.GetDB()
 	var i int
-	err := db.Get(&i, "SELECT 1 FROM user_addresses WHERE id=$1", id)
+	err := db.Get(&i, "SELECT 1 FROM user_addresses WHERE user_id=$1", id)
 	if err != nil {
 		log.Error().Err(err)
 	}

@@ -67,6 +67,7 @@ func Creation(c *gin.Context) {
 
 	err = UpsertOne(a)
 	if err != nil {
+		log.Error().Err(err).Msg("")
 		common.AbortWithHtml(c, http.StatusInternalServerError, fmt.Sprintf("Internal error occured - try again later"))
 		return
 	}

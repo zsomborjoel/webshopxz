@@ -1,7 +1,16 @@
 {{define "bodyHTMLmainpage"}}
+<style>
+    .half-height {
+        height: 40vh;
+    }
+</style>
 <body>
+    {{if .Products}}
     <div id="products" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4 sm:px-8 md:px-16 lg:px-32 flex-grow">
         {{template "productHTMLmainpage" .}}
     </div>
+    {{else}}
+    <div class="text-center half-height">No such products available</div>
+    {{end}}
 </body>
 {{end}}

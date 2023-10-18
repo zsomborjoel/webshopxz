@@ -7,7 +7,7 @@ import (
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
 	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
 	"github.com/zsomborjoel/workoutxz/internal/common"

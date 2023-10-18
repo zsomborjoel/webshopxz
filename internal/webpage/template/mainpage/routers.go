@@ -18,6 +18,7 @@ var categories []string
 
 func MainPageRegister(r *gin.RouterGroup) {
 	r.GET("", renderMainPage)
+	r.GET("/search", renderProductsBySearch)
 }
 
 func ProductsByCategoryRegister(r *gin.RouterGroup) {
@@ -55,6 +56,27 @@ func renderProductsByCategory(c *gin.Context) {
 	cat := common.GetLastPartUrlPath(url)
 
 	products, err := product.FindAllByCategory(cat)
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	dataMap := map[string]interface{}{
+		"Products": products,
+	}
+
+	if !webpage.IsHTMXRequest(c) {
+		executeMainPage(c, dataMap)
+		return
+	}
+
+	common.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+}
+
+func renderProductsBySearch(c *gin.Context) {
+	t := c.Query("query")
+
+	products, err := product.SearchAllBy(t)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return

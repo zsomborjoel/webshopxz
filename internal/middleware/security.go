@@ -12,8 +12,8 @@ import (
 	"github.com/golang-jwt/jwt/v4"
 	"github.com/rs/zerolog/log"
 	csrf "github.com/utrack/gin-csrf"
-	"github.com/zsomborjoel/workoutxz/internal/auth/authtoken"
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
+	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 

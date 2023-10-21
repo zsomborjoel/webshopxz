@@ -4,11 +4,11 @@ import (
 	"errors"
 	"net/http"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session"
+	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
@@ -172,8 +172,7 @@ func Login(c *gin.Context) {
 		return
 	}
 
-	session := sessions.Default(c)
-	session.Options(sessions.Options{Path: common.Root})
+	session := session.GetRoot(c)
 	session.Set(common.AccessToken, jwt)
 	session.Set(common.RefreshToken, rt)
 	session.Set(common.UserId, usr.Id)
@@ -186,8 +185,7 @@ func Login(c *gin.Context) {
 func Logout(c *gin.Context) {
 	log.Debug().Msg("Logout called")
 
-	session := sessions.Default(c)
-	session.Options(sessions.Options{Path: common.Root})
+	session := session.GetRoot(c)
 	session.Clear()
 	session.Save()
 

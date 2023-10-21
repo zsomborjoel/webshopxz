@@ -1,6 +1,7 @@
 package mainpage
 
 import (
+	"fmt"
 	"net/http"
 
 	"github.com/rs/zerolog/log"
@@ -101,6 +102,7 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 		return
 	}
 
+	fmt.Println(auth.IsLoggedIn(c))
 	dataMap := map[string]interface{}{
 		"Categories": cats,
 		"LoggedIn":   auth.IsLoggedIn(c),

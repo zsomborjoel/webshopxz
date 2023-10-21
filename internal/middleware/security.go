@@ -13,6 +13,7 @@ import (
 	"github.com/rs/zerolog/log"
 	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
@@ -48,7 +49,7 @@ func XSSProtectionHandler() gin.HandlerFunc {
 
 func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
-		session := sessions.Default(c)
+		session := session.GetRoot(c)
 		at := session.Get(common.AccessToken)
 		rt := session.Get(common.RefreshToken)
 
@@ -59,6 +60,7 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 
 		token, err := authtoken.Parse(at.(string))
 		if err != nil {
+			resetLogin(session)
 			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Jwt Token parse error: %w", err))
 			return
 		}
@@ -75,6 +77,12 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 
 		c.AbortWithError(http.StatusUnauthorized, errors.New("Jwt token is Invalid"))
 	}
+}
+
+func resetLogin(session sessions.Session) {
+	session.Delete(common.AccessToken)
+	session.Delete(common.RefreshToken)
+	session.Save()
 }
 
 func isValidRefreshToken(tokenString string) bool {

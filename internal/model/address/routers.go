@@ -5,9 +5,9 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 )
 
@@ -46,7 +46,7 @@ func Creation(c *gin.Context) {
 		return
 	}
 
-	session := sessions.Default(c)
+	session := session.GetRoot(c)
 	userId := session.Get(common.UserId).(string)
 
 	s := AddressDeserializer{c, AddressRequest{

@@ -94,7 +94,7 @@ func SearchAllBy(text string) ([]Product, error) {
 		FROM products p
 		JOIN product_categories pc
 		ON p.product_category_id = pc.id
-		WHERE p.name LIKE '%' || $1 || '%'
+		WHERE LOWER(p.name) LIKE LOWER('%' || $1 || '%')
 		`, text)
 
 	if err != nil {

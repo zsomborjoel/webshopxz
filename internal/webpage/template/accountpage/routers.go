@@ -22,7 +22,7 @@ func renderAccountPage(c *gin.Context) {
 	session := session.GetRoot(c)
 	userId := session.Get(common.UserId).(string)
 
-	addr, err := address.FindByUserId(userId)
+	addr, err := address.FindOneByUserId(userId)
 	if err != nil {
 		log.Error().Err(err)
 	}

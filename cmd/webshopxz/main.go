@@ -62,6 +62,7 @@ func main() {
 	template := r.Group("")
 	mainpage.MainPageRegister(template)
 	mainpage.ProductsByCategoryRegister(template)
+	mainpage.ProductDetailsByTagNameRegister(template)
 	loginpage.LoginPageRegister(template)
 
 	protected := r.Group("/protected")

@@ -22,7 +22,7 @@ type Address struct {
 	ModifiedAt  int64  `db:"modified_at"`
 }
 
-func FindByUserId(userId string) (Address, error) {
+func FindOneByUserId(userId string) (Address, error) {
 	log.Debug().Msg("address.FindByUserId called")
 
 	db := common.GetDB()

@@ -6,6 +6,8 @@ const ConfirmRegistrationEndpoint = "/confirm-registration"
 const AllSlug = "/all"
 const All = "all"
 const Root = "/"
+const ProductCategories = "product-categories"
+const ProductDetails = "product-details"
 
 // HTMX
 const HTMXRequest = "HX-Request"

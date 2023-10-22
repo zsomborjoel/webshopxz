@@ -23,3 +23,5 @@ databaseChangeLog:
       file: classpath:schema/9-changelog-order-details-20231009.yml
   - include:
       file: classpath:schema/10-changelog-order-items-20231009.yml
+  - include:
+      file: classpath:schema/11-changelog-products-tag-name-20231022.yml

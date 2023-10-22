@@ -31,8 +31,46 @@ func ProductsByCategoryRegister(r *gin.RouterGroup) {
 
 	r.GET(common.AllSlug, renderProductsByCategory)
 	for _, c := range cs {
-		r.GET(c.Name, renderProductsByCategory)
+		r.GET(fmt.Sprintf("%s/%s", common.ProductCategories, c.Name), renderProductsByCategory)
 	}
+}
+
+func ProductDetailsByTagNameRegister(r *gin.RouterGroup) {
+	ps, err := product.FindAllTagNames()
+	if err != nil {
+		log.Fatal().Stack().Msg("Error loading ProductDetailsByTagNameRegister routes")
+		return
+	}
+
+	for _, p := range ps {
+		r.GET(fmt.Sprintf("%s/%s", common.ProductDetails, p.TagName), renderProductDetails)
+	}
+}
+
+func renderProductDetails(c *gin.Context) {
+	cats, err := category.FindAllNameWithProducts()
+	if err != nil {
+		c.AbortWithError(http.StatusInternalServerError, err)
+		return
+	}
+
+	url := c.Request.URL.String()
+	tag := common.GetLastPartUrlPath(url)
+	p, err := product.FindOneByTagName(tag)
+
+	dataMap := map[string]interface{}{
+		"Categories": cats,
+		"LoggedIn":   auth.IsLoggedIn(c),
+		"IsMainPage": true,
+		"Product":    p,
+	}
+
+	if !webpage.IsHTMXRequest(c) {
+		executeMainPage(c, dataMap)
+		return
+	}
+
+	common.GetTemplate().ExecuteTemplate(c.Writer, "productdetailsHTMLmainpage", dataMap)
 }
 
 func renderMainPage(c *gin.Context) {
@@ -102,10 +140,10 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 		return
 	}
 
-	fmt.Println(auth.IsLoggedIn(c))
 	dataMap := map[string]interface{}{
 		"Categories": cats,
 		"LoggedIn":   auth.IsLoggedIn(c),
+		"IsMainPage": true,
 	}
 
 	common.MergeMaps(source, dataMap)

@@ -2,7 +2,16 @@
 {{range .Products}}
 <div class="block text-center max-w-[18rem] rounded-lg border bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
     <div class="relative overflow-hidden bg-cover bg-no-repeat">
-        <img class="rounded-t-lg" src="../../static/images/{{.ImageName}}" alt="">
+        <img
+            hx-get="/product-details/{{.TagName}}"
+            hx-trigger="click"
+            hx-target="#products"
+            hx-push-url="true"
+            hx-swap="outerHTML"
+            class="cursor-pointer hover:opacity-75 rounded-t-lg"
+            src="../../static/images/{{.ImageName}}"
+            alt=""
+        >
     </div>
     <div class="font-semibold mb-1">{{.Name}}</div>
     <div class="text-blue-500">${{.Price}}</div>

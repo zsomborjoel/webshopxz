@@ -1,0 +1,18 @@
+databaseChangeLog:
+
+  - changeSet:
+      id: 0d34bb67-b28f-4f04-ac18-99ed12f463b0
+      author: zsomborjoel
+      changes:
+        - addColumn:
+            tableName: products
+            columns:
+            - column:
+                name: tag_name
+                type: varchar(255)
+
+  - changeSet:  
+      id: e1bfda46-a17d-4a75-931d-0fcd4680cd78
+      author: zsomborjoel 
+      changes:  
+        - sql: UPDATE products SET tag_name = LOWER(REPLACE(name, ' ', '-'));

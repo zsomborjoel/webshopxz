@@ -11,6 +11,7 @@ import (
 	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/response"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
@@ -32,22 +33,22 @@ func Registration(c *gin.Context) {
 	t := c.PostForm("terms")
 
 	if e == "" || p == "" {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email or password can not be empty")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Email or password can not be empty")
 		return
 	}
 
 	if !common.IsValidEmail(e) {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
 		return
 	}
 
 	if p != cp {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Password and Confirm Password is not equal")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Password and Confirm Password is not equal")
 		return
 	}
 
 	if t != "on" {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Please approve Terms and Conditions")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Please approve Terms and Conditions")
 		return
 	}
 
@@ -57,23 +58,23 @@ func Registration(c *gin.Context) {
 	s := RegistrationRequestSerializer{c, rr}
 	usr, err = s.Model()
 	if err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
+		response.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	if user.ExistByUserName(usr.UserName) {
-		common.AbortWithHtml(c, http.StatusBadRequest, "User alredy exists")
+		response.AbortWithHtml(c, http.StatusBadRequest, "User alredy exists")
 		return
 	}
 
 	if err := user.CreateOne(usr); err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
+		response.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	_, err = verificationtoken.CreateOne(usr)
 	if err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
+		response.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
@@ -83,7 +84,7 @@ func Registration(c *gin.Context) {
 		return
 	}*/
 
-	common.OkWithHtml(c, "Account been created")
+	response.OkWithHtml(c, "Account been created")
 }
 
 func ConfirmRegistration(c *gin.Context) {
@@ -147,28 +148,28 @@ func Login(c *gin.Context) {
 	usr, err := user.FindByUserName(e)
 	if err != nil {
 		log.Debug().Err(err).Msg(common.LoginError)
-		common.AbortWithHtml(c, http.StatusNotFound, "Username or password is invalid")
+		response.AbortWithHtml(c, http.StatusNotFound, "Username or password is invalid")
 		return
 	}
 
 	err = validatePassword(usr.Password, p)
 	if err != nil {
 		log.Debug().Err(err).Msg(common.LoginError)
-		common.AbortWithHtml(c, http.StatusUnauthorized, "Username or password is invalid")
+		response.AbortWithHtml(c, http.StatusUnauthorized, "Username or password is invalid")
 		return
 	}
 
 	jwt, err := authtoken.CreateJWTToken(usr.Id)
 	if err != nil {
 		log.Debug().Err(err).Msg(common.LoginError)
-		common.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
+		response.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
 	rt, err := refreshtoken.CreateOne(usr)
 	if err != nil {
 		log.Debug().Err(err).Msg(common.LoginError)
-		common.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
+		response.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
@@ -199,25 +200,25 @@ func ResetPassword(c *gin.Context) {
 	e := c.PostForm("email")
 
 	if e == "" {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email can not be empty")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Email can not be empty")
 		return
 	}
 
 	if !common.IsValidEmail(e) {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
 		return
 	}
 
 	if !user.ExistByUserName(e) {
-		common.AbortWithHtml(c, http.StatusBadRequest, "Email not exists in our system")
+		response.AbortWithHtml(c, http.StatusBadRequest, "Email not exists in our system")
 		return
 	}
 
 	err := user.ResetPasswordByUserName(e)
 	if err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, "We were not able to reset your password - contact us via email")
+		response.AbortWithHtml(c, http.StatusInternalServerError, "We were not able to reset your password - contact us via email")
 		return
 	}
 
-	common.OkWithHtml(c, "Password been reseted - Check for the verification in your email account!")
+	response.OkWithHtml(c, "Password been reseted - Check for the verification in your email account!")
 }

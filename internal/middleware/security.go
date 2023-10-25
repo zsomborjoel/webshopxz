@@ -16,6 +16,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/response"
 )
 
 func CSRFProtectionHandler() gin.HandlerFunc {
@@ -54,14 +55,16 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 		rt := session.Get(common.RefreshToken)
 
 		if at == nil || rt == nil {
-			c.AbortWithError(http.StatusUnauthorized, errors.New("Token not present"))
+			log.Err(errors.New("Token not present")).Msg("")
+			response.AbortWithUnauthorizedHtml(c)
 			return
 		}
 
 		token, err := authtoken.Parse(at.(string))
 		if err != nil {
 			resetLogin(session)
-			c.AbortWithError(http.StatusUnauthorized, fmt.Errorf("Jwt Token parse error: %w", err))
+			log.Err(fmt.Errorf("Jwt Token parse error: %w", err)).Msg("")
+			response.AbortWithUnauthorizedHtml(c)
 			return
 		}
 

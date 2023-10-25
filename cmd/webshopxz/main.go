@@ -10,6 +10,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/model/address"
@@ -24,7 +25,7 @@ func main() {
 	fmt.Println("Application Init started")
 	common.InitEnvVariables()
 	common.InitDB()
-	common.InitTemplate()
+	ctemplate.InitTemplate()
 
 	level := os.Getenv("LOG_LEVEL")
 	if level == "" {

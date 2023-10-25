@@ -3,7 +3,7 @@ package loginpage
 import (
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 )
 
 func LoginPageRegister(r *gin.RouterGroup) {
@@ -20,17 +20,17 @@ func renderLoginPage(c *gin.Context) {
 		"csrfToken": csrfToken,
 	}
 
-	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", dataMap)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", dataMap)
 }
 
 func renderCreateAccountForm(c *gin.Context) {
-	common.GetTemplate().ExecuteTemplate(c.Writer, "createaccountformHTMLloginpage", nil)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "createaccountformHTMLloginpage", nil)
 }
 
 func renderChangePasswordForm(c *gin.Context) {
-	common.GetTemplate().ExecuteTemplate(c.Writer, "changepasswordformHTMLloginpage", nil)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "changepasswordformHTMLloginpage", nil)
 }
 
 func renderResetPasswordForm(c *gin.Context) {
-	common.GetTemplate().ExecuteTemplate(c.Writer, "resetpasswordformHTMLloginpage", nil)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "resetpasswordformHTMLloginpage", nil)
 }

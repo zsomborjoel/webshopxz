@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/response"
 )
 
 func AddressRegister(r *gin.RouterGroup) {
@@ -42,7 +43,7 @@ func Creation(c *gin.Context) {
 	}
 
 	if len(emptyFields) > 0 {
-		common.AbortWithHtml(c, http.StatusBadRequest, fmt.Sprintf("The following field(s) need to be filled: [%s]", strings.Join(emptyFields, ", ")))
+		response.AbortWithHtml(c, http.StatusBadRequest, fmt.Sprintf("The following field(s) need to be filled: [%s]", strings.Join(emptyFields, ", ")))
 		return
 	}
 
@@ -61,14 +62,14 @@ func Creation(c *gin.Context) {
 	}}
 	a, err := s.Model()
 	if err != nil {
-		common.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
+		response.AbortWithHtml(c, http.StatusInternalServerError, err.Error())
 		return
 	}
 
 	err = UpsertOne(a)
 	if err != nil {
 		log.Error().Err(err).Msg("")
-		common.AbortWithHtml(c, http.StatusInternalServerError, fmt.Sprintf("Internal error occured - try again later"))
+		response.AbortWithHtml(c, http.StatusInternalServerError, fmt.Sprintf("Internal error occured - try again later"))
 		return
 	}
 

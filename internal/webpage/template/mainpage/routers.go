@@ -10,6 +10,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
@@ -56,13 +57,13 @@ func renderProductDetails(c *gin.Context) {
 
 	url := c.Request.URL.String()
 	tag := common.GetLastPartUrlPath(url)
-	p, err := product.FindOneByTagName(tag)
+	productByTag, err := product.FindOneByTagName(tag)
 
 	dataMap := map[string]interface{}{
 		"Categories": cats,
 		"LoggedIn":   auth.IsLoggedIn(c),
 		"IsMainPage": true,
-		"Product":    p,
+		"Product":    productByTag,
 	}
 
 	if !webpage.IsHTMXRequest(c) {
@@ -70,7 +71,7 @@ func renderProductDetails(c *gin.Context) {
 		return
 	}
 
-	common.GetTemplate().ExecuteTemplate(c.Writer, "productdetailsHTMLmainpage", dataMap)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productdetailsHTMLmainpage", dataMap)
 }
 
 func renderMainPage(c *gin.Context) {
@@ -109,13 +110,13 @@ func renderProductsByCategory(c *gin.Context) {
 		return
 	}
 
-	common.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func renderProductsBySearch(c *gin.Context) {
 	t := c.Query("query")
 
-	products, err := product.SearchAllBy(t)
+	products, err := product.SearchAllByText(t)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
@@ -130,7 +131,7 @@ func renderProductsBySearch(c *gin.Context) {
 		return
 	}
 
-	common.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
@@ -147,5 +148,5 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 	}
 
 	common.MergeMaps(source, dataMap)
-	common.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
 }

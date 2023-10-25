@@ -20,12 +20,12 @@
                     hx-trigger="click"
                     hx-target="#mainpage"
                     hx-push-url="true"
-                    class="hover:underline block"
+                    class="cursor-pointer hover:underline block"
                 >
                     Shop All
                 </a>
-                <a href="#" class="hover:underline block">New</a>
-                <a href="#" class="hover:underline block">Back in stock</a>
+                <a href="#" class="cursor-pointer hover:underline block">New</a>
+                <a href="#" class="cursor-pointer hover:underline block">Back in stock</a>
             </div>
         </div>
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">
@@ -37,7 +37,7 @@
                     hx-trigger="click"
                     hx-target="#products"
                     hx-push-url="true"
-                    class="hover:underline block"
+                    class="cursor-pointer hover:underline block"
                 >
                     {{.Name}}
                 </a>
@@ -47,8 +47,8 @@
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">
         <div class="flex justify-center sm:justify-start ml-0 sm:ml-7">
             <div class="space-y-2">
-                <a href="#" class="hover:underline block">Gifting</a>
-                <a href="#" class="hover:underline block">Sale</a>
+                <a href="#" class="cursor-pointer hover:underline block">Gifting</a>
+                <a href="#" class="cursor-pointer hover:underline block">Sale</a>
                 <form action="/search">
                     <div class="w-full group">
                         <input
@@ -66,19 +66,18 @@
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">
         <div class="flex justify-center sm:justify-end relative sm:mt-0 ml-0 sm:ml-auto">
             <div class="space-y-2">
-                <a href="#" class="hover:underline block">Cart</a>
+                <a href="#" class="cursor-pointer hover:underline block">Cart</a>
                 <div>
                     {{if .LoggedIn}}
-                    <a hx-post="/api/auth/logout" hx-trigger="click" class="hover:underline block">Logout</a>
+                    <a hx-post="/api/auth/logout" hx-trigger="click" class="cursor-pointer hover:underline block">Logout</a>
                     {{else}}
                     <a
                         id="login-button"
-                        hx-get="login"
+                        hx-get="/login"
                         hx-trigger="click"
                         hx-target="#login"
                         hx-push-url="true"
-                        hx-swap="innerHTML"
-                        class="hover:underline block"
+                        class="cursor-pointer hover:underline block"
                     >
                         Login
                     </a>
@@ -91,8 +90,7 @@
                     hx-trigger="click"
                     hx-target="#account"
                     hx-push-url="true"
-                    hx-swap="innerHTML"
-                    class="hover:underline block"
+                    class="cursor-pointer hover:underline block"
                 >Account</a>
                 {{end}}
             </div>

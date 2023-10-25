@@ -78,7 +78,7 @@ func FindAllByCategory(cn string) ([]Product, error) {
 	return p, nil
 }
 
-func SearchAllBy(text string) ([]Product, error) {
+func SearchAllByText(text string) ([]Product, error) {
 	log.Debug().Msg("products.SearchAllBy called")
 
 	db := common.GetDB()
@@ -93,7 +93,8 @@ func SearchAllBy(text string) ([]Product, error) {
 			p.sku, 
 			p.price, 
 			p.image_name,
-			p.active 
+			p.active,
+			p.tag_name
 		FROM products p
 		JOIN product_categories pc
 		ON p.product_category_id = pc.id

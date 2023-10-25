@@ -13,19 +13,16 @@
                 <div class="lg:pl-20">
                     <div class="mb-8 ">
                         <h2 class="max-w-xl mt-2 mb-6 text-2xl font-bold dark:text-gray-400 md:text-4xl">
-                            Shoes
+                            {{.Product.Name}}
                         </h2>
                         <p class="max-w-md mb-8 text-gray-700 dark:text-gray-400">
-                            Lorem ispum dor amet Lorem ispum dor amet Lorem ispum dor amet Lorem ispum dor amet
-                            Lorem ispum dor amet Lorem ispum dor amet Lorem ispum dor amet Lorem ispum dor amet
+                            {{.Product.Description}}
                         </p>
-                        <p class="inline-block mb-8 text-4xl font-bold text-gray-700 dark:text-gray-400 ">
-                            <span>$1000.99</span>
-                            <span class="text-base font-normal text-gray-500 line-through dark:text-gray-400">$1500.99</span>
+                        <p class="inline-block mb-4 text-4xl font-bold text-gray-700 dark:text-gray-400 ">
+                            <span>${{.Product.Price}}</span>
                         </p>
-                        <p class="text-green-600 dark:text-green-300 ">7 in stock</p>
                     </div>
-                    <div class="flex flex-wrap items-center -mx-4 ">
+                    <div class="flex flex-wrap items-center">
                         <div class="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
                             <button
                                 hx-post="/"

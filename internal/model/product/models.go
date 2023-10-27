@@ -109,7 +109,7 @@ func SearchAllByText(text string) ([]Product, error) {
 }
 
 func FindAllTagNames() ([]Product, error) {
-	log.Debug().Msg("categories.FindAll called")
+	log.Debug().Msg("products.FindAll called")
 
 	db := common.GetDB()
 	var p []Product
@@ -130,7 +130,7 @@ func FindAllTagNames() ([]Product, error) {
 }
 
 func FindOneByTagName(tagName string) (Product, error) {
-	log.Debug().Msg("categories.FindByTagName called")
+	log.Debug().Msg("products.FindByTagName called")
 
 	db := common.GetDB()
 	var p Product
@@ -149,7 +149,33 @@ func FindOneByTagName(tagName string) (Product, error) {
 		tagName)
 
 	if err != nil {
-		return p, fmt.Errorf("An error occured in address.FindByTagName.Get: %w", err)
+		return p, fmt.Errorf("An error occured in products.FindByTagName.Get: %w", err)
+	}
+
+	return p, nil
+}
+
+func FindOneById(id string) (Product, error) {
+	log.Debug().Msg("categories.FindOneById called")
+
+	db := common.GetDB()
+	var p Product
+	err := db.Get(&p,
+		`
+		SELECT 
+			p.id,
+			p.name,
+			p.description,
+			p.sku, 
+			p.price, 
+			p.image_name
+		FROM products p
+		WHERE p.id=$1
+		`,
+		id)
+
+	if err != nil {
+		return p, fmt.Errorf("An error occured in products.FindOneById.Get: %w", err)
 	}
 
 	return p, nil

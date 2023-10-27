@@ -35,7 +35,7 @@ func SetupStore() cookie.Store {
 
 	secure, err := strconv.ParseBool(secureValue)
 	if err != nil {
-		log.Error().Msg(fmt.Sprintf("SESSION_STORE_SECURE can not be converted to bool: %s", secureValue))
+		log.Error().Err(err).Msg(fmt.Sprintf("SESSION_STORE_SECURE can not be converted to bool: %s", secureValue))
 	}
 
 	domain := os.Getenv("SESSION_STORE_DOMAIN")

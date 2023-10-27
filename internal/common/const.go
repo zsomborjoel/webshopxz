@@ -6,8 +6,6 @@ const ConfirmRegistrationEndpoint = "/confirm-registration"
 const AllSlug = "/all"
 const All = "all"
 const Root = "/"
-const ProductCategories = "product-categories"
-const ProductDetails = "product-details"
 
 // HTMX
 const HTMXRequest = "HX-Request"
@@ -17,6 +15,7 @@ const HTMXRedirect = "HX-Redirect"
 const AccessToken = "accessToken"
 const RefreshToken = "refreshToken"
 const UserId = "UserId"
+const Cart = "cart"
 
 // Errors
 const LoginError = "Login Error"

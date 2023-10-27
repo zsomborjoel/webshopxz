@@ -1,10 +1,8 @@
 package mainpage
 
 import (
-	"fmt"
 	"net/http"
 
-	"github.com/rs/zerolog/log"
 	csrf "github.com/utrack/gin-csrf"
 
 	"github.com/gin-gonic/gin"
@@ -24,28 +22,11 @@ func MainPageRegister(r *gin.RouterGroup) {
 }
 
 func ProductsByCategoryRegister(r *gin.RouterGroup) {
-	cs, err := category.FindAllNameWithProducts()
-	if err != nil {
-		log.Fatal().Stack().Msg("Error loading ProductsByCategoryRegister routes")
-		return
-	}
-
-	r.GET(common.AllSlug, renderProductsByCategory)
-	for _, c := range cs {
-		r.GET(fmt.Sprintf("%s/%s", common.ProductCategories, c.Name), renderProductsByCategory)
-	}
+	r.GET("product-categories/:name", renderProductsByCategory)
 }
 
 func ProductDetailsByTagNameRegister(r *gin.RouterGroup) {
-	ps, err := product.FindAllTagNames()
-	if err != nil {
-		log.Fatal().Stack().Msg("Error loading ProductDetailsByTagNameRegister routes")
-		return
-	}
-
-	for _, p := range ps {
-		r.GET(fmt.Sprintf("%s/%s", common.ProductDetails, p.TagName), renderProductDetails)
-	}
+	r.GET("/product-details/:name", renderProductDetails)
 }
 
 func renderProductDetails(c *gin.Context) {
@@ -55,8 +36,7 @@ func renderProductDetails(c *gin.Context) {
 		return
 	}
 
-	url := c.Request.URL.String()
-	tag := common.GetLastPartUrlPath(url)
+	tag := c.Param("name")
 	productByTag, err := product.FindOneByTagName(tag)
 
 	dataMap := map[string]interface{}{
@@ -92,9 +72,7 @@ func renderMainPage(c *gin.Context) {
 }
 
 func renderProductsByCategory(c *gin.Context) {
-	url := c.Request.URL.String()
-	cat := common.GetLastPartUrlPath(url)
-
+	cat := c.Param("name")
 	products, err := product.FindAllByCategory(cat)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)

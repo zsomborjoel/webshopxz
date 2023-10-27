@@ -14,8 +14,10 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/email"
 	"github.com/zsomborjoel/workoutxz/internal/middleware"
 	"github.com/zsomborjoel/workoutxz/internal/model/address"
+	"github.com/zsomborjoel/workoutxz/internal/model/cart"
 	"github.com/zsomborjoel/workoutxz/internal/ping"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/accountpage"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/cartpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/loginpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/notfoundpage"
@@ -51,6 +53,7 @@ func main() {
 		middleware.StaticFileHandler(),
 		middleware.ErrorHandler(),
 		middleware.XSSProtectionHandler(),
+		middleware.SetupSessionDefaults(),
 	)
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)
@@ -65,6 +68,10 @@ func main() {
 	mainpage.ProductsByCategoryRegister(template)
 	mainpage.ProductDetailsByTagNameRegister(template)
 	loginpage.LoginPageRegister(template)
+
+	cartgrp := template.Group("/cart")
+	cartpage.CartPageRegister(cartgrp)
+	cart.CartRegister(cartgrp)
 
 	protected := r.Group("/protected")
 	protected.Use(

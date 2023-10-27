@@ -12,8 +12,7 @@
                 alt=""
             >
         </nav>
-        {{if .IsMainPage}}
-        <div class="flex justify-center sm:justify-start ml-0 sm:ml-36">
+        <div class="flex justify-center sm:justify-start ml-0 sm:ml-12">
             <div class="space-y-2">
                 <a
                     hx-get="/"
@@ -28,6 +27,7 @@
                 <a href="#" class="cursor-pointer hover:underline block">Back in stock</a>
             </div>
         </div>
+        {{if .IsMainPage}}
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">
         <div class="flex justify-center sm:justify-start ml-0 sm:ml-7 sm:mt-0">
             <div class="grid grid-cols-3 gap-2">
@@ -66,7 +66,13 @@
         <hr class="border-gray-300 w-full mt-4 mb-4 sm:hidden">
         <div class="flex justify-center sm:justify-end relative sm:mt-0 ml-0 sm:ml-auto">
             <div class="space-y-2">
-                <a href="#" class="cursor-pointer hover:underline block">Cart</a>
+                <a
+                    hx-get="/cart"
+                    hx-trigger="click"
+                    hx-target="#mainpage"
+                    hx-push-url="true"
+                    class="cursor-pointer hover:underline block"
+                >Cart</a>
                 <div>
                     {{if .LoggedIn}}
                     <a hx-post="/api/auth/logout" hx-trigger="click" class="cursor-pointer hover:underline block">Logout</a>

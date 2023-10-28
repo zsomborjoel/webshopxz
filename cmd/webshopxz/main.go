@@ -9,6 +9,7 @@ import (
 	"github.com/rs/zerolog"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session/sessionregister"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 	"github.com/zsomborjoel/workoutxz/internal/email"
@@ -44,6 +45,7 @@ func main() {
 	gin.SetMode(ginMode)
 
 	store := session.SetupStore()
+	sessionregister.RegisterSlices()
 
 	r := gin.Default()
 	r.Use(
@@ -53,7 +55,6 @@ func main() {
 		middleware.StaticFileHandler(),
 		middleware.ErrorHandler(),
 		middleware.XSSProtectionHandler(),
-		middleware.SetupSessionDefaults(),
 	)
 
 	r.NoRoute(notfoundpage.RenderNotFoundPage)

@@ -1,36 +1,36 @@
 package cart
 
-import "github.com/zsomborjoel/workoutxz/internal/model/product"
+import (
+	"github.com/zsomborjoel/workoutxz/internal/model/product"
+)
 
 type Cart struct {
-	Products []product.Product
+	Products map[string]product.CartProduct
 }
 
 func EmptyCart() Cart {
-	return Cart{Products: []product.Product{}}
+	return Cart{Products: make(map[string]product.CartProduct)}
 }
 
-func (c *Cart) AddProduct(p product.Product) {
-	c.Products = append(c.Products, p)
+func (c *Cart) AddProduct(p product.CartProduct) {
+	current, isPresent := c.Products[p.Id]
+	if !isPresent {
+		c.Products[p.Id] = p
+		return
+	}
+
+	current.Amount = current.Amount + 1
+	c.Products[p.Id] = current
 }
 
 func (c *Cart) RemoveProductById(id string) {
-	index := -1
-	for i, p := range c.Products {
-		if p.Id == id {
-			index = i
-			break
-		}
-	}
-	if index != -1 {
-		c.Products = append(c.Products[:index], c.Products[index+1:]...)
-	}
+	delete(c.Products, id)
 }
 
 func (c *Cart) CalculateSubtotal() int {
 	sum := 0
 	for _, p := range c.Products {
-		sum += p.Price
+		sum += (p.Price * p.Amount)
 	}
 
 	return sum

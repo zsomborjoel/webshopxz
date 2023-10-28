@@ -177,7 +177,10 @@ func Login(c *gin.Context) {
 	session.Set(common.AccessToken, jwt)
 	session.Set(common.RefreshToken, rt)
 	session.Set(common.UserId, usr.Id)
-	session.Save()
+	err = session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session auth.Login")
+	}
 
 	c.Header(common.HTMXRedirect, "/")
 	c.Status(http.StatusOK)
@@ -188,7 +191,10 @@ func Logout(c *gin.Context) {
 
 	session := session.GetRoot(c)
 	session.Clear()
-	session.Save()
+	err := session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session auth.Logout")
+	}
 
 	c.Header(common.HTMXRedirect, "/")
 	c.Status(http.StatusOK)

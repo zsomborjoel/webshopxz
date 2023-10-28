@@ -7,9 +7,6 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/model/cart"
 )
 
 func ErrorHandler() gin.HandlerFunc {
@@ -44,13 +41,5 @@ func StaticFileHandler() gin.HandlerFunc {
 
 		c.Request.URL.Path = strings.TrimPrefix(c.Request.URL.Path, prefix)
 		fileServer.ServeHTTP(c.Writer, c.Request)
-	}
-}
-
-func SetupSessionDefaults() gin.HandlerFunc {
-	return func(c *gin.Context) {
-		session := session.GetRoot(c)
-		session.Set(common.Cart, cart.EmptyCart())
-		session.Save()
 	}
 }

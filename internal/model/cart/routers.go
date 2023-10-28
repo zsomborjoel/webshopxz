@@ -7,6 +7,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/response"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 )
 
@@ -25,10 +26,19 @@ func Add(c *gin.Context) {
 	}
 
 	session := session.GetRoot(c)
-	ct := session.Get(common.Cart).(Cart)
-	ct.AddProduct(p)
-	session.Set(common.Cart, ct)
-	session.Save()
+	ct := session.Get(common.Cart)
+	cart := initCart(ct)
+
+	s := product.ProductSerializer{C: c, Product: p}
+	cart.AddProduct(s.CartProduct())
+	session.Set(common.Cart, cart)
+
+	err = session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session in cart.Add")
+	}
+
+	response.OkWithHtml(c, "Product been added to cart")
 }
 
 func Remove(c *gin.Context) {
@@ -40,5 +50,23 @@ func Remove(c *gin.Context) {
 	ct := session.Get(common.Cart).(Cart)
 	ct.RemoveProductById(productId)
 	session.Set(common.Cart, ct)
-	session.Save()
+
+	err := session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session in cart.Remove")
+	}
+}
+
+func initCart(ct interface{}) Cart {
+	var cart Cart
+	if ct == nil {
+		cart = EmptyCart()
+	} else {
+		var ok bool
+		cart, ok = ct.(Cart)
+		if !ok {
+			log.Error().Msg("Failed to assert cart type")
+		}
+	}
+	return cart
 }

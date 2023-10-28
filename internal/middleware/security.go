@@ -28,7 +28,9 @@ func CSRFProtectionHandler() gin.HandlerFunc {
 	return csrf.Middleware(csrf.Options{
 		Secret: csrfSecret,
 		ErrorFunc: func(c *gin.Context) {
-			c.String(403, "Invalid CSRF token")
+			msg := "Invalid CSRF token"
+			log.Error().Msg(msg)
+			c.String(403, msg)
 			c.Abort()
 		},
 	})
@@ -85,7 +87,10 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 func resetLogin(session sessions.Session) {
 	session.Delete(common.AccessToken)
 	session.Delete(common.RefreshToken)
-	session.Save()
+	err := session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session security.resetLogin")
+	}
 }
 
 func isValidRefreshToken(tokenString string) bool {
@@ -116,6 +121,10 @@ func handleTokenRefresh(c *gin.Context, userID string, session sessions.Session)
 	}
 
 	session.Set(common.AccessToken, newAccessToken)
-	session.Save()
+	err = session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session security.handleTokenRefresh")
+	}
+	
 	c.Next()
 }

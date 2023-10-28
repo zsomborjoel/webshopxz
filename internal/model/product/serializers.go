@@ -2,14 +2,13 @@ package product
 
 import "github.com/gin-gonic/gin"
 
-type ProductResponse struct {
+type CartProduct struct {
 	Id          string
 	Name        string
 	Description string
-	SKU         string
 	Price       int
 	ImageName   string
-	Active      bool
+	Amount      int
 }
 
 type ProductSerializer struct {
@@ -17,14 +16,13 @@ type ProductSerializer struct {
 	Product
 }
 
-func (s *ProductSerializer) Response() ProductResponse {
-	return ProductResponse{
+func (s *ProductSerializer) CartProduct() CartProduct {
+	return CartProduct{
 		Id:          s.Product.Id,
 		Name:        s.Product.Name,
 		Description: s.Product.Description,
-		SKU:         s.Product.SKU,
 		Price:       s.Product.Price,
 		ImageName:   s.Product.ImageName,
-		Active:      s.Product.Active,
+		Amount:      1,
 	}
 }

@@ -1,10 +1,14 @@
 {{define "indexHTMLcartpage"}}
 <!DOCTYPE html>
 <html>
-    <div>
+    <div class="bg-gray-50 text-gray-600">
         {{template "headHTMLgeneral" .}}
 
+        {{template "headerHTMLgeneral" .}}
+
         {{template "bodyHTMLcartpage" .}}
+
+        {{template "footerHTMLgeneral" .}}
     </div>
 </html>
 {{end}}

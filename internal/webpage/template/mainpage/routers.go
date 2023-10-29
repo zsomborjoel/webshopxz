@@ -115,10 +115,18 @@ func renderProductsBySearch(c *gin.Context) {
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
-	cats, err := category.FindAllNameWithProducts()
+	dataMap, err := GetBaseData(c, source)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
+	}
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
+}
+
+func GetBaseData(c *gin.Context, source map[string]interface{}) (map[string]interface{}, error) {
+	cats, err := category.FindAllNameWithProducts()
+	if err != nil {
+		return nil, err
 	}
 
 	dataMap := map[string]interface{}{
@@ -128,5 +136,5 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 	}
 
 	common.MergeMaps(source, dataMap)
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
+	return dataMap, nil
 }

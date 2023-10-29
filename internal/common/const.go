@@ -19,3 +19,6 @@ const Cart = "cart"
 
 // Errors
 const LoginError = "Login Error"
+
+// Params
+const ProductId = "product-id"

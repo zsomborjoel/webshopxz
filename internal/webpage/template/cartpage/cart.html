@@ -11,14 +11,23 @@
                 </div>
                 <div class="mt-4 flex justify-between sm:space-y-6 sm:mt-0 sm:block sm:space-x-6">
                     <div class="flex items-center border-gray-100">
-                        <span class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50">-</span>
-                        <input
-                            class="h-8 w-8 border bg-white text-center text-xs outline-none"
-                            type="number"
-                            value="2"
-                            min="1"
-                        >
-                        <span class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50">+</span>
+                        <span
+                            hx-put="/cart/decrease-product-amount/{{.Id}}"
+                            hx-trigger="click"
+                            hx-target="#mainpagebody"
+                            class="cursor-pointer rounded-l bg-gray-100 py-1 px-3.5 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                        >-</span>
+                        <div class="h-8 w-8 border bg-white flex items-center justify-center">
+                            <p id="product-amount-{{.Id}}" class="text-xs outline-none">
+                                {{.Amount}}
+                            </p>
+                        </div>
+                        <span
+                            hx-put="/cart/increase-product-amount/{{.Id}}"
+                            hx-trigger="click"
+                            hx-target="#mainpagebody"
+                            class="cursor-pointer rounded-r bg-gray-100 py-1 px-3 duration-100 hover:bg-blue-500 hover:text-blue-50"
+                        >+</span>
                     </div>
                     <div class="flex items-center space-x-4">
                         <p class="text-sm">${{.Price}}</p>

@@ -13,12 +13,14 @@ import (
 
 func CartRegister(r *gin.RouterGroup) {
 	r.POST("/add/:product-id", Add)
+	//r.PUT("/increase-product-amount/:product-id", IncreaseProductAmount)
+	//r.PUT("/decrease-product-amount/:product-id", DecreaseProductAmount)
 }
 
 func Add(c *gin.Context) {
 	log.Debug().Msg("cart.Add called")
 
-	productId := c.Param("product-id")
+	productId := c.Param(common.ProductId)
 	p, err := product.FindOneById(productId)
 	if err != nil {
 		log.Error().Err(err).Msg(fmt.Sprintf("failed to fetch product for cart | [%s]", productId))
@@ -40,10 +42,42 @@ func Add(c *gin.Context) {
 	response.OkWithHtml(c, "Product been added to cart")
 }
 
+func IncreaseProductAmount(c *gin.Context) {
+	log.Debug().Msg("cart.IncreaseProductAmount called")
+
+	productId := c.Param(common.ProductId)
+
+	session := session.GetRoot(c)
+	ct := session.Get(common.Cart).(Cart)
+	ct.IncreaseProductAmount(productId)
+	session.Set(common.Cart, ct)
+
+	err := session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session in cart.IncreaseProductAmount")
+	}
+}
+
+func DecreaseProductAmount(c *gin.Context) {
+	log.Debug().Msg("cart.DecreaseProductAmount called")
+
+	productId := c.Param("product-id")
+
+	session := session.GetRoot(c)
+	ct := session.Get(common.Cart).(Cart)
+	ct.DecreaseProductAmount(productId)
+	session.Set(common.Cart, ct)
+
+	err := session.Save()
+	if err != nil {
+		log.Error().Err(err).Msg("Failed to save session in cart.DecreaseProductAmount")
+	}
+}
+
 func Remove(c *gin.Context) {
 	log.Debug().Msg("cart.Remove called")
 
-	productId := c.Param("product-id")
+	productId := c.Param(common.ProductId)
 
 	session := session.GetRoot(c)
 	ct := session.Get(common.Cart).(Cart)

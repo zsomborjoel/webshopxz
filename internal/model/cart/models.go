@@ -31,6 +31,30 @@ func (c *Cart) AddProduct(p product.CartProduct) {
 	c.Products[p.Id] = current
 }
 
+func (c *Cart) IncreaseProductAmount(productId string) {
+	current, isPresent := c.Products[productId]
+	if !isPresent {
+		return
+	}
+
+	current.Amount = current.Amount + 1
+	c.Products[productId] = current
+}
+
+func (c *Cart) DecreaseProductAmount(productId string) {
+	current, isPresent := c.Products[productId]
+	if !isPresent {
+		return
+	}
+
+	if current.Amount == 0 {
+		return
+	}
+
+	current.Amount = current.Amount - 1
+	c.Products[productId] = current
+}
+
 func (c *Cart) RemoveProductById(id string) {
 	delete(c.Products, id)
 }

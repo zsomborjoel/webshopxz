@@ -11,10 +11,10 @@ import (
 )
 
 func CartPageRegister(r *gin.RouterGroup) {
-	r.GET("", renderCartPage)
+	r.GET("", RenderCartPage)
 }
 
-func renderCartPage(c *gin.Context) {
+func RenderCartPage(c *gin.Context) {
 	noProductMsg := "No product added to cart currently"
 
 	session := session.GetRoot(c)

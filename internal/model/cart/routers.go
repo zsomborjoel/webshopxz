@@ -2,6 +2,7 @@ package cart
 
 import (
 	"fmt"
+	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
@@ -68,6 +69,9 @@ func Remove(c *gin.Context) {
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to save session in cart.Remove")
 	}
+
+	c.Header(common.HTMXRedirect, common.Cart)
+	c.Status(http.StatusOK)
 }
 
 func initCart(ct interface{}) Cart {

@@ -73,7 +73,7 @@
                     hx-target="#mainpagebody"
                     hx-push-url="true"
                     class="cursor-pointer hover:underline block"
-                >Cart {{.NumberOfCartItems}}</a>
+                >Cart ({{.NumberOfCartItems}})</a>
                 <div>
                     {{if .LoggedIn}}
                     <a hx-post="/api/auth/logout" hx-trigger="click" class="cursor-pointer hover:underline block">Logout</a>

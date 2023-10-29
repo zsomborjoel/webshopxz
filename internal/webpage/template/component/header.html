@@ -67,12 +67,13 @@
         <div class="flex justify-center sm:justify-end relative sm:mt-0 ml-0 sm:ml-auto">
             <div class="space-y-2">
                 <a
+                    id="cart-link"
                     hx-get="/cart"
                     hx-trigger="click"
                     hx-target="#mainpagebody"
                     hx-push-url="true"
                     class="cursor-pointer hover:underline block"
-                >Cart</a>
+                >Cart {{.NumberOfCartItems}}</a>
                 <div>
                     {{if .LoggedIn}}
                     <a hx-post="/api/auth/logout" hx-trigger="click" class="cursor-pointer hover:underline block">Logout</a>

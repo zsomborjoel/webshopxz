@@ -206,9 +206,7 @@
         <span></span>
         <div id="currentYear"></div>
         <script>
-            const currentYear = new Date().getFullYear();
-            const yearDiv = document.getElementById('currentYear');
-            yearDiv.innerHTML = `© ${currentYear} Copyright: Webshopxz`;
+            document.getElementById('currentYear').innerHTML = `© ${new Date().getFullYear()} Copyright: Webshopxz`;
         </script>
     </div>
 </footer>

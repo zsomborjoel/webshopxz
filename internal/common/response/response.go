@@ -16,7 +16,7 @@ func AbortWithUnauthorizedHtml(c *gin.Context) {
 
 func AbortWithHtml(c *gin.Context, code int, msg string) {
 	dataMap := map[string]string{
-		"Message": msg,
+		"ErrorMessage": msg,
 	}
 	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "errorresponseHTMLgeneral", dataMap)
 	c.AbortWithError(code, errors.New(msg))
@@ -24,7 +24,14 @@ func AbortWithHtml(c *gin.Context, code int, msg string) {
 
 func OkWithHtml(c *gin.Context, msg string) {
 	dataMap := map[string]string{
-		"Message": msg,
+		"OkMessage": msg,
 	}
 	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "okresponseHTMLgeneral", dataMap)
+}
+
+func NoItemsHtml(c *gin.Context, msg string) {
+	dataMap := map[string]string{
+		"NoItemsMessage": msg,
+	}
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "noitemsHTMLgeneral", dataMap)
 }

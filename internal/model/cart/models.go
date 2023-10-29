@@ -12,6 +12,14 @@ func EmptyCart() Cart {
 	return Cart{Products: make(map[string]product.CartProduct)}
 }
 
+func (c *Cart) IsEmpty() bool {
+	return len(c.Products) == 0
+}
+
+func (c *Cart) NumberOfItems() int {
+	return len(c.Products)
+}
+
 func (c *Cart) AddProduct(p product.CartProduct) {
 	current, isPresent := c.Products[p.Id]
 	if !isPresent {

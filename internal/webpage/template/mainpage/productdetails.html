@@ -25,6 +25,7 @@
                     <div class="flex flex-wrap items-center">
                         <div class="w-full px-4 mb-4 lg:w-1/2 lg:mb-0">
                             <button
+                                id="add-to-cart"
                                 hx-post="/cart/add/{{.Product.Id}}"
                                 hx-trigger="click"
                                 hx-target="#response-message"

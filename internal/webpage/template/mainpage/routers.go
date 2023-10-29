@@ -3,12 +3,14 @@ package mainpage
 import (
 	"net/http"
 
+	"github.com/rs/zerolog/log"
 	csrf "github.com/utrack/gin-csrf"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
+	"github.com/zsomborjoel/workoutxz/internal/model/cart"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
@@ -38,12 +40,18 @@ func renderProductDetails(c *gin.Context) {
 
 	tag := c.Param("name")
 	productByTag, err := product.FindOneByTagName(tag)
+	if err != nil {
+		log.Warn().Err(err).Msg("productByTag not found in mainpage.renderProductDetails")
+	}
+
+	numberOfCartItems := cart.NumberOfSessionItems(c)
 
 	dataMap := map[string]interface{}{
-		"Categories": cats,
-		"LoggedIn":   auth.IsLoggedIn(c),
-		"IsMainPage": true,
-		"Product":    productByTag,
+		"Categories":        cats,
+		"LoggedIn":          auth.IsLoggedIn(c),
+		"IsMainPage":        true,
+		"NumberOfCartItems": numberOfCartItems,
+		"Product":           productByTag,
 	}
 
 	if !webpage.IsHTMXRequest(c) {
@@ -119,10 +127,13 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 		return
 	}
 
+	numberOfCartItems := cart.NumberOfSessionItems(c)
+
 	dataMap := map[string]interface{}{
-		"Categories": cats,
-		"LoggedIn":   auth.IsLoggedIn(c),
-		"IsMainPage": true,
+		"Categories":        cats,
+		"LoggedIn":          auth.IsLoggedIn(c),
+		"IsMainPage":        true,
+		"NumberOfCartItems": numberOfCartItems,
 	}
 
 	common.MergeMaps(source, dataMap)

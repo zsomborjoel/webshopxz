@@ -16,6 +16,19 @@ func CartRegister(r *gin.RouterGroup) {
 	r.DELETE("/remove/:product-id", Remove)
 }
 
+func NumberOfSessionItems(c *gin.Context) int {
+	log.Debug().Msg("cartcheck.NumberOfCartItems called")
+
+	session := session.GetRoot(c)
+	sct := session.Get(common.Cart)
+	if sct == nil {
+		return 0
+	}
+
+	cart := sct.(Cart)
+	return cart.NumberOfItems()
+}
+
 func Add(c *gin.Context) {
 	log.Debug().Msg("cart.Add called")
 

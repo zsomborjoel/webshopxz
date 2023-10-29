@@ -14,10 +14,8 @@ func LoginPageRegister(r *gin.RouterGroup) {
 }
 
 func renderLoginPage(c *gin.Context) {
-	csrfToken := csrf.GetToken(c)
-
 	dataMap := map[string]interface{}{
-		"csrfToken": csrfToken,
+		"csrfToken": csrf.GetToken(c),
 	}
 
 	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", dataMap)

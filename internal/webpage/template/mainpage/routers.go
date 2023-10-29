@@ -10,7 +10,6 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
-	"github.com/zsomborjoel/workoutxz/internal/model/cart"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
@@ -44,14 +43,11 @@ func renderProductDetails(c *gin.Context) {
 		log.Warn().Err(err).Msg("productByTag not found in mainpage.renderProductDetails")
 	}
 
-	numberOfCartItems := cart.NumberOfSessionItems(c)
-
 	dataMap := map[string]interface{}{
-		"Categories":        cats,
-		"LoggedIn":          auth.IsLoggedIn(c),
-		"IsMainPage":        true,
-		"NumberOfCartItems": numberOfCartItems,
-		"Product":           productByTag,
+		"Categories": cats,
+		"LoggedIn":   auth.IsLoggedIn(c),
+		"IsMainPage": true,
+		"Product":    productByTag,
 	}
 
 	if !webpage.IsHTMXRequest(c) {
@@ -63,8 +59,6 @@ func renderProductDetails(c *gin.Context) {
 }
 
 func renderMainPage(c *gin.Context) {
-	csrfToken := csrf.GetToken(c)
-
 	ps, err := product.FindAll()
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
@@ -73,7 +67,7 @@ func renderMainPage(c *gin.Context) {
 
 	dataMap := map[string]interface{}{
 		"Products":  ps,
-		"csrfToken": csrfToken,
+		"csrfToken": csrf.GetToken(c),
 	}
 
 	executeMainPage(c, dataMap)
@@ -127,13 +121,10 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 		return
 	}
 
-	numberOfCartItems := cart.NumberOfSessionItems(c)
-
 	dataMap := map[string]interface{}{
-		"Categories":        cats,
-		"LoggedIn":          auth.IsLoggedIn(c),
-		"IsMainPage":        true,
-		"NumberOfCartItems": numberOfCartItems,
+		"Categories": cats,
+		"LoggedIn":   auth.IsLoggedIn(c),
+		"IsMainPage": true,
 	}
 
 	common.MergeMaps(source, dataMap)

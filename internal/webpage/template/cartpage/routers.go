@@ -11,10 +11,16 @@ import (
 )
 
 func CartPageRegister(r *gin.RouterGroup) {
-	r.GET("", RenderCartPage)
+	r.DELETE("/remove/:product-id", renderRemovedCartItemPage)
+	r.GET("", renderCartPage)
 }
 
-func RenderCartPage(c *gin.Context) {
+func renderRemovedCartItemPage(c *gin.Context) {
+	cart.Remove(c)
+	renderCartPage(c)
+}
+
+func renderCartPage(c *gin.Context) {
 	noProductMsg := "No product added to cart currently"
 
 	session := session.GetRoot(c)
@@ -26,14 +32,12 @@ func RenderCartPage(c *gin.Context) {
 
 	cart := sct.(cart.Cart)
 	isEmptyCart := cart.IsEmpty()
-	if sct == nil {
+	if isEmptyCart {
 		response.NoItemsHtml(c, noProductMsg)
 		return
 	}
 
-	csrfToken := csrf.GetToken(c)
 	subtotal := cart.CalculateSubtotal()
-	numberOfCartItems := cart.NumberOfItems()
 	shipping := 10 // TODO store it in db
 
 	dataMap := map[string]interface{}{
@@ -43,8 +47,7 @@ func RenderCartPage(c *gin.Context) {
 		"Shipping":          shipping,
 		"Total":             subtotal + shipping,
 		"IsMainPage":        true,
-		"NumberOfCartItems": numberOfCartItems,
-		"csrfToken":         csrfToken,
+		"csrfToken":         csrf.GetToken(c),
 	}
 
 	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLcartpage", dataMap)

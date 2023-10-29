@@ -17,7 +17,6 @@ func AccountPageRegister(r *gin.RouterGroup) {
 }
 
 func renderAccountPage(c *gin.Context) {
-	csrfToken := csrf.GetToken(c)
 	session := session.GetRoot(c)
 	userId := session.Get(common.UserId).(string)
 
@@ -29,7 +28,7 @@ func renderAccountPage(c *gin.Context) {
 	dataMap := map[string]interface{}{
 		"Address":   addr,
 		"LoggedIn":  auth.IsLoggedIn(c),
-		"csrfToken": csrfToken,
+		"csrfToken": csrf.GetToken(c),
 	}
 
 	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLaccountpage", dataMap)

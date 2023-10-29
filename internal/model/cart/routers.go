@@ -2,7 +2,6 @@ package cart
 
 import (
 	"fmt"
-	"net/http"
 
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
@@ -14,20 +13,6 @@ import (
 
 func CartRegister(r *gin.RouterGroup) {
 	r.POST("/add/:product-id", Add)
-	r.DELETE("/remove/:product-id", Remove)
-}
-
-func NumberOfSessionItems(c *gin.Context) int {
-	log.Debug().Msg("cartcheck.NumberOfCartItems called")
-
-	session := session.GetRoot(c)
-	sct := session.Get(common.Cart)
-	if sct == nil {
-		return 0
-	}
-
-	cart := sct.(Cart)
-	return cart.NumberOfItems()
 }
 
 func Add(c *gin.Context) {
@@ -69,9 +54,6 @@ func Remove(c *gin.Context) {
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to save session in cart.Remove")
 	}
-
-	c.Header(common.HTMXRedirect, common.Cart)
-	c.Status(http.StatusOK)
 }
 
 func initCart(ct interface{}) Cart {

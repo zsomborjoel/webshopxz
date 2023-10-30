@@ -59,8 +59,8 @@ This application created due to research purposes
     <td>Account creation</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/login_page.png" width="200"></td>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/account_creation.png" width="200"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/login_page.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/account_creation.png" width="600"></td>
   </tr>
  </table>
 

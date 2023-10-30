@@ -37,8 +37,8 @@ This application created due to research purposes
     <td>Product details </td>
   </tr>
   <tr>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/main_page.png" width="600"></td>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/product_details.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/main_page.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/product_details.png" width="600"></td>
   </tr>
  </table>
 
@@ -48,8 +48,8 @@ This application created due to research purposes
     <td>Account page</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/cart_page.png" width="600"></td>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/account_page.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/cart_page.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/account_page.png" width="600"></td>
   </tr>
  </table>
 
@@ -59,8 +59,8 @@ This application created due to research purposes
     <td>Account creation</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/login_page.png" width="200"></td>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/ui/account_creation.png" width="200"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/login_page.png" width="200"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/account_creation.png" width="200"></td>
   </tr>
  </table>
 
@@ -71,7 +71,7 @@ This application created due to research purposes
     <td>DB schema</td>
   </tr>
   <tr>
-    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/main/documentation/db/er_diagram.png" width="600"></td>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/db/er_diagram.png" width="600"></td>
   </tr>
  </table>
 

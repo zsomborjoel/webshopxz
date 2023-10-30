@@ -12,6 +12,7 @@
                             name="country"
                             id="country"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value={{.Address.Country}}
                             required=""
                         >
                     </div>
@@ -22,6 +23,7 @@
                             name="postal-code"
                             id="postal-code"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value={{.Address.PortalCode}}
                             required=""
                         >
                     </div>
@@ -32,6 +34,7 @@
                             name="city"
                             id="city"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value={{.Address.City}}
                             required=""
                         >
                     </div>
@@ -42,6 +45,7 @@
                             name="address-line"
                             id="address-line"
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
+                            value={{.Address.AddressLine}}
                             required=""
                         >
                     </div>
@@ -51,6 +55,7 @@
                             type="text"
                             name="phone-number"
                             id="phone-number"
+                            value={{.Address.PhoneNumber}}
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                         >
                     </div>
@@ -60,13 +65,19 @@
                             type="text"
                             name="company-name"
                             id="company-name"
+                            value={{.Address.CompanyName}}
                             class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full p-2.5"
                         >
                     </div>
                 </div>
                 <div class="mb-4">
                     <label for="details" class="block mb-2 text-gray-900">Additional details</label>
-                    <textarea id="details" name="details" rows="4" class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-32 p-2.5"></textarea>
+                    <textarea
+                        id="details"
+                        name="details"
+                        rows="4"
+                        class="bg-gray-50 border border-gray-300 text-gray-900 sm:text-sm rounded-lg focus:ring-primary-600 focus:border-primary-600 block w-full h-32 p-2.5"
+                    >{{.Address.Details}}</textarea>
                 </div>
                 <div class="flex justify-center p-6 space-x-2 border-t border-gray-200 rounded-b dark:border-gray-600">
                     <button

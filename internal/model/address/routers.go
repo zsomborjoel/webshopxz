@@ -47,6 +47,11 @@ func Creation(c *gin.Context) {
 		return
 	}
 
+	if !common.IsValidPhoneNumber(pn) {
+		response.AbortWithHtml(c, http.StatusBadRequest, "Inserted phone number is not valid")
+		return
+	}
+
 	session := session.GetRoot(c)
 	userId := session.Get(common.UserId).(string)
 

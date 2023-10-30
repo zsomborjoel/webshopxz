@@ -22,3 +22,10 @@ func GenerateRandomString(length int) string {
 	}
 	return string(result)
 }
+
+func IsValidPhoneNumber(phoneNumber string) bool {
+	regex := `^\+?[\d]{0,3}[\s.-]?\(?\d{3}\)?[\s.-]?\d{3}[\s.-]?\d{4}$`
+	re := regexp.MustCompile(regex)
+
+	return re.MatchString(phoneNumber)
+}

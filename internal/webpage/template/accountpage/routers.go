@@ -35,5 +35,17 @@ func renderAccountPage(c *gin.Context) {
 }
 
 func renderAccountAddressForm(c *gin.Context) {
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "accountaddressformHTMLaccountpage", nil)
+	session := session.GetRoot(c)
+	userId := session.Get(common.UserId).(string)
+
+	addr, err := address.FindOneByUserId(userId)
+	if err != nil {
+		log.Error().Err(err)
+	}
+
+	dataMap := map[string]interface{}{
+		"Address":   addr,
+	}
+
+	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "accountaddressformHTMLaccountpage", dataMap)
 }

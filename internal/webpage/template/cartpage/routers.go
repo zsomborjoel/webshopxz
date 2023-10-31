@@ -4,7 +4,6 @@ import (
 	"net/http"
 
 	"github.com/gin-gonic/gin"
-	csrf "github.com/utrack/gin-csrf"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
@@ -39,8 +38,8 @@ func renderCartProductAmountDecrease(c *gin.Context) {
 func renderCartBodyPage(c *gin.Context) {
 	noProductMsg := "No product added to cart currently"
 
-	session := session.GetRoot(c)
-	sct := session.Get(common.Cart)
+	s := session.GetRoot(c)
+	sct := s.Get(common.Cart)
 	if sct == nil {
 		response.NoItemsHtml(c, noProductMsg)
 		return
@@ -56,6 +55,8 @@ func renderCartBodyPage(c *gin.Context) {
 	subtotal := cart.CalculateSubtotal()
 	shipping := 10 // TODO store it in db
 
+	session.SetCsrfTokenCookie(c)
+
 	dataMap := map[string]interface{}{
 		"Cart":        cart,
 		"IsEmptyCart": isEmptyCart,
@@ -63,7 +64,6 @@ func renderCartBodyPage(c *gin.Context) {
 		"Shipping":    shipping,
 		"Total":       subtotal + shipping,
 		"IsMainPage":  true,
-		"csrfToken":   csrf.GetToken(c),
 	}
 
 	if !webpage.IsHTMXRequest(c) {

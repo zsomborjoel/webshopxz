@@ -4,10 +4,10 @@ import (
 	"net/http"
 
 	"github.com/rs/zerolog/log"
-	csrf "github.com/utrack/gin-csrf"
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
+	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
 	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
@@ -65,9 +65,10 @@ func renderMainPage(c *gin.Context) {
 		return
 	}
 
+	session.SetCsrfTokenCookie(c)
+
 	dataMap := map[string]interface{}{
-		"Products":  ps,
-		"csrfToken": csrf.GetToken(c),
+		"Products": ps,
 	}
 
 	executeMainPage(c, dataMap)

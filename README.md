@@ -1,6 +1,10 @@
 # Webshopxz
 
-<img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/createdwithhtmx.jpeg">
+<p align="center">
+  <a href="https://htmx.org/" target="_blank">
+    <img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/createdwithhtmx.jpeg">
+  </a>
+</p>
 
 ## 💻 Technologies
 

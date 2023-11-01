@@ -3,7 +3,7 @@ package loginpage
 import (
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
+	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 )
 
 func LoginPageRegister(r *gin.RouterGroup) {
@@ -15,17 +15,17 @@ func LoginPageRegister(r *gin.RouterGroup) {
 
 func renderLoginPage(c *gin.Context) {
 	session.SetCsrfTokenCookie(c)
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLloginpage", nil)
+	templaterenderer.Render(c.Writer, "indexHTMLloginpage", nil)
 }
 
 func renderCreateAccountForm(c *gin.Context) {
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "createaccountformHTMLloginpage", nil)
+	templaterenderer.Render(c.Writer, "createaccountformHTMLloginpage", nil)
 }
 
 func renderChangePasswordForm(c *gin.Context) {
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "changepasswordformHTMLloginpage", nil)
+	templaterenderer.Render(c.Writer, "changepasswordformHTMLloginpage", nil)
 }
 
 func renderResetPasswordForm(c *gin.Context) {
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "resetpasswordformHTMLloginpage", nil)
+	templaterenderer.Render(c.Writer, "resetpasswordformHTMLloginpage", nil)
 }

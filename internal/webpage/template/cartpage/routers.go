@@ -6,8 +6,8 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
+	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 	"github.com/zsomborjoel/workoutxz/internal/model/cart"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
@@ -71,7 +71,7 @@ func renderCartBodyPage(c *gin.Context) {
 		return
 	}
 
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "bodyHTMLcartpage", dataMap)
+	templaterenderer.Render(c.Writer, "bodyHTMLcartpage", dataMap)
 }
 
 func executeMainCartPage(c *gin.Context, source map[string]interface{}) {
@@ -80,5 +80,5 @@ func executeMainCartPage(c *gin.Context, source map[string]interface{}) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLcartpage", dataMap)
+	templaterenderer.Render(c.Writer, "indexHTMLcartpage", dataMap)
 }

@@ -1,7 +1,8 @@
-package ctemplate
+package templaterenderer
 
 import (
 	"html/template"
+	"io"
 	"io/ioutil"
 	"os"
 	"path/filepath"
@@ -12,7 +13,7 @@ import (
 
 var AllTemplate *template.Template
 
-func InitTemplate() {
+func InitTemplates() {
 	rootDir := os.Getenv("TEMPLATE_PATH")
 	if rootDir == "" {
 		log.Fatal().Msg("TEMPLATE_PATH environment variable is not set")
@@ -52,6 +53,6 @@ func InitTemplate() {
 	AllTemplate = root
 }
 
-func GetTemplate() *template.Template {
-	return AllTemplate
+func Render(wr io.Writer, name string, data any) {
+	AllTemplate.ExecuteTemplate(wr, name, data)
 }

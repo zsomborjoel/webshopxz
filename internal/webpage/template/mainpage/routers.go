@@ -9,7 +9,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	"github.com/zsomborjoel/workoutxz/internal/common"
-	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
+	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 	"github.com/zsomborjoel/workoutxz/internal/webpage"
@@ -55,7 +55,7 @@ func renderProductDetails(c *gin.Context) {
 		return
 	}
 
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productdetailsHTMLmainpage", dataMap)
+	templaterenderer.Render(c.Writer, "productdetailsHTMLmainpage", dataMap)
 }
 
 func renderMainPage(c *gin.Context) {
@@ -91,7 +91,7 @@ func renderProductsByCategory(c *gin.Context) {
 		return
 	}
 
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+	templaterenderer.Render(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func renderProductsBySearch(c *gin.Context) {
@@ -112,7 +112,7 @@ func renderProductsBySearch(c *gin.Context) {
 		return
 	}
 
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "productHTMLmainpage", dataMap)
+	templaterenderer.Render(c.Writer, "productHTMLmainpage", dataMap)
 }
 
 func executeMainPage(c *gin.Context, source map[string]interface{}) {
@@ -121,7 +121,7 @@ func executeMainPage(c *gin.Context, source map[string]interface{}) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLmainpage", dataMap)
+	templaterenderer.Render(c.Writer, "indexHTMLmainpage", dataMap)
 }
 
 func GetBaseData(c *gin.Context, source map[string]interface{}) (map[string]interface{}, error) {

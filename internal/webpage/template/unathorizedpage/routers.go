@@ -2,9 +2,9 @@ package unathorizedpage
 
 import (
 	"github.com/gin-gonic/gin"
-	"github.com/zsomborjoel/workoutxz/internal/common/ctemplate"
+	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 )
 
 func RenderUnauthorizedPage(c *gin.Context) {
-	ctemplate.GetTemplate().ExecuteTemplate(c.Writer, "indexHTMLunauthorizedpage", nil)
+	templaterenderer.Render(c.Writer, "indexHTMLunauthorizedpage", nil)
 }

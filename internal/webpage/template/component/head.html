@@ -5,30 +5,19 @@
     <title>Webshopx</title>
 </head>
 <script src="https://unpkg.com/htmx.org@1.9.5"></script>
-<script>
-    const fetchCsrfToken = () => {
-        const cookies = document.cookie.split(";").map(cookie => cookie.split("=").map(c => c.trim()));
-        for (const element of cookies) {
-            if (element[0] === "csrf_token") {
-                return decodeURIComponent(element[1]);
-            }
-        }
-        return null; 
-    }
-        
-    document.body.addEventListener('htmx:configRequest', (event) => {
-        const csrfToken = fetchCsrfToken();
-        if (csrfToken) {
-            event.detail.headers['X-CSRF-Token'] = csrfToken;
-        }
-    });
-</script>
+<!-- common components used multiple page -->
+{{template "csrfHTMLgeneral" .}}
+<!-- end -->
+<!-- common styles used multiple page and can not be done via tailwind -->
 <style>
     .half-height {
         height: 40vh;
     }
 </style>
+<!-- end -->
+<!-- common ids used multiple page -->
 <div id="login"/>
 <div id="account"/>
 <div id="mainpage"/>
+<!-- end -->
 {{end}}

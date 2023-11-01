@@ -1,8 +1,6 @@
 package session
 
 import (
-	"fmt"
-
 	"github.com/gin-contrib/sessions"
 	"github.com/gin-gonic/gin"
 	csrf "github.com/utrack/gin-csrf"
@@ -16,7 +14,5 @@ func GetRoot(c *gin.Context) sessions.Session {
 }
 
 func SetCsrfTokenCookie(c *gin.Context) {
-	token := csrf.GetToken(c)
-	fmt.Println(token)
-	c.SetCookie("csrf_token", token, 0, "/", "", false, false)
+	c.SetCookie("csrf_token", csrf.GetToken(c), 0, "/", "", false, false)
 }

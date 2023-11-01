@@ -1,0 +1,20 @@
+{{define "csrfHTMLgeneral"}}
+<script>
+    const fetchCsrfToken = () => {
+        const cookies = document.cookie.split(";").map(cookie => cookie.split("=").map(c => c.trim()));
+        for (const element of cookies) {
+            if (element[0] === "csrf_token") {
+                return decodeURIComponent(element[1]);
+            }
+        }
+        return null; 
+    }
+        
+    document.body.addEventListener('htmx:configRequest', (event) => {
+        const csrfToken = fetchCsrfToken();
+        if (csrfToken) {
+            event.detail.headers['X-CSRF-Token'] = csrfToken;
+        }
+    });
+</script>
+{{end}}

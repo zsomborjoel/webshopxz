@@ -10,7 +10,7 @@
 * Authentication/Authorization contains
     * jwt
     * refresh token
-    * csrf
+    * csrf protection
     * xss protection
     * sessions
 

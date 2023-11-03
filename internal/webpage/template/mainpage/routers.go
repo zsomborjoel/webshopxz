@@ -102,12 +102,10 @@ func renderProductsBySearch(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-
-	isProductsExists := products != nil && len(products) > 0
 	
 	dataMap := map[string]interface{}{
 		"Products": products,
-		"IsProductsExists": isProductsExists,
+		"IsProductsExists": !common.IsEmptyList(products),
 	}
 
 	if !webpage.IsHTMXRequest(c) {

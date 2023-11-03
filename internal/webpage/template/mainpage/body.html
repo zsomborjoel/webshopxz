@@ -1,6 +1,6 @@
 {{define "bodyHTMLmainpage"}}
 <body>
-    {{if .Products}}
+    {{if .IsProductsExists}}
     <div id="mainpagebody">
         {{template "productHTMLmainpage" .}}
     </div>

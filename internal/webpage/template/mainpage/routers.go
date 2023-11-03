@@ -103,8 +103,11 @@ func renderProductsBySearch(c *gin.Context) {
 		return
 	}
 
+	isProductsExists := products != nil && len(products) > 0
+	
 	dataMap := map[string]interface{}{
 		"Products": products,
+		"IsProductsExists": isProductsExists,
 	}
 
 	if !webpage.IsHTMXRequest(c) {

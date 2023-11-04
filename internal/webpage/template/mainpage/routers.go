@@ -76,14 +76,14 @@ func renderMainPage(c *gin.Context) {
 
 func renderProductsByCategory(c *gin.Context) {
 	cat := c.Param("name")
-	products, err := product.FindAllByCategory(cat)
+	ps, err := product.FindAllByCategory(cat)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	dataMap := map[string]interface{}{
-		"Products": products,
+		"Products": ps,
 	}
 
 	if !webpage.IsHTMXRequest(c) {
@@ -97,20 +97,23 @@ func renderProductsByCategory(c *gin.Context) {
 func renderProductsBySearch(c *gin.Context) {
 	t := c.Query("query")
 
-	products, err := product.SearchAllByText(t)
+	ps, err := product.SearchAllByText(t)
 	if err != nil {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
 
 	dataMap := map[string]interface{}{
-		"Products":         products,
-		"IsProductsExists": !slices.IsEmptyList(products),
+		"Products": ps,
 	}
 
 	if !webpage.IsHTMXRequest(c) {
 		executeMainPage(c, dataMap)
 		return
+	}
+
+	if slices.IsEmpty(ps) {
+		templaterenderer.Render(c.Writer, "noproductHTMLmainpage", nil)
 	}
 
 	templaterenderer.Render(c.Writer, "productHTMLmainpage", dataMap)

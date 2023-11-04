@@ -1,6 +1,6 @@
 {{define "csrfHTMLgeneral"}}
 <script>
-    const fetchCsrfToken = () => {
+    var fetchCsrfToken = () => {
         const cookies = document.cookie.split(";").map(cookie => cookie.split("=").map(c => c.trim()));
         for (const element of cookies) {
             if (element[0] === "csrf_token") {

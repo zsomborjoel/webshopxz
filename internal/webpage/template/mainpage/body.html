@@ -1,12 +1,11 @@
 {{define "bodyHTMLmainpage"}}
 <body>
-    <div>{{.IsProductsExists}}</div>
-    {{if .IsProductsExists}}
     <div id="mainpagebody">
+        {{if .Products}}
         {{template "productHTMLmainpage" .}}
+        {{else}}
+        {{template "noproductHTMLmainpage" .}}
+        {{end}}
     </div>
-    {{else}}
-    <div class="text-center half-height">No such products available</div>
-    {{end}}
 </body>
 {{end}}

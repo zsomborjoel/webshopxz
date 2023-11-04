@@ -21,6 +21,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/ping"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/accountpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/cartpage"
+	"github.com/zsomborjoel/workoutxz/internal/webpage/template/checkoutpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/loginpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/mainpage"
 	"github.com/zsomborjoel/workoutxz/internal/webpage/template/notfoundpage"
@@ -75,6 +76,9 @@ func main() {
 	cartgrp := template.Group("/cart")
 	cartpage.CartPageRegister(cartgrp)
 	cart.CartRegister(cartgrp)
+
+	checkoutgrp := template.Group("/checkout")
+	checkoutpage.CheckoutPageRegister(checkoutgrp)
 
 	protected := r.Group("/protected")
 	protected.Use(

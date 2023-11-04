@@ -21,7 +21,7 @@ func renderAccountPage(c *gin.Context) {
 
 	addr, err := address.FindOneByUserId(userId)
 	if err != nil {
-		log.Error().Err(err)
+		log.Error().Err(err).Msg("")
 	}
 
 	session.SetCsrfTokenCookie(c)

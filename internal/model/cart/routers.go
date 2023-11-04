@@ -13,8 +13,6 @@ import (
 
 func CartRegister(r *gin.RouterGroup) {
 	r.POST("/add/:product-id", Add)
-	//r.PUT("/increase-product-amount/:product-id", IncreaseProductAmount)
-	//r.PUT("/decrease-product-amount/:product-id", DecreaseProductAmount)
 }
 
 func Add(c *gin.Context) {

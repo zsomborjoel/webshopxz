@@ -4,7 +4,7 @@
     <div class="rounded-lg md:w-2/3">
         {{range .Cart.Products}}
         <div class="justify-between mb-6 rounded-lg bg-white p-6 shadow-md sm:flex sm:justify-start">
-            <img src="../../static/images/{{.ImageName}}" alt="product-image" class="w-full rounded-lg sm:w-40">
+            <img src="../../static/images/{{.ImageName}}" alt="" class="w-full rounded-lg sm:w-40">
             <div class="sm:ml-4 sm:flex sm:w-full sm:justify-between">
                 <div class="mt-5 sm:mt-0">
                     <h2 class="text-lg font-bold text-gray-900">{{.Name}}</h2>
@@ -62,7 +62,15 @@
                 <p class="text-sm text-gray-700">including VAT</p>
             </div>
         </div>
-        <button class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600">Check out</button>
+        <button
+            id="checkkout-button"
+            hx-get="/checkout"
+            hx-trigger="click"
+            hx-target="#whole-page-content"
+            hx-push-url="true"
+            hx-indicator=".htmx-indicator"
+            class="mt-6 w-full rounded-md bg-blue-500 py-1.5 font-medium text-blue-50 hover:bg-blue-600"
+        >Check out</button>
     </div>
 </div>
 {{end}}

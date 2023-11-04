@@ -69,6 +69,15 @@ This application created due to research purposes
     <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/account_creation.png" width="600"></td>
   </tr>
  </table>
+ 
+ <table>
+  <tr>
+    <td>Checkout page</td>
+  </tr>
+  <tr>
+    <td><img src="https://github.com/zsomborjoel/webshopxz/blob/master/documentation/ui/checkout_page.png" width="600"></td>
+  </tr>
+ </table>
 
 ## 📙 ER diagram
 

@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -20,7 +20,7 @@ func validatePassword(existing string, recived string) error {
 
 func IsLoggedIn(c *gin.Context) bool {
 	session := session.GetRoot(c)
-	if at := session.Get(common.AccessToken); at != nil {
+	if at := session.Get(consts.AccessToken); at != nil {
 		return true
 	}
 

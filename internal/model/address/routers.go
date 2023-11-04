@@ -8,8 +8,9 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
+	"github.com/zsomborjoel/workoutxz/internal/common/str"
 )
 
 func AddressRegister(r *gin.RouterGroup) {
@@ -47,13 +48,13 @@ func Creation(c *gin.Context) {
 		return
 	}
 
-	if !common.IsValidPhoneNumber(pn) {
+	if !str.IsValidPhoneNumber(pn) {
 		response.AbortWithHtml(c, http.StatusBadRequest, "Inserted phone number is not valid")
 		return
 	}
 
 	session := session.GetRoot(c)
-	userId := session.Get(common.UserId).(string)
+	userId := session.Get(consts.UserId).(string)
 
 	s := AddressDeserializer{c, AddressRequest{
 		Country:     co,
@@ -78,6 +79,6 @@ func Creation(c *gin.Context) {
 		return
 	}
 
-	c.Header(common.HTMXRedirect, "/protected/account")
+	c.Header(consts.HTMXRedirect, "/protected/account")
 	c.Status(http.StatusOK)
 }

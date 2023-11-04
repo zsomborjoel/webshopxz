@@ -1,4 +1,4 @@
-package common
+package db
 
 import (
 	"os"
@@ -10,7 +10,7 @@ import (
 
 var DB *sqlx.DB
 
-func InitDB() *sqlx.DB {
+func Init() *sqlx.DB {
 	conn := os.Getenv("DB_CONNECTION")
 
 	var err error
@@ -22,6 +22,6 @@ func InitDB() *sqlx.DB {
 	return DB
 }
 
-func GetDB() *sqlx.DB {
+func Get() *sqlx.DB {
 	return DB
 }

@@ -7,7 +7,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
@@ -37,7 +37,7 @@ func CreateOne(user user.User) (string, error) {
 		UserId:    user.Id,
 	}
 
-	db := common.GetDB()
+	db := db.Get()
 	tx := db.MustBegin()
 
 	st := `INSERT INTO verification_tokens (token, created_at, expired_at, user_id) 
@@ -58,7 +58,7 @@ func CreateOne(user user.User) (string, error) {
 func IsValid(token string) (VerificationToken, error) {
 	log.Debug().Msg("verificationtoken.IsValid called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var vt VerificationToken
 	err := db.Get(&vt, "SELECT * FROM verification_tokens WHERE token=$1", token)
 	if err != nil {
@@ -75,7 +75,7 @@ func IsValid(token string) (VerificationToken, error) {
 func DeleteOne(token string) {
 	log.Debug().Msg("verificationtoken.DeleteOne called")
 
-	db := common.GetDB()
+	db := db.Get()
 	db.MustExec("DELETE FROM verification_tokens WHERE token=$1", token)
 }
 
@@ -87,7 +87,7 @@ func UpdateToken(token string) (string, error) {
 		return "", fmt.Errorf("An error occured in verificationtoken.UpdateOne.NewV4: %w", err)
 	}
 
-	db := common.GetDB()
+	db := db.Get()
 	r := db.MustExec("UPDATE verification_tokens SET token=$1 WHERE token=$2", uuid, token)
 	num, err := r.RowsAffected()
 	if err != nil {

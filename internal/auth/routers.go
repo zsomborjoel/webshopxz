@@ -10,14 +10,15 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
 	"github.com/zsomborjoel/workoutxz/internal/auth/verificationtoken"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
+	"github.com/zsomborjoel/workoutxz/internal/common/str"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
 func AuthRegister(r *gin.RouterGroup) {
 	r.POST("/registration", Registration)
-	r.GET(common.ConfirmRegistrationEndpoint, ConfirmRegistration)
+	r.GET(consts.ConfirmRegistrationEndpoint, ConfirmRegistration)
 	r.PUT("/resend-verification", ResendVerification)
 	r.POST("/login", Login)
 	r.POST("/logout", Logout)
@@ -37,7 +38,7 @@ func Registration(c *gin.Context) {
 		return
 	}
 
-	if !common.IsValidEmail(e) {
+	if !str.IsValidEmail(e) {
 		response.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
 		return
 	}
@@ -147,42 +148,42 @@ func Login(c *gin.Context) {
 
 	usr, err := user.FindByUserName(e)
 	if err != nil {
-		log.Debug().Err(err).Msg(common.LoginError)
+		log.Debug().Err(err).Msg(consts.LoginError)
 		response.AbortWithHtml(c, http.StatusNotFound, "Username or password is invalid")
 		return
 	}
 
 	err = validatePassword(usr.Password, p)
 	if err != nil {
-		log.Debug().Err(err).Msg(common.LoginError)
+		log.Debug().Err(err).Msg(consts.LoginError)
 		response.AbortWithHtml(c, http.StatusUnauthorized, "Username or password is invalid")
 		return
 	}
 
 	jwt, err := authtoken.CreateJWTToken(usr.Id)
 	if err != nil {
-		log.Debug().Err(err).Msg(common.LoginError)
+		log.Debug().Err(err).Msg(consts.LoginError)
 		response.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
 	rt, err := refreshtoken.CreateOne(usr)
 	if err != nil {
-		log.Debug().Err(err).Msg(common.LoginError)
+		log.Debug().Err(err).Msg(consts.LoginError)
 		response.AbortWithHtml(c, http.StatusInternalServerError, "Internal server error on login")
 		return
 	}
 
 	session := session.GetRoot(c)
-	session.Set(common.AccessToken, jwt)
-	session.Set(common.RefreshToken, rt)
-	session.Set(common.UserId, usr.Id)
+	session.Set(consts.AccessToken, jwt)
+	session.Set(consts.RefreshToken, rt)
+	session.Set(consts.UserId, usr.Id)
 	err = session.Save()
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to save session auth.Login")
 	}
 
-	c.Header(common.HTMXRedirect, "/")
+	c.Header(consts.HTMXRedirect, "/")
 	c.Status(http.StatusOK)
 }
 
@@ -196,7 +197,7 @@ func Logout(c *gin.Context) {
 		log.Error().Err(err).Msg("Failed to save session auth.Logout")
 	}
 
-	c.Header(common.HTMXRedirect, "/")
+	c.Header(consts.HTMXRedirect, "/")
 	c.Status(http.StatusOK)
 }
 
@@ -210,7 +211,7 @@ func ResetPassword(c *gin.Context) {
 		return
 	}
 
-	if !common.IsValidEmail(e) {
+	if !str.IsValidEmail(e) {
 		response.AbortWithHtml(c, http.StatusBadRequest, "Email is not in valid format")
 		return
 	}

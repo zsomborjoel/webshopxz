@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 )
 
 type Product struct {
@@ -21,7 +22,7 @@ type Product struct {
 func FindAll() ([]Product, error) {
 	log.Debug().Msg("products.FindAll called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p []Product
 	err := db.Select(&p,
 		`
@@ -47,10 +48,10 @@ func FindAll() ([]Product, error) {
 func FindAllByCategory(cn string) ([]Product, error) {
 	log.Debug().Msg("products.FindAllByCategory called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p []Product
 
-	if cn == common.All {
+	if cn == consts.All {
 		return FindAll()
 	}
 
@@ -81,7 +82,7 @@ func FindAllByCategory(cn string) ([]Product, error) {
 func SearchAllByText(text string) ([]Product, error) {
 	log.Debug().Msg("products.SearchAllBy called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p []Product
 
 	err := db.Select(&p,
@@ -111,7 +112,7 @@ func SearchAllByText(text string) ([]Product, error) {
 func FindAllTagNames() ([]Product, error) {
 	log.Debug().Msg("products.FindAll called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p []Product
 	err := db.Select(&p,
 		`
@@ -132,7 +133,7 @@ func FindAllTagNames() ([]Product, error) {
 func FindOneByTagName(tagName string) (Product, error) {
 	log.Debug().Msg("products.FindByTagName called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p Product
 	err := db.Get(&p,
 		`
@@ -158,7 +159,7 @@ func FindOneByTagName(tagName string) (Product, error) {
 func FindOneById(id string) (Product, error) {
 	log.Debug().Msg("categories.FindOneById called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var p Product
 	err := db.Get(&p,
 		`

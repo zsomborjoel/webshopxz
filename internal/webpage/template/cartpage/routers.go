@@ -5,7 +5,7 @@ import (
 
 	"github.com/gin-gonic/gin"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
 	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 	"github.com/zsomborjoel/workoutxz/internal/model/cart"
@@ -39,7 +39,7 @@ func renderCartBodyPage(c *gin.Context) {
 	noProductMsg := "No product added to cart currently"
 
 	s := session.GetRoot(c)
-	sct := s.Get(common.Cart)
+	sct := s.Get(consts.Cart)
 	if sct == nil {
 		response.NoItemsHtml(c, noProductMsg)
 		return

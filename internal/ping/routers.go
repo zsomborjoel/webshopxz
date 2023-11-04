@@ -5,7 +5,7 @@ import (
 	"os"
 
 	"github.com/gin-gonic/gin"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 )
 
 func PingRegister(router *gin.RouterGroup) {
@@ -19,7 +19,7 @@ func ping(c *gin.Context) {
 }
 
 func pingDb(c *gin.Context) {
-	db := common.GetDB()
+	db := db.Get()
 
 	err := db.Ping()
 	if err != nil {

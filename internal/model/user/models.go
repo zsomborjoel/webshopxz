@@ -4,7 +4,8 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
+	"github.com/zsomborjoel/workoutxz/internal/common/str"
 )
 
 type User struct {
@@ -18,7 +19,7 @@ type User struct {
 func FindByUserName(username string) (User, error) {
 	log.Debug().Msg("users.FindUserByUserName called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var u User
 	err := db.Get(&u, "SELECT id, username, email, password, active FROM users WHERE username=$1", username)
 	if err != nil {
@@ -31,7 +32,7 @@ func FindByUserName(username string) (User, error) {
 func FindByUserId(id string) (User, error) {
 	log.Debug().Msg("users.FindByUserId called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var u User
 	err := db.Get(&u, "SELECT id, username, email, password, active FROM users WHERE id=$1", id)
 	if err != nil {
@@ -44,7 +45,7 @@ func FindByUserId(id string) (User, error) {
 func ExistByUserName(username string) bool {
 	log.Debug().Msg("users.ExistByUserName called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var i int
 	err := db.Get(&i, "SELECT 1 FROM users WHERE username=$1", username)
 	if err != nil {
@@ -57,7 +58,7 @@ func ExistByUserName(username string) bool {
 func CreateOne(user User) error {
 	log.Debug().Msg("users.CreateOne called")
 
-	db := common.GetDB()
+	db := db.Get()
 	tx := db.MustBegin()
 
 	st := `INSERT INTO users (id, username, email, password) 
@@ -80,7 +81,7 @@ func CreateOne(user User) error {
 func ActivateOne(user User) error {
 	log.Debug().Msg("users.ActivateOne called")
 
-	db := common.GetDB()
+	db := db.Get()
 	tx := db.MustBegin()
 
 	st := `UPDATE users SET active=true WHERE id=:id`
@@ -100,8 +101,8 @@ func ActivateOne(user User) error {
 func ResetPasswordByUserName(username string) error {
 	log.Debug().Msg("users.ResetPasswordByUserName called")
 
-	db := common.GetDB()
-	newpass := common.GenerateRandomString(8)
+	db := db.Get()
+	newpass := str.GenerateRandom(8)
 	_, err := db.Exec("UPDATE users SET password=$1 WHERE username=$2", newpass, username)
 	if err != nil {
 		return fmt.Errorf("An error occured in users.ResetPasswordById.Exec: %w", err)

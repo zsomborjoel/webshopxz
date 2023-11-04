@@ -5,7 +5,7 @@ import (
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 	"github.com/zsomborjoel/workoutxz/internal/model/address"
 )
@@ -17,7 +17,7 @@ func AccountPageRegister(r *gin.RouterGroup) {
 
 func renderAccountPage(c *gin.Context) {
 	s := session.GetRoot(c)
-	userId := s.Get(common.UserId).(string)
+	userId := s.Get(consts.UserId).(string)
 
 	addr, err := address.FindOneByUserId(userId)
 	if err != nil {
@@ -36,7 +36,7 @@ func renderAccountPage(c *gin.Context) {
 
 func renderAccountAddressForm(c *gin.Context) {
 	s := session.GetRoot(c)
-	userId := s.Get(common.UserId).(string)
+	userId := s.Get(consts.UserId).(string)
 
 	addr, err := address.FindOneByUserId(userId)
 	if err != nil {

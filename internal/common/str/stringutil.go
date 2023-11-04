@@ -1,4 +1,4 @@
-package common
+package str
 
 import (
 	"math/rand"
@@ -12,7 +12,7 @@ func IsValidEmail(email string) bool {
 	return regex.MatchString(email)
 }
 
-func GenerateRandomString(length int) string {
+func GenerateRandom(length int) string {
 	charset := "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789"
 
 	rand.Seed(time.Now().UnixNano())

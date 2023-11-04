@@ -13,7 +13,7 @@ import (
 
 var AllTemplate *template.Template
 
-func InitTemplates() {
+func Init() {
 	rootDir := os.Getenv("TEMPLATE_PATH")
 	if rootDir == "" {
 		log.Fatal().Msg("TEMPLATE_PATH environment variable is not set")

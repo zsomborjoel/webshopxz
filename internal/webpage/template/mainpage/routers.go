@@ -3,12 +3,12 @@ package mainpage
 import (
 	"net/http"
 
-	"github.com/rs/zerolog/log"
-
 	"github.com/gin-gonic/gin"
+	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/maps"
+	"github.com/zsomborjoel/workoutxz/internal/common/slices"
 	"github.com/zsomborjoel/workoutxz/internal/common/templaterenderer"
 	"github.com/zsomborjoel/workoutxz/internal/model/category"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
@@ -102,10 +102,10 @@ func renderProductsBySearch(c *gin.Context) {
 		c.AbortWithError(http.StatusInternalServerError, err)
 		return
 	}
-	
+
 	dataMap := map[string]interface{}{
-		"Products": products,
-		"IsProductsExists": !common.IsEmptyList(products),
+		"Products":         products,
+		"IsProductsExists": !slices.IsEmptyList(products),
 	}
 
 	if !webpage.IsHTMXRequest(c) {
@@ -137,6 +137,6 @@ func GetBaseData(c *gin.Context, source map[string]interface{}) (map[string]inte
 		"IsMainPage": true,
 	}
 
-	common.MergeMaps(source, dataMap)
+	maps.Merge(source, dataMap)
 	return dataMap, nil
 }

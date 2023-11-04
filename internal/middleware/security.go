@@ -15,7 +15,7 @@ import (
 	"github.com/zsomborjoel/workoutxz/internal/auth/refreshtoken"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
 	authtoken "github.com/zsomborjoel/workoutxz/internal/auth/token"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
 )
 
@@ -53,8 +53,8 @@ func XSSProtectionHandler() gin.HandlerFunc {
 func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		session := session.GetRoot(c)
-		at := session.Get(common.AccessToken)
-		rt := session.Get(common.RefreshToken)
+		at := session.Get(consts.AccessToken)
+		rt := session.Get(consts.RefreshToken)
 
 		if at == nil || rt == nil {
 			log.Err(errors.New("Token not present")).Msg("")
@@ -85,8 +85,8 @@ func TokenAuthAndRefreshHandler() gin.HandlerFunc {
 }
 
 func resetLogin(session sessions.Session) {
-	session.Delete(common.AccessToken)
-	session.Delete(common.RefreshToken)
+	session.Delete(consts.AccessToken)
+	session.Delete(consts.RefreshToken)
 	err := session.Save()
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to save session security.resetLogin")
@@ -120,11 +120,11 @@ func handleTokenRefresh(c *gin.Context, userID string, session sessions.Session)
 		return
 	}
 
-	session.Set(common.AccessToken, newAccessToken)
+	session.Set(consts.AccessToken, newAccessToken)
 	err = session.Save()
 	if err != nil {
 		log.Error().Err(err).Msg("Failed to save session security.handleTokenRefresh")
 	}
-	
+
 	c.Next()
 }

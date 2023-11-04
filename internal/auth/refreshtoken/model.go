@@ -6,7 +6,7 @@ import (
 
 	"github.com/gofrs/uuid"
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 	"github.com/zsomborjoel/workoutxz/internal/model/user"
 )
 
@@ -36,7 +36,7 @@ func CreateOne(user user.User) (string, error) {
 		UserId:    user.Id,
 	}
 
-	db := common.GetDB()
+	db := db.Get()
 	tx := db.MustBegin()
 
 	st := `INSERT INTO refresh_tokens (token, created_at, expired_at, user_id) 
@@ -57,7 +57,7 @@ func CreateOne(user user.User) (string, error) {
 func IsValid(token string) bool {
 	log.Debug().Msg("verificationtokens.IsValid called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var rt RefreshToken
 	err := db.Get(&rt, "SELECT * FROM refresh_tokens WHERE token=$1", token)
 	if err != nil {
@@ -76,6 +76,6 @@ func IsValid(token string) bool {
 func DeleteOne(token string) {
 	log.Debug().Msg("refreshtoken.DeleteOne called")
 
-	db := common.GetDB()
+	db := db.Get()
 	db.Exec("DELETE FROM refresh_tokens WHERE token=$1", token)
 }

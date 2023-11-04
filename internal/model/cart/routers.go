@@ -6,7 +6,7 @@ import (
 	"github.com/gin-gonic/gin"
 	"github.com/rs/zerolog/log"
 	"github.com/zsomborjoel/workoutxz/internal/auth/session"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"github.com/zsomborjoel/workoutxz/internal/common/response"
 	"github.com/zsomborjoel/workoutxz/internal/model/product"
 )
@@ -20,19 +20,19 @@ func CartRegister(r *gin.RouterGroup) {
 func Add(c *gin.Context) {
 	log.Debug().Msg("cart.Add called")
 
-	productId := c.Param(common.ProductId)
+	productId := c.Param(consts.ProductId)
 	p, err := product.FindOneById(productId)
 	if err != nil {
 		log.Error().Err(err).Msg(fmt.Sprintf("failed to fetch product for cart | [%s]", productId))
 	}
 
 	session := session.GetRoot(c)
-	ct := session.Get(common.Cart)
+	ct := session.Get(consts.Cart)
 	cart := initCart(ct)
 
 	s := product.ProductSerializer{C: c, Product: p}
 	cart.AddProduct(s.CartProduct())
-	session.Set(common.Cart, cart)
+	session.Set(consts.Cart, cart)
 
 	err = session.Save()
 	if err != nil {
@@ -45,12 +45,12 @@ func Add(c *gin.Context) {
 func IncreaseProductAmount(c *gin.Context) {
 	log.Debug().Msg("cart.IncreaseProductAmount called")
 
-	productId := c.Param(common.ProductId)
+	productId := c.Param(consts.ProductId)
 
 	session := session.GetRoot(c)
-	ct := session.Get(common.Cart).(Cart)
+	ct := session.Get(consts.Cart).(Cart)
 	ct.IncreaseProductAmount(productId)
-	session.Set(common.Cart, ct)
+	session.Set(consts.Cart, ct)
 
 	err := session.Save()
 	if err != nil {
@@ -64,9 +64,9 @@ func DecreaseProductAmount(c *gin.Context) {
 	productId := c.Param("product-id")
 
 	session := session.GetRoot(c)
-	ct := session.Get(common.Cart).(Cart)
+	ct := session.Get(consts.Cart).(Cart)
 	ct.DecreaseProductAmount(productId)
-	session.Set(common.Cart, ct)
+	session.Set(consts.Cart, ct)
 
 	err := session.Save()
 	if err != nil {
@@ -77,12 +77,12 @@ func DecreaseProductAmount(c *gin.Context) {
 func Remove(c *gin.Context) {
 	log.Debug().Msg("cart.Remove called")
 
-	productId := c.Param(common.ProductId)
+	productId := c.Param(consts.ProductId)
 
 	session := session.GetRoot(c)
-	ct := session.Get(common.Cart).(Cart)
+	ct := session.Get(consts.Cart).(Cart)
 	ct.RemoveProductById(productId)
-	session.Set(common.Cart, ct)
+	session.Set(consts.Cart, ct)
 
 	err := session.Save()
 	if err != nil {

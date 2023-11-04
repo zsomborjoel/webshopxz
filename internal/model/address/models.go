@@ -5,7 +5,7 @@ import (
 	"time"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 )
 
 type Address struct {
@@ -25,7 +25,7 @@ type Address struct {
 func FindOneByUserId(userId string) (Address, error) {
 	log.Debug().Msg("address.FindByUserId called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var a Address
 	err := db.Get(&a,
 		`
@@ -46,7 +46,7 @@ func FindOneByUserId(userId string) (Address, error) {
 func Update(address Address) error {
 	log.Debug().Msg("address.UpdateAddressByUserId called")
 
-	db := common.GetDB()
+	db := db.Get()
 
 	address.ModifiedAt = time.Now().Unix()
 	_, err := db.NamedExec(
@@ -73,7 +73,7 @@ func Update(address Address) error {
 func CreateOne(address Address) error {
 	log.Debug().Msg("users.CreateOne called")
 
-	db := common.GetDB()
+	db := db.Get()
 	tx := db.MustBegin()
 
 	st := `INSERT INTO user_addresses (id, country, postal_code, city, address_line, phone_number, company_name, details, user_id) 
@@ -116,7 +116,7 @@ func UpsertOne(address Address) error {
 func existByUserId(id string) bool {
 	log.Debug().Msg("address.existByUserId called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var i int
 	err := db.Get(&i, "SELECT 1 FROM user_addresses WHERE user_id=$1", id)
 	if err != nil {

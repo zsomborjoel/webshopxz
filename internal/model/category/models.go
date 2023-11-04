@@ -4,7 +4,7 @@ import (
 	"fmt"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/db"
 )
 
 type Category struct {
@@ -16,7 +16,7 @@ type Category struct {
 func FindAllNameWithProducts() ([]Category, error) {
 	log.Debug().Msg("categories.FindAll called")
 
-	db := common.GetDB()
+	db := db.Get()
 	var c []Category
 	err := db.Select(&c,
 		`

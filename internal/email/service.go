@@ -8,7 +8,7 @@ import (
 	"strings"
 
 	"github.com/rs/zerolog/log"
-	"github.com/zsomborjoel/workoutxz/internal/common"
+	"github.com/zsomborjoel/workoutxz/internal/common/consts"
 	"google.golang.org/api/gmail/v1"
 	"google.golang.org/api/option"
 )
@@ -63,7 +63,7 @@ func SendEmail(to string, token string) error {
 func getEmailHtml(token string) (string, error) {
 	htmlPath := os.Getenv("EMAIL_HTML_PATH")
 	url := os.Getenv("APP_URL")
-	endpoint := url + "/api/auth" + common.ConfirmRegistrationEndpoint + "?token=" + token
+	endpoint := url + "/api/auth" + consts.ConfirmRegistrationEndpoint + "?token=" + token
 
 	html, err := os.ReadFile(htmlPath)
 	if err != nil {

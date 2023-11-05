@@ -1,7 +1,7 @@
 {{define "productHTMLmainpage"}}
-<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4 sm:px-8 md:px-16 lg:px-32 flex-grow">
+<div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-4 px-4 sm:px-8 md:px-16 lg:px-32 flex-grow place-items-center">
     {{range .Products}}
-    <div class="block text-center max-w-[18rem] rounded-lg border bg-white shadow-[0_2px_15px_-3px_rgba(0,0,0,0.07),0_10px_20px_-2px_rgba(0,0,0,0.04)] dark:bg-neutral-700">
+    <div class="block text-center max-w-24 rounded-lg border bg-white dark:bg-neutral-700 shadow-[0 2px 15px -3px rgba(0,0,0,0.07) 0 10px 20px -2px rgba(0,0,0,0.04)]">
         <div class="relative overflow-hidden bg-cover bg-no-repeat">
             <img
                 hx-get="/product-details/{{.TagName}}"
